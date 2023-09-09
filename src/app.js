@@ -4,6 +4,7 @@ const app = express()
 const port = 3000
 const db = require('../services/user_api/queries')
 
+
 app.use(bodyParser.json())
 app.use(
   bodyParser.urlencoded({
