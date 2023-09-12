@@ -64,6 +64,11 @@ cd question-service
 yarn install
 yarn run dev
 ```
+### Setting up MongoDB
+1. Install [MongoDB](https://www.mongodb.com/docs/manual/installation/)
+1. Create a question-service database
+1. Create a question collection
+1. Add `mongodb://127.0.0.1:27017/question-service` to your `.env file` for `local_db_url` and set `ENV=DEV`. This is the default ip address and port for MongoDB. Note that newer versions of NodeJS may not resolve localhost properly.
 
 ### Testing API
 You may use Postman to test the API but I prefer using Rest Client Extension within VSCode
