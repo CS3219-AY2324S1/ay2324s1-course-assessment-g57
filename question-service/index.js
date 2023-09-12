@@ -6,29 +6,15 @@ const mongoose = require('mongoose')
 const port = 3000
 
 var api = process.env.ENV == 'DEV' ? process.env.LOCAL_DB_URL : process.env.PROD_DB_URL
-console.log(api)
 mongoose.connect(api, { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', () => console.log('Connected to MongoDB!'))
 
+app.use(express.json())
 
-// app.use(bodyParser.json())
-// app.use(
-//   bodyParser.urlencoded({
-//     extended: true,
-//   })
-// )
-
-// app.get('/', (request, response) => {
-//   response.json({ info: 'Node.js, Express, and Postgres API' })
-// })
-
-// app.get('/users', db.getUsers)
-// app.get('/users/:id', db.getUserById)
-// app.post('/users', db.createUser)
-// app.put('/users/:id', db.updateUser)
-// app.delete('/users/:id', db.deleteUser)
+const questionRouter = require('./routes/questions')
+app.use('/api/v1/questions', questionRouter)
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}.`)
