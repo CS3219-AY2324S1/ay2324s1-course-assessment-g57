@@ -4,7 +4,7 @@ import { User, Question, Fact } from "../models/types";
 import dynamic from 'next/dynamic'
 import UserTable from '../components/table'
 import NavBar from '../components/nav'
- 
+
 const questionsApi = "https://www.boredapi.com/api/activity";
 const usersApi = "https://jsonplaceholder.typicode.com/users";
 
@@ -69,7 +69,6 @@ const MainApp = () => {
                     </button>
                     <button className="button is-link" onClick={getUsers}>Link</button>
                 </div>
-
                 <UserTable users={users} />
             </main>
         </>
