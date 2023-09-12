@@ -4,7 +4,6 @@ const Question = require('../models/question-model')
 
 // Read questions
 router.get('/', async (req, res) => {
-    // res.send('Hello world!')
     try {
         const questions = await Question.find()
         res.json(questions)

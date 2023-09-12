@@ -58,3 +58,26 @@ VALUES
   ('user9', 'p@ssw0rd', 'user9@example.com', NOW()),
   ('user10', 'password567', 'user10@example.com', NOW());
 
+## Setup Question Service
+```
+cd question-service
+yarn install
+yarn run dev
+```
+
+### Testing API
+You may use Postman to test the API but I prefer using Rest Client Extension within VSCode
+
+#### Installation
+1. Open Visual Studio Code.
+
+1. Go to the Extensions view by clicking on the Extensions icon in the Activity Bar on the side of the window.
+
+1. Search for "REST Client" in the Extensions Marketplace.
+
+1. Click the Install button for the "REST Client" extension by Huachao Mao.
+
+1. Once the installation is complete, you can access the extension from the Extensions view or the integrated terminal.
+
+#### Sending Requests
+In the `route.rest` file, place the cursor anywhere in the request block and use the "Send Request" button on top of the block or you can right click anywhere in the request block and select "Send Request".

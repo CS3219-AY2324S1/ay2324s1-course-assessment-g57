@@ -1,8 +1,8 @@
-GET http://localhost:3000/api/v1/questions
+GET http://localhost:5000/api/v1/questions
 
 ###
 
-POST http://localhost:3000/api/v1/questions
+POST http://localhost:5000/api/v1/questions
 Content-Type: application/json
 
 {
@@ -14,13 +14,13 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:3000/api/v1/questions/65008e4a2d141f07160daa0f
+PATCH http://localhost:5000/api/v1/questions/65008e4a2d141f07160daa0f
 Content-Type: application/json
 
 {
-    "complexity": "hard"
+    "complexity": "medium"
 }
 
 ###
 
-DELETE http://localhost:3000/api/v1/questions/65008e5b2d141f07160daa12
+DELETE http://localhost:5000/api/v1/questions/650096e3701587aa79d06ae2
