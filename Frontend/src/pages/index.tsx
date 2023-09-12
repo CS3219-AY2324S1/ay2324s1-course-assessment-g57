@@ -1,9 +1,10 @@
 import Head from "next/head";
 import React from "react";
-
-type Fact = { fact: string; length: number };
-type User = { id: number; name: string; username: string; email: string };
-
+import { User, Question, Fact } from "../models/types";
+import dynamic from 'next/dynamic'
+import UserTable from '../components/table'
+import NavBar from '../components/nav'
+ 
 const questionsApi = "https://www.boredapi.com/api/activity";
 const usersApi = "https://jsonplaceholder.typicode.com/users";
 
@@ -15,7 +16,7 @@ const getUsers = async () => {
 const MainApp = () => {
     const [fact, setFact] = React.useState<Fact | undefined>(undefined);
     const [question, setQuestion] = React.useState<string | undefined>(undefined);
-    const [users, setUsers] = React.useState<User[]>([]);
+    const [users, setUsers] = React.useState<User[]>([{ id: 0, name: "", username: "", email: ""}]);
 
     React.useEffect(() => {
         fetch(usersApi)
@@ -24,6 +25,14 @@ const MainApp = () => {
                 setUsers(data);
             });
     }, [users]);
+
+    // function getUsers() {
+    //     fetch(usersApi)
+    //         .then((res) => res.json())
+    //         .then((data) => {
+    //             setUsers(data);
+    //         });
+    // }
 
     function getFact() {
         fetch("https://catfact.ninja/fact")
@@ -45,6 +54,7 @@ const MainApp = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
+                <NavBar />
                 <h1 className="is-size-1">PeerPrep</h1>
                 <p>
                     PeerPrep is a platform for students to practice technical interviews with their
@@ -57,27 +67,10 @@ const MainApp = () => {
                     <button className="button is-primary" onClick={getFact}>
                         Primary
                     </button>
-                    <button className="button is-link">Link</button>
+                    <button className="button is-link" onClick={getUsers}>Link</button>
                 </div>
 
-                <table>
-                    <thead>
-                    <th>Name</th>
-                        <th>Age</th>
-                        <th>Gender</th>
-                    </thead>
-                    <tbody>
-                    {users.map((val) => {
-                        return (
-                            <tr>
-                                <td>{val.id}</td>
-                                <td>{val.name}</td>
-                                <td>{val.email}</td>
-                            </tr>
-                        );
-                    })}
-                    </tbody>
-                </table>
+                <UserTable users={users} />
             </main>
         </>
     );
