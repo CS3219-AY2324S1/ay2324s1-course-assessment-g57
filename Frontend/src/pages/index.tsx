@@ -1,6 +1,6 @@
 import Head from "next/head";
 import React from "react";
-
+ 
 type Fact = { fact: string; length: number };
 type User = { id: number; name: string; username: string; email: string };
 
@@ -59,12 +59,14 @@ const MainApp = () => {
                     </button>
                     <button className="button is-link">Link</button>
                 </div>
-
+                
                 <table>
                     <thead>
-                    <th>Name</th>
+                    <tr>
+                        <th>Name</th>
                         <th>Age</th>
                         <th>Gender</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {users.map((val) => {
