@@ -22,8 +22,8 @@ const tableComponent = (prop: { users: User[] }) => {
                                 <td>{val.name}</td>
                                 <td>{val.email}</td>
                                 <td>{val.createdDateTime}</td>
-                                <td><img src = "/assets/edit.svg"/></td>
-                                <td><img src = "/assets/trash.svg"/></td>
+                                <td><img src = "/assets/edit.svg" style={{width:25}}/></td>
+                                <td><img src = "/assets/trash.svg" style={{width:25}}/></td>
                             </tr>
                         );
                     })}

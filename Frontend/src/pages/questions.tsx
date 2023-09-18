@@ -6,7 +6,7 @@ import QuestionTable from '../components/userTable'
 import { Question } from "../models/types";
 
 export default function Home() {
-    const questionsApi = "";
+    const questionsApi = "https://opentdb.com/api.php?amount=10";
     const client = new PeerPrepClient(questionsApi);
     const [questions, setQuestions] = React.useState<Question[]>([{ id: 0, title: "", category: "", difficulty: "", link: ""}]);
 
@@ -22,7 +22,6 @@ return (
     <main>
         <NavBar />
         <h1 className="is-size-1">Questions</h1>
-        <p>Questions will go here</p>
 
         <QuestionTable questions={questions}/>
     </main>
