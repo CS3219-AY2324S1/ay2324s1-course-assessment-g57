@@ -4,8 +4,8 @@ export class PeerPrepClient {
     
     private readonly baseURL: string;
 
-    constructor(baseURL = "http://localhost:4000") {
-        this.baseURL = baseURL;
+    constructor(baseURL = process.env.SERVER_URL) {
+        this.baseURL = baseURL || "http://localhost:8080";
     }
 
     public async getUser(id: number): Promise<User> {
