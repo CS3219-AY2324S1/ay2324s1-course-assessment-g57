@@ -12,7 +12,7 @@ export default function Home() {
 
     React.useEffect(() => {
         client.getQuestions().then(setQuestions)
-    }, [questions]);
+    }, []);
 
 return (
     <>

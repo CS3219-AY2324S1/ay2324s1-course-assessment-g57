@@ -11,7 +11,7 @@ export default function Home() {
 
     React.useEffect(() => {
         client.getUsers().then(setUsers)
-    }, [users]);
+    }, []);
 
     return (
         <>
