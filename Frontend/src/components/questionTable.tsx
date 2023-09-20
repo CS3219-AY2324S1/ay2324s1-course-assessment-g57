@@ -12,22 +12,22 @@ const tableComponent = (prop: { questions: Question[] }) => {
                         <th>Category</th>
                         <th>Difficulty</th>
                         <th>Link</th>
-                        <th></th>
-                        <th></th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {prop.questions.map((val) => {
+                    {prop.questions.map((val, idx) => {
                         return (
                             <tr>
-                                <td><img src="/assets/chevrondown.svg"/></td>
+                                <td><img src="/assets/chevrondown.svg" /></td>
                                 <td>{val.id}</td>
                                 <td>{val.title}</td>
                                 <td>{val.category}</td>
                                 <td>{val.difficulty}</td>
                                 <td>{val.link}</td>
-                                <td><img src = "/assets/edit.svg" style={{width:25}}/></td>
-                                <td><img src = "/assets/trash.svg" style={{width:25}}/></td>
+                                <td><img src="/assets/edit.svg" style={{ width: 25 }} /></td>
+                                <td><img src="/assets/trash.svg" style={{ width: 25 }} /></td>
                             </tr>
                         );
                     })}

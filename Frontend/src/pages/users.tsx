@@ -1,14 +1,13 @@
 import Head from "next/head";
 import NavBar from '../components/nav'
-import { User } from "../models/types";
+import { User, defaultUser } from "../models/types";
 import React from "react";
 import { PeerPrepClient } from "@/lib/PeerPrepClient";
 import UserTable from '../components/userTable'
 
 export default function Home() {
-    const usersApi = "https://jsonplaceholder.typicode.com";
-    const client = new PeerPrepClient(usersApi);
-    const [users, setUsers] = React.useState<User[]>([{ id: 0, name: "", username: "", email: "", createdDateTime: ""}]);
+    const client = new PeerPrepClient();
+    const [users, setUsers] = React.useState<User[]>([defaultUser()]);
 
     React.useEffect(() => {
         client.getUsers().then(setUsers)
@@ -23,8 +22,7 @@ export default function Home() {
                 <NavBar />
                 <section>
                     <h1 className="is-size-1">Users</h1>
-
-                    <UserTable users={users} />
+                    <UserTable users={users} client={client} />
                 </section>
             </main>
         </>

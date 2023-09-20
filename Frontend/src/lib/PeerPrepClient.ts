@@ -5,7 +5,7 @@ export class PeerPrepClient {
     private readonly baseURL: string;
 
     constructor(baseURL = process.env.SERVER_URL) {
-        this.baseURL = baseURL || "http://localhost:8080";
+        this.baseURL = baseURL || "http://localhost:3001";
     }
 
     public async getUser(id: number): Promise<User> {
@@ -30,7 +30,7 @@ export class PeerPrepClient {
     }
 
     public async updateUser(user: User): Promise<User> {
-        const response = await fetch(`${this.baseURL}/users/${user.id}`, {
+        const response = await fetch(`${this.baseURL}/users/${user.userid}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -64,7 +64,7 @@ export class PeerPrepClient {
 
     public async updateQuestion(question: Question): Promise<Question> {
         const response = await fetch(`${this.baseURL}/questions/${question.id}`, {
-            method: "PUT",
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
