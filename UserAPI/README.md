@@ -33,7 +33,7 @@ You can use the following format to test out the POST request (Put request only 
 
 
 To set up the Postgres database, use the query tool function to execute the code
-
+```
 DROP TABLE IF EXISTS users; 
 
 CREATE TABLE users 
@@ -57,32 +57,22 @@ VALUES
   ('user8', 'letmein', 'user8@example.com', NOW()),
   ('user9', 'p@ssw0rd', 'user9@example.com', NOW()),
   ('user10', 'password567', 'user10@example.com', NOW());
-
-## Setup Question Service
 ```
-cd question-service
-yarn install
-yarn run dev
+
+
+## Set up guide
+1. git clone the repo
+2. install postgres if you dont have, you can use pgAdmin as a GUI to set up your database
+3. run the provided sql script to create the table and insert some dummy data above
+4. run `npm install` to install all the dependencies
+5. create a .env file with the following variables, and fill in the values with how you set up your postgres database
 ```
-### Setting up MongoDB
-1. Install [MongoDB](https://www.mongodb.com/docs/manual/installation/)
-1. Create a question-service database
-1. Create a question collection
-1. Add `mongodb://127.0.0.1:27017/question-service` to your `.env file` for `local_db_url` and set `ENV=DEV`. This is the default ip address and port for MongoDB. Note that newer versions of NodeJS may not resolve localhost properly.
-
-### Testing API
-You may use Postman to test the API but I prefer using Rest Client Extension within VSCode
-
-#### Installation
-1. Open Visual Studio Code.
-
-1. Go to the Extensions view by clicking on the Extensions icon in the Activity Bar on the side of the window.
-
-1. Search for "REST Client" in the Extensions Marketplace.
-
-1. Click the Install button for the "REST Client" extension by Huachao Mao.
-
-1. Once the installation is complete, you can access the extension from the Extensions view or the integrated terminal.
-
-#### Sending Requests
-In the `route.rest` file, place the cursor anywhere in the request block and use the "Send Request" button on top of the block or you can right click anywhere in the request block and select "Send Request".
+DB_USER=
+DB_HOST=
+DB_DATABASE=
+DB_PASSWORD=
+DB_PORT=
+```
+6. To change the port the expressjs server is running on, edit `const port = 3001` in app.js
+7. run `node app.js` to start the server
+8. Use postman/thunder client to test the API calls
