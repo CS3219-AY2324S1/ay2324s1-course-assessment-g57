@@ -1,6 +1,12 @@
+require('dotenv').config()
 const mongoose = require('mongoose');
 
 const questionSchema = new mongoose.Schema({
+    _id: {
+        type: Number,
+        required: true,
+        min: 1
+    },
     title: {
         type: String,
         required: true
@@ -26,5 +32,5 @@ const questionSchema = new mongoose.Schema({
         default: Date.now
     }
 });
-    
-module.exports = mongoose.model('Question', questionSchema);
+
+module.exports = mongoose.model('Question', questionSchema, process.env.QUESTION_COLLECTION_NAME);

@@ -1,6 +1,22 @@
+require('dotenv').config()
 const express = require('express')
 const router = express.Router()
 const Question = require('../models/question-model')
+const Counter = require('../models/counter-model')
+
+
+// Helper function
+
+// Returns and increments the next sequence number for the questions collection
+async function getNextSequenceNum() {
+    filter = {collectionName: process.env.QUESTION_COLLECTION_NAME}
+    update = {$inc: {sequenceNum: 1}}
+
+    // Returns the value before the update
+    const result = await Counter.findOneAndUpdate(filter, update)
+    return result.sequenceNum
+}
+
 
 // Read questions
 router.get('/', async (req, res) => {
@@ -16,9 +32,11 @@ router.get('/:id', getQuestion, (req, res) => {
     res.json(res.question)
 })
 
+
 // Add a question
 router.post('/', async (req, res) => {
     const question = new Question({
+        _id: await getNextSequenceNum(),
         title: req.body.title,
         categories: req.body.categories,
         complexity: req.body.complexity,
@@ -32,6 +50,7 @@ router.post('/', async (req, res) => {
         res.status(400).json({ message: err.message })
     }
 })
+
 
 // Update a question
 router.patch('/:id', getQuestion, async (req, res) => {
@@ -58,6 +77,7 @@ router.patch('/:id', getQuestion, async (req, res) => {
     }
 })
 
+
 // Delete a question
 router.delete('/:id', getQuestion, async (req, res) => {
     try {
@@ -67,6 +87,7 @@ router.delete('/:id', getQuestion, async (req, res) => {
         res.status(500).json({ message: err.message })
     }
 })
+
 
 // middleware
 async function getQuestion(req, res, next) {
