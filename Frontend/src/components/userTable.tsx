@@ -34,6 +34,10 @@ const tableComponent = ({ users, client }: UserTableProp) => {
         client.deleteUser(id)
     }
 
+    function sendAdd(e: React.FormEvent<HTMLFormElement>) {
+
+    }
+
     return (
         <>
             <section>
@@ -83,6 +87,22 @@ const tableComponent = ({ users, client }: UserTableProp) => {
                 <br /><br /><br />
                 <section>
                     <h1 className="is-size-2">Add User</h1>
+                    <form method="post" onSubmit={async (e) => { sendAdd(e) }}>
+                        <section>
+                            <textarea id="textareaedit"
+                                className="textarea is-normal"
+                                rows={10}
+                                placeholder="json here"
+                                defaultValue={currentUserEditJson}
+                                onChange={(e) => { setCurrentUserEditJson(e.target.value) }}
+                            >
+                            </textarea>
+                        </section>
+
+                        <section>
+                            <button className="button is-primary" type="submit">Submit</button>
+                        </section>
+                    </form>
                 </section>
             </section>
 
