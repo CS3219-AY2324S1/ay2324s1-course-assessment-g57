@@ -33,7 +33,7 @@ You can use the following format to test out the POST request (Put request only 
 
 
 To set up the Postgres database, use the query tool function to execute the code
-
+```
 DROP TABLE IF EXISTS users; 
 
 CREATE TABLE users 
@@ -57,4 +57,22 @@ VALUES
   ('user8', 'letmein', 'user8@example.com', NOW()),
   ('user9', 'p@ssw0rd', 'user9@example.com', NOW()),
   ('user10', 'password567', 'user10@example.com', NOW());
+```
 
+
+## Set up guide
+1. git clone the repo
+2. install postgres if you dont have, you can use pgAdmin as a GUI to set up your database
+3. run the provided sql script to create the table and insert some dummy data above
+4. run `npm install` to install all the dependencies
+5. create a .env file with the following variables, and fill in the values with how you set up your postgres database
+```
+DB_USER=
+DB_HOST=
+DB_DATABASE=
+DB_PASSWORD=
+DB_PORT=
+```
+6. To change the port the expressjs server is running on, edit `const port = 3001` in app.js
+7. run `node app.js` to start the server
+8. Use postman/thunder client to test the API calls
