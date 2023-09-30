@@ -26,7 +26,6 @@ function CodeEditor() {
     const type = doc.getText("monaco"); // doc { "monaco": "what our IDE is showing" }
     // Bind YJS to Monaco 
     //@ts-ignore
-
     const binding = new MonacoBinding(type, editorRef.current.getModel(), new Set([editorRef.current]), provider.awareness);
     console.log(provider.awareness);                
   }
@@ -36,6 +35,7 @@ function CodeEditor() {
       height="100vh"
       width="100vw"
       theme="vs-dark"
+      language ='python'
       onMount={handleEditorDidMount}
     />
   )
