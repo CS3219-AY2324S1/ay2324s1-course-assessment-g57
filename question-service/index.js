@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
-const port = 5000
+const port = 4000
 
 var api = process.env.ENV == 'DEV' ? process.env.LOCAL_DB_URL : process.env.PROD_DB_URL
 mongoose.connect(api, { useNewUrlParser: true, useUnifiedTopology: true })
