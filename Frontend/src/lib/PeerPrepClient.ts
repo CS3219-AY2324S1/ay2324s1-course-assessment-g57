@@ -3,9 +3,12 @@ import { User, Question } from "../models/types";
 export class PeerPrepClient {
     
     private readonly baseURL: string;
+    private readonly baseURLQuestion: string;
 
-    constructor(baseURL = process.env.SERVER_URL) {
+    constructor(baseURL = process.env.SERVER_URL, 
+                baseURLQuestion = process.env.SERVER_URL_QUESTION) {
         this.baseURL = baseURL || "http://localhost:3001";
+        this.baseURLQuestion = baseURLQuestion || "http://localhost:3002";
     }
 
     public async getUser(id: number): Promise<User> {
@@ -47,12 +50,12 @@ export class PeerPrepClient {
     }
 
     public async getQuestions(): Promise<Array<Question>> {
-        const response = await fetch(`${this.baseURL}/questions`);
+        const response = await fetch(`${this.baseURLQuestion}/api/v1/questions`);
         return await response.json();
     }
 
     public async createQuestion(question: Question): Promise<Question> {
-        const response = await fetch(`${this.baseURL}/questions`, {
+        const response = await fetch(`${this.baseURLQuestion}/api/v1/questions`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -63,7 +66,7 @@ export class PeerPrepClient {
     }
 
     public async updateQuestion(question: Question): Promise<Question> {
-        const response = await fetch(`${this.baseURL}/questions/${question.id}`, {
+        const response = await fetch(`${this.baseURLQuestion}/api/v1/questions/${question.title}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -74,7 +77,7 @@ export class PeerPrepClient {
     }
 
     public async deleteQuestion(id: number): Promise<void> {
-        await fetch(`${this.baseURL}/questions/${id}`, {
+        await fetch(`${this.baseURLQuestion}/api/v1/questions/${id}`, {
             method: "DELETE",
         });
     }

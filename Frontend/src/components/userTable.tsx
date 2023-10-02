@@ -7,7 +7,6 @@ type UserTableProp = {
     client: PeerPrepClient
 };
 
-
 const tableComponent = ({ users, client }: UserTableProp) => {
     const [currentUserEditJson, setCurrentUserEditJson] = React.useState<string>("");
 

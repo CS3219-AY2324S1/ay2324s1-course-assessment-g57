@@ -6,8 +6,7 @@ import QuestionTable from '../components/questionTable'
 import { Question, defaultQuestion } from "../models/types";
 
 export default function Home() {
-    const questionsApi = "https://opentdb.com/api.php?amount=10";
-    const client = new PeerPrepClient(questionsApi);
+    const client = new PeerPrepClient();
     const [questions, setQuestions] = React.useState<Question[]>([defaultQuestion()]);
 
     React.useEffect(() => {
