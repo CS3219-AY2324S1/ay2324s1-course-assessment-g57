@@ -1,9 +1,9 @@
 const Pool = require('pg').Pool;
 const dotenv = require('dotenv');
-dotenv.config({ path: '../.env' });
+dotenv.config();
 
 var bcrypt = require('bcryptjs');
-console.log(process.env);
+console.log(process.env.DB_PASSWORD);
 
 const pool = new Pool({
   user: process.env.DB_USER,
