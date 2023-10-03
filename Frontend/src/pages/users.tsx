@@ -1,5 +1,5 @@
 import Head from "next/head";
-import NavBar from '../components/nav'
+import NavBar from '../components/Nav'
 import { User, defaultUser } from "../models/types";
 import React from "react";
 import { PeerPrepClient } from "@/lib/PeerPrepClient";

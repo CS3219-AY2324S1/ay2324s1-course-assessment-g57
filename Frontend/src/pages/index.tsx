@@ -1,6 +1,6 @@
 import Head from "next/head";
 import React from "react";
-import NavBar from '../components/nav'
+import NavBar from '../components/Nav'
 
 
 const MainApp = () => {
