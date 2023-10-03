@@ -55,7 +55,7 @@ const createUser = (request, response) => {
         console.error(error); // Log the error for debugging
         response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
       } else {
-        response.status(201).send(`User added!`);
+        response.status(201).json({ message: `User added!`});
       }
     }
   );
@@ -76,7 +76,7 @@ const updateUser = (request, response) => {
         if (results.rowCount === 0) {
           response.status(404).json({ error: 'User not found' }); // Send a 404 Not Found response if no user is found to update
         } else {
-          response.status(200).send(`User modified with ID: ${id}`);
+          response.status(200).json({message: `User modified with ID: ${id}`});
         }
       }
     }
@@ -94,7 +94,7 @@ const deleteUser = (request, response) => {
       if (results.rowCount === 0) {
         response.status(404).json({ error: 'User not found' }); // Send a 404 Not Found response if no user is found to delete
       } else {
-        response.status(200).send(`User deleted with ID: ${id}`);
+        response.status(200).json({ message: `User deleted with ID: ${id}`});
       }
     }
   });
