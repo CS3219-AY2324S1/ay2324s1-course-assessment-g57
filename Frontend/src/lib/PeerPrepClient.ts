@@ -1,4 +1,4 @@
-import { User, Question } from "../models/types";
+import { User, Question, CreateUserForm, AddQuestionForm } from "../models/types";
 
 export class PeerPrepClient {
     
@@ -21,7 +21,7 @@ export class PeerPrepClient {
         return await response.json();
     }
 
-    public async createUser(user: User): Promise<User> {
+    public async createUser(user: CreateUserForm): Promise<void> {
         const response = await fetch(`${this.baseURL}/users`, {
             method: "POST",
             headers: {
@@ -29,10 +29,11 @@ export class PeerPrepClient {
             },
             body: JSON.stringify(user),
         });
+
         return await response.json();
     }
 
-    public async updateUser(user: User): Promise<User> {
+    public async updateUser(user: User): Promise<void> {
         const response = await fetch(`${this.baseURL}/users/${user.userid}`, {
             method: "PUT",
             headers: {
@@ -40,6 +41,7 @@ export class PeerPrepClient {
             },
             body: JSON.stringify(user),
         });
+        
         return await response.json();
     }
 
@@ -54,7 +56,7 @@ export class PeerPrepClient {
         return await response.json();
     }
 
-    public async createQuestion(question: Question): Promise<Question> {
+    public async createQuestion(question: AddQuestionForm): Promise<Question> {
         const response = await fetch(`${this.baseURLQuestion}/api/v1/questions`, {
             method: "POST",
             headers: {
@@ -66,7 +68,7 @@ export class PeerPrepClient {
     }
 
     public async updateQuestion(question: Question): Promise<Question> {
-        const response = await fetch(`${this.baseURLQuestion}/api/v1/questions/${question.title}`, {
+        const response = await fetch(`${this.baseURLQuestion}/api/v1/questions/${question._id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",

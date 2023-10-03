@@ -1,40 +1,64 @@
-import { User } from "../models/types";
+import { User, CreateUserForm, defaultCreateUserForm  } from "../models/types";
 import { PeerPrepClient } from "@/lib/PeerPrepClient";
 import React from 'react';
+import { isValidJsonString, hasEmptyValues } from '@/lib/utils';
 
 type UserTableProp = {
     users: User[],
-    client: PeerPrepClient
+    client: PeerPrepClient,
+    fetchUsersFn: () => void
 };
 
-const tableComponent = ({ users, client }: UserTableProp) => {
+const tableComponent = ({ users, client, fetchUsersFn }: UserTableProp) => {
     const [currentUserEditJson, setCurrentUserEditJson] = React.useState<string>("");
+    const [currentAddUser, setCurrentAddUser] = React.useState<string>(JSON.stringify(defaultCreateUserForm(), null, 4));
 
     function sendToEditBox(user: User) {
         // send json to textbox
         setCurrentUserEditJson(JSON.stringify(user, null, 4));
     }
 
-    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
+    async function handleEditSubmit(e: React.FormEvent<HTMLFormElement>) {
         try {
             // try to parse the string in currentUserEditJson
             const user: User = JSON.parse(currentUserEditJson);
+            // does not return json
             const _ = await client.updateUser(user);
+            // we make parent fetch users
+            fetchUsersFn();
+            // then we clear the currentUserEditJson
+            setCurrentUserEditJson("");
             alert(`Updated user: ${user.userid}!`)
         } catch (err: any) {
             console.log(err);
-            alert("Are you sure that the json is valid?");
         }
     }
 
     // OnClick Delete function
-    function sendDelete(id: number) {
-        client.deleteUser(id)
+    async function sendDelete(id: number) {
+        try {        
+            await client.deleteUser(id)
+            fetchUsersFn();
+            alert(`Deleted user: ${id}`);
+        } catch(e: any) {
+            console.log(e);
+        }
     }
 
-    function sendAdd(e: React.FormEvent<HTMLFormElement>) {
-
+    async function handleAddSubmit(e: React.FormEvent<HTMLFormElement>) {
+        try {
+            // try to parse the string in currentUserEditJson
+            const user: CreateUserForm = JSON.parse(currentAddUser);
+            // does not return json
+            const _ = await client.createUser(user);
+            // we make parent fetch users
+            fetchUsersFn();
+            // then we clear the currentUserEditJson
+            setCurrentAddUser(JSON.stringify(defaultCreateUserForm(), null, 4));
+            alert('Added user!')
+        } catch (err: any) {
+            console.log(err);
+        }
     }
 
     return (
@@ -67,39 +91,43 @@ const tableComponent = ({ users, client }: UserTableProp) => {
                     </tbody>
                 </table>
 
-                <form method="post" onSubmit={async (e) => { await handleSubmit(e) }}>
+                <form method="post" onSubmit={async (e) => { await handleEditSubmit(e) }}>
                     <section>
                         <textarea id="textareaedit"
                             className="textarea is-normal"
                             rows={10}
                             placeholder="json here"
-                            defaultValue={currentUserEditJson}
+                            disabled={currentUserEditJson.length === 0}
+                            value={currentUserEditJson}
                             onChange={(e) => { setCurrentUserEditJson(e.target.value) }}
                         >
                         </textarea>
                     </section>
 
                     <section>
-                        <button className="button is-primary" type="submit">Submit</button>
+                        <button className="button is-primary"
+                            disabled={!isValidJsonString(currentUserEditJson)} 
+                            type="submit">Submit
+                        </button>
                     </section>
                 </form>
-                <br /><br /><br />
+                <br/><br/><br/>
                 <section>
                     <h1 className="is-size-2">Add User</h1>
-                    <form method="post" onSubmit={async (e) => { sendAdd(e) }}>
+                    <form method="post" onSubmit={async (e) => { handleAddSubmit(e) }}>
                         <section>
                             <textarea id="textareaedit"
                                 className="textarea is-normal"
                                 rows={10}
                                 placeholder="json here"
-                                defaultValue={currentUserEditJson}
-                                onChange={(e) => { setCurrentUserEditJson(e.target.value) }}
+                                value={currentAddUser}
+                                onChange={(e) => { setCurrentAddUser(e.target.value) }}
                             >
                             </textarea>
                         </section>
 
                         <section>
-                            <button className="button is-primary" type="submit">Submit</button>
+                            <button className="button is-primary" type="submit" disabled={!isValidJsonString(currentAddUser) || (isValidJsonString(currentAddUser) && hasEmptyValues(JSON.parse(currentAddUser)))}>Submit</button>
                         </section>
                     </form>
                 </section>

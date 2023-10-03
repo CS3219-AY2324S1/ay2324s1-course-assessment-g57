@@ -9,21 +9,24 @@ export default function Home() {
     const client = new PeerPrepClient();
     const [questions, setQuestions] = React.useState<Question[]>([defaultQuestion()]);
 
-    React.useEffect(() => {
+    function fetchQuestions() {
         client.getQuestions().then(setQuestions)
+    }
+
+    React.useEffect(() => {
+        fetchQuestions()
     }, []);
 
-return (
-    <>
-    <Head>
-        <title>Questions</title>
-    </Head>
-    <main>
-        <NavBar />
-        <h1 className="is-size-1">Questions</h1>
-
-        <QuestionTable questions={questions}/>
-    </main>
-    </>
-)
+    return (
+        <>
+        <Head>
+            <title>Questions</title>
+        </Head>
+        <main>
+            <NavBar />
+            <h1 className="is-size-1">Questions</h1>
+            <QuestionTable questions={questions} client={client} fetchQnFn={fetchQuestions}/>
+        </main>
+        </>
+    )
 }
