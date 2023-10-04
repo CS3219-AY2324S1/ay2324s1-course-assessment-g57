@@ -1,13 +1,10 @@
 // Import required modules
 const express = require("express");
-const { RtcTokenBuilder, RtcRole } = require("agora-access-token");
-const dotenv = require("dotenv");
 const cors = require("cors");
 
 const generateRTCToken = require("./controllers/token-generator");
 
 // Do necessary setup for application
-dotenv.config();
 const app = express();
 app.use(
   cors({
@@ -19,8 +16,6 @@ app.options("*", cors());
 
 // Define necessary constants
 const PORT = process.env.PORT || 3500;
-const APP_ID = process.env.APP_ID;
-const APP_CERTIFICATE = process.env.APP_CERTIFICATE;
 
 // Set up routes
 app.get("/rtc", (req, res) => {
