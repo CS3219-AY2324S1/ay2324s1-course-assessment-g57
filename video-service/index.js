@@ -19,11 +19,13 @@ const PORT = process.env.PORT || 3500;
 
 // Set up routes
 app.get("/rtc", (req, res) => {
-  res.status(200).json({ message: `Video Service for Generating Agora RTC Tokens.` });
+  res
+    .status(200)
+    .json({ message: `Video Service for Generating Agora RTC Tokens.` });
 });
 app.get("/rtc/:channel", generateRTCToken);
 
 // Configure app to listen for requests
 app.listen(PORT, () => {
-    console.log(`Video Service Listening on Port ${PORT}`);
-})
+  console.log(`Video Service Listening on Port ${PORT}`);
+});
