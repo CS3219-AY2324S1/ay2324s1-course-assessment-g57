@@ -3,14 +3,19 @@ import NavBar from '../components/nav'
 import { User, defaultUser } from "../models/types";
 import React from "react";
 import { PeerPrepClient } from "@/lib/PeerPrepClient";
+import dynamic from 'next/dynamic'
 import UserTable from '../components/userTable'
 
 export default function Home() {
     const client = new PeerPrepClient();
     const [users, setUsers] = React.useState<User[]>([defaultUser()]);
 
-    React.useEffect(() => {
+    function getUsers() {
         client.getUsers().then(setUsers)
+    }
+
+    React.useEffect(() => {
+        getUsers();
     }, []);
 
     return (
@@ -22,7 +27,7 @@ export default function Home() {
                 <NavBar />
                 <section>
                     <h1 className="is-size-1">Users</h1>
-                    <UserTable users={users} client={client} />
+                    <UserTable users={users} client={client} fetchUsersFn={getUsers}/>
                 </section>
             </main>
         </>
