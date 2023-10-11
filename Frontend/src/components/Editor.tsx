@@ -4,6 +4,7 @@ import * as Y from "yjs"
 import { WebrtcProvider } from "y-webrtc"
 import { MonacoBinding } from "../lib/y-monaco"
 import {Container, Select, Button, Box} from "@chakra-ui/react"
+import { fromUint8Array, toUint8Array } from 'js-base64'
 
 // Setup Monaco Editor
 // Attach YJS Text to Monaco Editor
@@ -34,12 +35,25 @@ function handleEditorDidMount(editor:any, monaco: any) {
   const binding = new MonacoBinding(type, editorRef.current.getModel(), new Set([editorRef.current]), provider.awareness);
   console.log(provider.awareness);                
 }
-
-function submitCode() {
+/*Save the code as a binary file*/
+function submitCode() : string {
   //@ts-ignore
-  const data= editorRef.current.getValue()
-  alert(data)
-  setLoading(true)
+  const data= editorRef.current.getValue();
+  alert(data);
+  setLoading(true);
+  var enc = new TextEncoder(); 
+  var dec = new TextDecoder();
+  var documentState = enc.encode(data);
+  // Transform Uint8Array to a Base64-String
+  const base64Encoded = fromUint8Array(documentState);
+  alert(base64Encoded)
+  // Transform Base64-String back to an Uint8Array
+  const binaryEncoded = toUint8Array(base64Encoded);
+  alert(binaryEncoded);
+  //convert back to string
+  alert(dec.decode(binaryEncoded));
+
+  return base64Encoded;
 }
 
 function changeLang(lang:any) {
