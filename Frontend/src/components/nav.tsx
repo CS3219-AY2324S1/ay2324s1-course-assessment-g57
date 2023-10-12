@@ -6,7 +6,7 @@ const navComponent = () => {
             <nav className="navbar" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
                     <a className="navbar-item" href="/">
-                        <img src="/assets/trash.svg" width="200"/>
+                        <img src="/assets/trash.svg" width="50"/>
                     </a>
                 </div>
 

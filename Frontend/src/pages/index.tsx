@@ -2,7 +2,6 @@ import Head from "next/head";
 import React from "react";
 import NavBar from '../components/nav'
 
-
 const MainApp = () => {
     return (
         <>
@@ -23,13 +22,6 @@ const MainApp = () => {
                         PeerPrep is a platform for students to practice technical interviews with their
                         peers.
                     </p>
-
-                      <div className="buttons">
-                        <button className="button is-primary">
-                            Primary
-                        </button>
-                        <button className="button is-link">Link</button>
-                    </div>
                 </section>
             </main>
         </>
