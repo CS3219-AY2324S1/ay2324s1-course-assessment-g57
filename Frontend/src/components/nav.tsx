@@ -19,6 +19,10 @@ const navComponent = () => {
                         <Link className="navbar-item" href="/users">
                             Users
                         </Link>
+
+                        <Link className="navbar-item" href="/video">
+                            Video
+                        </Link>
                     </div>
                 </div>
             </nav>

@@ -11,8 +11,9 @@ const client = AgoraRTC.createClient({
 
 const videoRoom = () => {
     const [users, setUsers] = useState([]);
+    const [localTracks, setLocalTracs] = useState([]);
 
-    
+
   return (
     <div>videoRoom</div>
   )
