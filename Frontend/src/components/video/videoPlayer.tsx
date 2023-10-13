@@ -1,14 +1,18 @@
-import React, {useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from "react";
 
 const videoPlayer = ({ user }) => {
-    const ref = useRef();
+  const ref = useRef();
 
-    return (
+  useEffect(() => {
+    user.videoTrack.play(ref.current);
+  }, []);
+
+  return (
     <div>
-        Uid: {user.id}
-        <div ref={ref} style={{ width: "200px", height: "200px" }}></div>
+      Uid: {user.uid}
+      <div ref={ref} style={{ width: "200px", height: "200px" }}></div>
     </div>
-  )
-}
+  );
+};
 
-export default videoPlayer
+export default videoPlayer;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import NavBar from "../components/nav";
@@ -9,6 +9,7 @@ const VideoComponentWithNoSSR = dynamic(
 );
 
 const video = () => {
+  const [joined, setJoined] = useState(false);
   return (
     <>
       <Head>
@@ -16,7 +17,9 @@ const video = () => {
       </Head>
       <main>
         <NavBar />
-        <VideoComponentWithNoSSR />
+        {!joined && <button onClick={() => setJoined(true)}>Join Room</button>}
+
+        {joined && <VideoComponentWithNoSSR />}
       </main>
     </>
   );
