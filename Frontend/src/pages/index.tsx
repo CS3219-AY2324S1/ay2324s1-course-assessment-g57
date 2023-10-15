@@ -1,30 +1,20 @@
-import Head from "next/head";
+// import Head from "next/head";
+import { useUser } from '@auth0/nextjs-auth0/client'
 import React from "react";
-import NavBar from '../components/nav'
+import Layout from "../components/layout";
 
 const MainApp = () => {
+    const { user, isLoading } = useUser()
     return (
-        <>
-            <Head>
-                <title>PeerPrep</title>
-                <meta
-                    name="description"
-                    content="auto generated content by chatgpt so this is plagurism 100%"
-                />
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <main>
-                <NavBar />
-                <section style={{ padding: 15}}>
-                    <h1 className="is-size-1">PeerPrep</h1>
-                    <p>
-                        PeerPrep is a platform for students to practice technical interviews with their
-                        peers.
-                    </p>
-                </section>
-            </main>
-        </>
+        <Layout user = {user} loading = {isLoading}>
+            <section style={{ padding: 15}}>
+                <h1 className="is-size-1">PeerPrep</h1>
+                <p>
+                    PeerPrep is a platform for students to practice technical interviews with their
+                    peers.
+                </p>
+            </section>
+        </Layout>
     );
 };
 

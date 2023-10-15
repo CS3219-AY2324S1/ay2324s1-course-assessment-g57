@@ -1,6 +1,11 @@
 import Link from "next/link";
 
-const navComponent = () => {
+type NavBarProps = {
+    user?: any;
+    loading?: boolean;
+}
+
+const navComponent = ({user, loading}: NavBarProps) => {
     return (
         <>
             <nav className="navbar" role="navigation" aria-label="main navigation">

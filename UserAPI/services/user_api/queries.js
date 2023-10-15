@@ -12,8 +12,39 @@ const pool = new Pool({
   port: process.env.DB_PORT
 });
 
+// const getUsers = (request, response) => {
+//   pool.query('SELECT userID, username, email, createdDateTime FROM users ORDER BY userId ASC', (error, results) => {
+//     if (error) {
+//       console.error(error); // Log the error for debugging
+//       response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
+//     } else {
+//       response.status(200).json(results.rows);
+//     }
+//   });
+// };
+
+// const getUserById = (request, response) => {
+//   const id = parseInt(request.params.id);
+
+//   pool.query('SELECT userID, username, email, createdDateTime FROM users WHERE userId = $1', [id], (error, results) => {
+//     if (error) {
+//       console.error(error); // Log the error for debugging
+//       response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
+//     } else {
+//       if (results.rows.length === 0) {
+//         response.status(404).json({ error: 'User not found' }); // Send a 404 Not Found response if no user is found
+//       } else {
+//         response.status(200).json(results.rows);
+//       }
+//     }
+//   });
+// };
+/* 
+  API for Auth0
+*/
 const getUsers = (request, response) => {
-  pool.query('SELECT userID, username, email, createdDateTime FROM users ORDER BY userId ASC', (error, results) => {
+  pool.query('SELECT user_id, username, email FROM user_profile ORDER BY user_id ASC', (error, results) => {
+    console.log("Get all users")
     if (error) {
       console.error(error); // Log the error for debugging
       response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
@@ -24,9 +55,10 @@ const getUsers = (request, response) => {
 };
 
 const getUserById = (request, response) => {
-  const id = parseInt(request.params.id);
+  const id = request.params.id;
+  console.log("Get user by id: " + id);
 
-  pool.query('SELECT userID, username, email, createdDateTime FROM users WHERE userId = $1', [id], (error, results) => {
+  pool.query('SELECT user_id, username, email FROM user_profile WHERE user_id = $1', [id], (error, results) => {
     if (error) {
       console.error(error); // Log the error for debugging
       response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
@@ -34,22 +66,19 @@ const getUserById = (request, response) => {
       if (results.rows.length === 0) {
         response.status(404).json({ error: 'User not found' }); // Send a 404 Not Found response if no user is found
       } else {
-        response.status(200).json(results.rows);
+        const user = results.rows[0];
+        response.status(200).json(user);
       }
     }
   });
 };
 
-
+//TODO: Update user_profile table to include username
 const createUser = (request, response) => {
-  const { username, password, email} = request.body;
-
-  var salt = bcrypt.genSaltSync(10);
-  var hash = bcrypt.hashSync(password, salt);
-
+  const { user_id, email, username} = request.body;
   pool.query(
-    'INSERT INTO users (username, password, email, createdDateTime) VALUES ($1, $2, $3, $4) RETURNING *',
-    [username, hash, email, getDateTime()],
+    'INSERT INTO user_profile (user_id, email, username) VALUES ($1, $2, $3) RETURNING *',
+    [user_id, email, username],
     (error, results) => {
       if (error) {
         console.error(error); // Log the error for debugging
@@ -62,12 +91,11 @@ const createUser = (request, response) => {
 };
 
 const updateUser = (request, response) => {
-  const id = parseInt(request.params.id);
-  const { username, email } = request.body;
+  const { user_id, email, username} = request.body;
 
   pool.query(
-    'UPDATE users SET username = $1, email = $2 WHERE userId = $3',
-    [username, email, id],
+    'UPDATE user_profile SET username = $1, email = $2 WHERE user_id = $3',
+    [username, email, user_id],
     (error, results) => {
       if (error) {
         console.error(error); // Log the error for debugging
@@ -84,9 +112,9 @@ const updateUser = (request, response) => {
 };
 
 const deleteUser = (request, response) => {
-  const id = parseInt(request.params.id);
+  const { user_id } = request.body;
 
-  pool.query('DELETE FROM users WHERE userId = $1', [id], (error, results) => {
+  pool.query('DELETE FROM user_profile WHERE userId = $1', [user_id], (error, results) => {
     if (error) {
       console.error(error); // Log the error for debugging
       response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
@@ -99,6 +127,65 @@ const deleteUser = (request, response) => {
     }
   });
 };
+
+// const createUser = (request, response) => {
+//   const { username, password, email} = request.body;
+
+//   var salt = bcrypt.genSaltSync(10);
+//   var hash = bcrypt.hashSync(password, salt);
+
+//   pool.query(
+//     'INSERT INTO users (username, password, email, createdDateTime) VALUES ($1, $2, $3, $4) RETURNING *',
+//     [username, hash, email, getDateTime()],
+//     (error, results) => {
+//       if (error) {
+//         console.error(error); // Log the error for debugging
+//         response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
+//       } else {
+//         response.status(201).json({ message: `User added!`});
+//       }
+//     }
+//   );
+// };
+
+// const updateUser = (request, response) => {
+//   const id = parseInt(request.params.id);
+//   const { username, email } = request.body;
+
+//   pool.query(
+//     'UPDATE users SET username = $1, email = $2 WHERE userId = $3',
+//     [username, email, id],
+//     (error, results) => {
+//       if (error) {
+//         console.error(error); // Log the error for debugging
+//         response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
+//       } else {
+//         if (results.rowCount === 0) {
+//           response.status(404).json({ error: 'User not found' }); // Send a 404 Not Found response if no user is found to update
+//         } else {
+//           response.status(200).json({message: `User modified with ID: ${id}`});
+//         }
+//       }
+//     }
+//   );
+// };
+
+// const deleteUser = (request, response) => {
+//   const id = parseInt(request.params.id);
+
+//   pool.query('DELETE FROM users WHERE userId = $1', [id], (error, results) => {
+//     if (error) {
+//       console.error(error); // Log the error for debugging
+//       response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
+//     } else {
+//       if (results.rowCount === 0) {
+//         response.status(404).json({ error: 'User not found' }); // Send a 404 Not Found response if no user is found to delete
+//       } else {
+//         response.status(200).json({ message: `User deleted with ID: ${id}`});
+//       }
+//     }
+//   });
+// };
 
 module.exports = {
   getUsers,

@@ -1,4 +1,9 @@
-export type User = { userid: number; username: string; email: string; createddatetime: string; };
+export type User = { 
+    user_id: string; 
+    username: string; 
+    email: string;
+    picture: string;
+};
 
 export type CreateUserForm = Pick<User, 'username' | 'email'> & { password: string }
 
