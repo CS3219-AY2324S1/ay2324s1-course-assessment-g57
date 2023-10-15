@@ -3,17 +3,17 @@ import Editor from "@monaco-editor/react"
 import * as Y from "yjs"
 import { WebrtcProvider } from "y-webrtc"
 import { MonacoBinding } from "../lib/y-monaco"
-import {Container, Select, Button, Box} from "@chakra-ui/react"
+import {Button, Card, CardBody, Select, Switch} from "@chakra-ui/react"
 import { fromUint8Array, toUint8Array } from 'js-base64'
 
 // Setup Monaco Editor
 // Attach YJS Text to Monaco Editor
 
 function CodeEditor() {
-
   const editorRef = useRef(null);
   const [lang, setLang] = useState("python");
   const [loading, setLoading] = useState(false);
+  const [editorTheme, setEditorTheme] = useState("light")
 
   // Editor value -> YJS Text value (A text value shared by multiple people)
   // One person deletes text -> Deletes from the overall shared text value
@@ -34,6 +34,7 @@ function handleEditorDidMount(editor:any, monaco: any) {
   //@ts-ignore
   const binding = new MonacoBinding(type, editorRef.current.getModel(), new Set([editorRef.current]), provider.awareness);
   console.log(provider.awareness);                
+
 }
 /*Save the code as a binary file*/
 function submitCode() : string {
@@ -57,7 +58,7 @@ function submitCode() : string {
 }
 
 function changeLang(lang:any) {
-  setLang(lang)
+  setLang(lang);
 }
 
 /*will have to modify this function to identify what
@@ -68,39 +69,59 @@ function isSelected() {
   return true;
 }
 
+function setDarkMode() {
+  editorTheme == "light" ? setEditorTheme("vs-dark") : setEditorTheme("light")
+}
+
 return (
   <div>
-    <Container mb={16} style={{ position: 'relative', height: '50vh' }}>
-      <div style={{ float:'right', paddingRight:3}}>
-        <Select placeholder='Select Language' size={'md'} onChange={(e : React.ChangeEvent<HTMLSelectElement>) => {changeLang(e.target.value)}}>
-          <option value='csharp'>C#</option> 
+    <Card style={{ display: 'flex', flexDirection: 'column', height: '80vh' }}>
+      <CardBody>
+        <Editor
+          theme={editorTheme}
+          language={lang}
+          onMount={handleEditorDidMount}
+          options={{fontSize: 12}}
+        />
+      </CardBody>
+    </Card>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 5 }}>
+      <div style={{ display: 'flex', alignItems: 'center', paddingLeft:2}}>
+        Dark Mode?
+        <Switch onChange={setDarkMode} paddingLeft={2} paddingRight={5}/>
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Select
+          minWidth={100}
+          maxWidth={100}
+          placeholder='Select Language'
+          size={'md'}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { changeLang(e.target.value) }}>
+          <option value='csharp'>C#</option>
           <option value='cpp'>C++</option>
-          <option value='python' selected = {isSelected()}>Python</option>
+          <option value='python' selected={isSelected()}>Python</option>
           <option value='go'>Go</option>
           <option value='java'>Java</option>
           <option value='kotlin'>Kotlin</option>
         </Select>
-      </div>
-    <Editor
-      height="50vh"
-      width="100vw"
-      theme="vs-dark"
-      language ={lang}
-      onMount={handleEditorDidMount}/>
-      <div style={{ float:'right', paddingRight:5}}>
+
         <Button
+          float={'right'}
           isLoading={loading}
           onClick={submitCode}
           loadingText='Submitting'
           colorScheme='teal'
-          variant='outline'>
+          variant='outline'
+          ml={4}
+          mr={2}
+        >
           Submit Code
         </Button>
+        </div>
       </div>
-      
-    </Container>
-  </div>
-  )
+    </div>
+  );
 }
 
 export default CodeEditor
