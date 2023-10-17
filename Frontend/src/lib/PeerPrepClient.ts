@@ -59,7 +59,7 @@ export class PeerPrepClient {
         return await response.json();
     }
 
-    public async deleteUser(id: number): Promise<void> {
+    public async deleteUser(id: string): Promise<void> {
         await fetch(`${this.baseURL}/users/${id}`, {
             method: "DELETE",
         });

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Header from "./header";
-import NavBar from '../components/nav'
+// import NavBar from './Nav'
 
 type LayoutProps = {
   user?: any;

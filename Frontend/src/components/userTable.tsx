@@ -35,7 +35,7 @@ const tableComponent = ({ users, client, fetchUsersFn }: UserTableProp) => {
     }
 
     // OnClick Delete function
-    async function sendDelete(id: number) {
+    async function sendDelete(id: string) {
         try {        
             await client.deleteUser(id)
             fetchUsersFn();
@@ -82,7 +82,6 @@ const tableComponent = ({ users, client, fetchUsersFn }: UserTableProp) => {
                                     <td>{val.userid}</td>
                                     <td>{val.username}</td>
                                     <td>{val.email}</td>
-                                    <td>{val.createddatetime}</td>
                                     <td><img src="/assets/edit.svg" onClick={() => { sendToEditBox(val) }} style={{ width: 25 }} /></td>
                                     <td><img src="/assets/trash.svg" onClick={() => sendDelete(val.userid)} style={{ width: 25 }} /></td>
                                 </tr>
