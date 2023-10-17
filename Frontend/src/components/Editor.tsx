@@ -3,7 +3,7 @@ import Editor from "@monaco-editor/react"
 import * as Y from "yjs"
 import { WebrtcProvider } from "y-webrtc"
 import { MonacoBinding } from "../lib/y-monaco"
-import {Button, Card, CardBody, Select, Switch, IconButton} from "@chakra-ui/react"
+import {Box, Button, Card, CardBody, Select, Switch, IconButton} from "@chakra-ui/react"
 import { fromUint8Array, toUint8Array } from 'js-base64'
 
 import * as random from 'lib0/random'
@@ -46,13 +46,12 @@ function CodeEditor() {
     // have to generate a unique sessionID during matching so that matched
     users can have a shared room to code
     */
-    const provider = new WebrtcProvider("test-room", doc); // room1, room2
+    const provider = new WebrtcProvider("test-room*2345", doc); // room1, room2
     //provider awareness for each user
     provider.awareness.setLocalStateField('user', 
     {name: 'Anonymous ' + Math.floor(Math.random() * 100),
     color: userColor.color,
     colorLight: userColor.light})
-
     const type = doc.getText("monaco"); // doc { "monaco": "what our IDE is showing" }
 
     // Bind YJS to Monaco 
@@ -101,18 +100,15 @@ function CodeEditor() {
 
 return (
   <div>
-    <Card style={{ display: 'flex', flexDirection: 'column', height: '80vh' }}>
-      <CardBody>
-        <Editor
-          height={"100%"}
-          width={"100%"}
-          theme={editorTheme}
-          language={lang}
-          onMount={handleEditorDidMount}
-          options={{fontSize: 12, automaticLayout: true}}
-        />
-      </CardBody>
-    </Card>
+    <Box style={{height:'500px', width:'100%'}}>
+      <Editor
+        className='editor'
+        theme={editorTheme}
+        language={lang}
+        onMount={handleEditorDidMount}
+        options={{fontSize: 12, automaticLayout: true}}
+      />
+    </Box>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 5 }}>
       <div style={{ display: 'flex', alignItems: 'center', paddingLeft:2}}>
         <IconButton aria-label='Dark Mode' 
