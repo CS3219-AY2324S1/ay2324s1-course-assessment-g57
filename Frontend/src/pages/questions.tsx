@@ -1,10 +1,10 @@
 import Head from "next/head";
-import NavBar from '../components/Nav'
+// import NavBar from '../components/Nav'
 import React from "react";
 import { PeerPrepClient } from "@/lib/PeerPrepClient";
-import QuestionTable from '../components/questionTable'
+import QuestionTable from '../components/QuestionTable';
 import { Question, defaultQuestion } from "../models/types";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import { useUser } from '@auth0/nextjs-auth0/client'
 
 export default function Home() {

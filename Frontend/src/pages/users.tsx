@@ -1,10 +1,11 @@
 import Head from "next/head";
-import NavBar from '../components/Nav'
+// import NavBar from '../components/Nav'
+import Layout from "@/components/Layout";
 import { User, defaultUser } from "../models/types";
 import React from "react";
 import { PeerPrepClient } from "@/lib/PeerPrepClient";
 import dynamic from 'next/dynamic'
-import UserTable from '../components/userTable'
+import UserTable from '../components/UserTable'
 
 export default function Home() {
     const client = new PeerPrepClient();
@@ -19,17 +20,9 @@ export default function Home() {
     }, []);
 
     return (
-        <>
-            <Head>
-                <title>Users</title>
-            </Head>
-            <main>
-                <NavBar />
-                <section>
-                    <h1 className="is-size-1">Users</h1>
-                    <UserTable users={users} client={client} fetchUsersFn={getUsers}/>
-                </section>
-            </main>
-        </>
+        <Layout>
+            <h1 className="is-size-1">Users</h1>
+            <UserTable users={users} client={client} fetchUsersFn={getUsers}/>
+        </Layout>
     )
 }

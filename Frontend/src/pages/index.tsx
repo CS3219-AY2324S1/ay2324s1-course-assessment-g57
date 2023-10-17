@@ -1,7 +1,7 @@
 // import Head from "next/head";
 import { useUser } from '@auth0/nextjs-auth0/client'
 import React from "react";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 
 const MainApp = () => {
     const { user, isLoading } = useUser()

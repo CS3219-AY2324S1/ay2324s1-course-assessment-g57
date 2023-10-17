@@ -1,5 +1,5 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client'
-import Layout from '../components/layout'
+import Layout from '../components/Layout'
 import { Context, useState } from 'react'
 import React from "react";
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
