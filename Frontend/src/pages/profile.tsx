@@ -1,7 +1,10 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client'
 import Layout from '../components/layout'
-import { useState } from 'react'
+import { Context, useState } from 'react'
 import React from "react";
+import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { getSession, getAccessToken, withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { PeerPrepClient } from "@/lib/PeerPrepClient";
 import { User } from "../models/types";
 import { set } from '@auth0/nextjs-auth0/dist/session';
@@ -18,8 +21,15 @@ type AuthUser = {
   updated_at: string
 }
 
+type dbUser = {
+  user_id: string
+  email: string
+  username: string
+}
+
 type ProfileCardProps = {
   user: AuthUser
+  dbUser: dbUser
 }
 
 // const ProfileCard = ({ user }: ProfileCardProps) => {
@@ -36,14 +46,13 @@ type ProfileCardProps = {
 //     </div>
 //   )
 // }
-
-const ProfileCard = ({ user }: ProfileCardProps) => {
+const ProfileCard = ({ user, dbUser }: ProfileCardProps) => {
   // const client = new PeerPrepClient();
   const [editing, setEditing] = useState(false);
   const [username, setUsername] = useState<string>();
   const [email, setEmail] = useState<string>();
 
-  function fetchUser() {
+  async function fetchUser() {
     fetch(`/api/users/${user.sub}`).then((response) => response.json())
     .then((fetchedUser) => {
       setUsername(fetchedUser.username);
@@ -123,13 +132,14 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
 type ProfileProps = {
   user?: any
   isLoading: boolean
+  dbUser: dbUser
 }
 
-const Profile = ({ user, isLoading }: ProfileProps) => {
+const Profile = ({ user, isLoading, dbUser }: ProfileProps) => {
   console.log(user);
   return (
     <Layout user={user} loading={isLoading}>
-      {isLoading ? <>Loading...</> : <ProfileCard user={user} />}
+      {isLoading ? <>Loading...</> : <ProfileCard user={user} dbUser={dbUser}/>}
     </Layout>
   )
 }
