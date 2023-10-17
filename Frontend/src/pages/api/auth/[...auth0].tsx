@@ -3,6 +3,8 @@ import { handleAuth, handleLogin } from '@auth0/nextjs-auth0'
 export default handleAuth({
   async login(req : any, res: any) {
     try {
+      console.log("Hello world")
+      console.log(process.env.AUTH0_SECRET)
       await handleLogin(req, res, {
         authorizationParams: {
           audience: 'user-service-api', // or AUTH0_AUDIENCE
