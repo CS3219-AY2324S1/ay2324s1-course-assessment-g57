@@ -1,8 +1,7 @@
 export type User = { 
-    user_id: string; 
+    userid: string; 
     username: string; 
     email: string;
-    picture: string;
 };
 
 export type CreateUserForm = Pick<User, 'username' | 'email'> & { password: string }
@@ -29,7 +28,7 @@ export function defaultQuestion(): Question {
 
 export function defaultUser(): User {
     return {
-        userid: 0, username: "", email: "", createddatetime: ""
+        userid: "0", username: "", email: "",
     }
 }
 

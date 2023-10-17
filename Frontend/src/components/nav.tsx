@@ -24,6 +24,10 @@ const navComponent = ({user, loading}: NavBarProps) => {
                         <Link className="navbar-item" href="/users">
                             Users
                         </Link>
+
+                        <Link className="navbar-item" href="/code">
+                            Code
+                        </Link>
                     </div>
                 </div>
             </nav>

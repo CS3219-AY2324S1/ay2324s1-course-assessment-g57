@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+ const nextConfig = { 
   reactStrictMode: true,
     // Can be safely removed in newer versions of Next.js
   future: {
