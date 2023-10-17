@@ -30,39 +30,6 @@ const verifyJwt = jwt({
   algorithms: ['RS256']
 }).unless({ path: ['/users'] });
 
-
-// passport.use('provider', new OAuthStrategy({
-//     requestTokenURL: 'https://www.provider.com/oauth/request_token',
-//     accessTokenURL: 'https://www.provider.com/oauth/access_token',
-//     userAuthorizationURL: 'https://www.provider.com/oauth/authorize',
-//     consumerKey: '123-456-789',
-//     consumerSecret: 'shhh-its-a-secret',
-//     callbackURL: 'https://www.example.com/auth/provider/callback'
-//   },
-//   function(token, tokenSecret, profile, done) {
-//     User.findOrCreate(..., function(err, user) {
-//       done(err, user);
-//     });
-//   }
-// ));
-
-// app.post('/users', (req, res) => {
-//   const authHeader = req.header('Authorization');
-
-//   if (!authHeader) {
-//     return res.status(401).json({ error: 'Access token not provided' });
-//   }
-
-//   // Extract the access token (remove 'Bearer ' prefix if present)
-//   const accessToken = authHeader.split(' ')[1];
-
-//   // Now you have the access token and can use it for further processing
-//   console.log('Access Token:', accessToken);
-
-//   // Continue handling the request here
-//   // res.redirect('http://localhost:3000');
-// });
-
 app.get('/', (request, response) => {
   response.json({ info: 'Node.js, Express, and Postgres API' })
 })

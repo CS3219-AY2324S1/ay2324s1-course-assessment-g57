@@ -34,7 +34,6 @@ export default withApiAuthRequired(async function handler(
         headers: reqHeaders,
         body: JSON.stringify(req.body)
       });
-
       res.status(200).json({ message: `PUT user with ID ${user_id}` });
     } else if (req.method === "DELETE") {
       // Handle DELETE request to delete user data by ID
