@@ -4,7 +4,7 @@ import { User, defaultUser } from "../models/types";
 import React from "react";
 import { PeerPrepClient } from "@/lib/PeerPrepClient";
 import dynamic from 'next/dynamic'
-import UserTable from '../components/userTable'
+import UserTable from '../components/UserTable'
 
 export default function Home() {
     const client = new PeerPrepClient();
