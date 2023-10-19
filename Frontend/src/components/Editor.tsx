@@ -46,7 +46,7 @@ function CodeEditor() {
     // have to generate a unique sessionID during matching so that matched
     users can have a shared room to code
     */
-    const provider = new WebrtcProvider("test-room*2345", doc); // room1, room2
+    const provider = new WebrtcProvider("test-room*2345", doc, { signaling: ['wss://y-webrtc-ckynwnzncc.now.sh', 'ws://localhost:4444'] }); // room1, room2
     //provider awareness for each user
     provider.awareness.setLocalStateField('user', 
     {name: 'Anonymous ' + Math.floor(Math.random() * 100),
