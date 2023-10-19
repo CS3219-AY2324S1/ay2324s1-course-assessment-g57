@@ -2,7 +2,7 @@ import Head from "next/head";
 import NavBar from '../components/Nav'
 import React from "react";
 import { PeerPrepClient } from "@/lib/PeerPrepClient";
-import QuestionTable from '../components/questionTable'
+import QuestionTable from '../components/QuestionTable';
 import { Question, defaultQuestion } from "../models/types";
 
 export default function Home() {
