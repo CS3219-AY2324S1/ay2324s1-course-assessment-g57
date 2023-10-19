@@ -9,7 +9,9 @@ export default withApiAuthRequired(async function handler(
 ) {
   try {
     console.log(req.method);
-    const { user_id } = req.query;
+    var { user_id } = req.query;
+    const regex = /\|/; // regex to check for pipe character
+    user_id = (user_id as string).replace(regex, "_") // clean user ID
     const { accessToken } = await getAccessToken(req, res);
     var reqHeaders: Record<string, string> = {
       Authorization: `Bearer ${accessToken}`,
@@ -17,27 +19,34 @@ export default withApiAuthRequired(async function handler(
     var url = `${baseURL}/users/${user_id}`;
 
     if (req.method === "GET") {
-      // Handle GET request to fetch user data by ID
-      // Use user_id to fetch the user data from your database
       const response = await fetch(url, {
         headers: reqHeaders,
       });
-      // return res.status(200).send(response);
-      const userData = await response.json();
-      res.status(200).json(userData);
+      if (response.ok) {
+        const userData = await response.json();
+        res.status(200).json(userData);
+      } else if (response.status === 404) {
+        // If the user is not found, return a 404 Not Found response
+        res.status(404).json({ error: 'User not found' });
+      } else {
+        res.status(response.status).json({ error: 'Failed to fetch user data' });
+      }
     } else if (req.method === "PUT") {
-      // Handle PUT request to update user data by ID
-      // Use user_id and request body to update user data in your database
       reqHeaders['Content-Type'] = 'application/json';
       const response = await fetch(url, {
         method: 'PUT',
         headers: reqHeaders,
         body: JSON.stringify(req.body)
       });
-      res.status(200).json({ message: `PUT user with ID ${user_id}` });
+      if (response.ok) {
+        res.status(200).json({ message: `PUT user with ID ${user_id}` });
+      } else if (response.status === 404) {
+        // If the user is not found, return a 404 Not Found response
+        res.status(404).json({ error: 'User not found' });
+      } else {
+        res.status(response.status).json({ error: 'Failed to update user data' });
+      }
     } else if (req.method === "DELETE") {
-      // Handle DELETE request to delete user data by ID
-      // Use user_id to delete the user data from your database
       res.status(204).end();
     } else {
       res.status(405).end(); // Method Not Allowed for other HTTP methods
