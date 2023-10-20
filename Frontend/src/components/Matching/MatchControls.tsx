@@ -4,15 +4,15 @@ import ConnectionManager from "./ConnectionManager";
 
 const MatchControls = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const [timeElapsed, setTimeElapsed] = useState();
-  const [isMatched, setIsMatched] = useState(false);
-  const [matchedMessage, setMatchedMessage] = useState("");
+  const [difficulty, setDifficulty] = useState("");
+  const [status, setStatus] = useState("Select difficulty and click Start Match");
+  const [timeElapsed, setTimeElapsed] = useState("30");
 
   useEffect(() => {
     const onConnect = () => {
       setIsConnected(true);
-
-      socket.emit("startMatch", "easy");
+      setStatus(`Finding match with difficulty level ${difficulty}`);
+      socket.emit("startMatch", difficulty);
     };
 
     const onDisconnect = () => {
@@ -24,15 +24,14 @@ const MatchControls = () => {
     socket.on("disconnect", onDisconnect);
 
     socket.on("matchFound", (message) => {
-      setIsMatched(true);
-      setTimeElapsed(undefined);
-      setMatchedMessage(message);
+      setTimeElapsed("30");
+      setStatus(message);
     });
     socket.on("matchTimerCountdown", (timerCountdown) => {
       setTimeElapsed(timerCountdown);
     });
     socket.on("noMatchTimerExpired", () => {
-      setMatchedMessage("No Match Found!");
+      setStatus("No Match Found!");
     });
 
     return () => {
@@ -42,11 +41,13 @@ const MatchControls = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{backgroundColor: "green"}}>
+      <h1>Client ID: {socket.id} </h1>
+      <h1>{status}</h1>
+      <h2>Select difficulty level:</h2>
       {!isConnected && (
         <div>
-          <h1>Client ID:</h1>
-          <select id="difficulty">
+          <select id="difficulty" onChange={(event) => setDifficulty(event.target.value)}>
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
@@ -56,9 +57,7 @@ const MatchControls = () => {
 
       {isConnected && (
         <div>
-          <h1>Client ID: {socket.id} </h1>
           <h2>{timeElapsed}</h2>
-          {isMatched && <h2>{matchedMessage}</h2>}
         </div>
       )}
 
