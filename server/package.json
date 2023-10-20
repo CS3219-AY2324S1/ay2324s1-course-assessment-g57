@@ -3,54 +3,17 @@
   "version": "10.2.5",
   "description": "WebRTC provider for Yjs",
   "type": "module",
-  "main": "./dist/y-webrtc.cjs",
-  "types": "./dist/src/y-webrtc.d.ts",
-  "module": "./src/y-webrtc.js",
-  "unpkg": "./src/y-webrtc.mjs",
   "sideEffects": false,
-  "funding": {
-    "type": "GitHub Sponsors ❤",
-    "url": "https://github.com/sponsors/dmonad"
-  },
-  "exports": {
-    "module": "./src/y-webrtc.js",
-    "import": "./src/y-webrtc.js",
-    "require": "./dist/y-webrtc.cjs",
-    "types": "./dist/src/y-webrtc.d.ts"
-  },
   "scripts": {
-    "clean": "rm -rf dist",
-    "start": "node ./bin/server.js",
-    "debug": "concurrently 'http-server -o index.html' 'npm run watch'",
-    "demo": "concurrently 'http-server -o demo/index.html' 'npm run watch'",
-    "dist": "rollup -c",
-    "types": "tsc",
-    "watch": "rollup -wc",
-    "test": "npm run lint",
-    "lint": "standard && tsc",
-    "preversion": "npm run clean && npm run lint && npm run dist && npm run types"
+    "start": "node ./server.js"
   },
   "bin": {
-    "y-webrtc-signaling": "./bin/server.js"
+    "y-webrtc-signaling": "./server.js"
   },
-  "files": [
-    "dist/*",
-    "bin/*",
-    "src/*"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yjs/y-webrtc.git"
-  },
+
   "keywords": [
     "Yjs"
   ],
-  "author": "Kevin Jahns <kevin.jahns@protonmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/yjs/y-webrtc/issues"
-  },
-  "homepage": "https://github.com/yjs/y-webrtc#readme",
   "standard": {
     "ignore": [
       "/dist",

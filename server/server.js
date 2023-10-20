@@ -8,6 +8,7 @@ const wsReadyStateConnecting = 0
 const wsReadyStateOpen = 1
 const wsReadyStateClosing = 2 // eslint-disable-line
 const wsReadyStateClosed = 3 // eslint-disable-line
+const hostname = '127.0.0.1' //change to 0.0.0.0 when deploy
 
 const pingTimeout = 30000
 
@@ -135,6 +136,6 @@ server.on('upgrade', (request, socket, head) => {
   wss.handleUpgrade(request, socket, head, handleAuth)
 })
 
-server.listen(port)
+server.listen(port, hostname)
 
 console.log('Signaling server running on localhost:', port)

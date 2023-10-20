@@ -18,6 +18,8 @@ function CodeEditor() {
   const [lang, setLang] = useState("python");
   const [loading, setLoading] = useState(false);
   const [editorTheme, setEditorTheme] = useState("light")
+  const [editorOutput, setEditorOutput] = useState("");
+  const axios = require('axios');
 
   const usercolors = [
     { color: '#30bced', light: '#30bced33' },
@@ -43,10 +45,10 @@ function CodeEditor() {
     // Initialize YJS
     const doc = new Y.Doc(); // a collection of shared objects -> Text
     /* Connect to peers (or start connection) with WebRTC
-    // have to generate a unique sessionID during matching so that matched
+    have to generate a unique sessionID during matching so that matched
     users can have a shared room to code
     */
-    const provider = new WebrtcProvider("test-room*2345", doc, { signaling: ['wss://y-webrtc-ckynwnzncc.now.sh', 'ws://localhost:4444'] }); // room1, room2
+    const provider = new WebrtcProvider("test-room*2345", doc, { signaling: ['ws://0.tcp.ap.ngrok.io:19793'] }); // room1, room2
     //provider awareness for each user
     provider.awareness.setLocalStateField('user', 
     {name: 'Anonymous ' + Math.floor(Math.random() * 100),
@@ -60,9 +62,22 @@ function CodeEditor() {
     console.log(provider.awareness);                
   }
 
+  function getLangID(lang : string) : number {
+    if (lang == "python") {
+      return 92
+    } 
+    else if (lang == "cpp") {
+      return 54
+    }
+    else if (lang == "csharp") {
+      return 51
+    } else {
+      return 91
+    }
+  }
 
   /*Save the code as a binary file*/
-  function submitCode() : string {
+  async function submitCode() {
     //@ts-ignore
     const data= editorRef.current.getValue();
     alert(data);
@@ -72,14 +87,73 @@ function CodeEditor() {
     var documentState = enc.encode(data);
     // Transform Uint8Array to a Base64-String
     const base64Encoded = fromUint8Array(documentState);
-    alert(base64Encoded)
+    //alert(base64Encoded)
     // Transform Base64-String back to an Uint8Array
-    const binaryEncoded = toUint8Array(base64Encoded);
-    alert(binaryEncoded);
+    //const binaryEncoded = toUint8Array(base64Encoded);
+    //alert(binaryEncoded);
     //convert back to string
-    alert(dec.decode(binaryEncoded));
+    //alert(dec.decode(binaryEncoded));
 
-    return base64Encoded;
+    const options = {
+      method: 'POST',
+      url: 'https://judge0-ce.p.rapidapi.com/submissions',
+      params: {
+        base64_encoded: 'true',
+        wait: 'true',
+        fields: 'token'
+      },
+      headers: {
+        'content-type': 'application/json',
+        'Content-Type': 'application/json',
+        'X-RapidAPI-Key': '39c0444892msh5d9c1d40799eaebp18a0f7jsnfd2cb15b5212',
+        'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+      },
+      data: {
+        language_id: getLangID(lang),
+        source_code: base64Encoded
+      }
+    };
+    
+    try {
+      const response = await axios.request(options);
+      console.log("POST: " + response.data.token);
+      const testUrl = 'https://judge0-ce.p.rapidapi.com/submissions/' + response.data.token
+      console.log(testUrl)
+
+      const options2 = {
+        method: 'GET',
+        url: testUrl,
+        params: {
+          base64_encoded: 'false',
+          fields: '*'
+        },
+        headers: {
+          'X-RapidAPI-Key': '39c0444892msh5d9c1d40799eaebp18a0f7jsnfd2cb15b5212',
+          'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+        }
+      };
+
+      try {
+        const response2 = await axios.request(options2);
+        console.log("GET:" + response2.data.stdout);
+        if (response2.data.stderr == null) {
+          console.log("A")
+          setLoading(false)
+          setEditorOutput(response2.data.stdout)
+        } else {
+          console.log("B")
+          setLoading(false)
+          setEditorOutput(response2.data.stderr)
+        }
+        
+      } catch (error) {
+        console.error(error);
+      }
+
+    } catch (error) {
+      console.error(error);
+    }
+    
   }
 
   function changeLang(lang:any) {
@@ -109,6 +183,9 @@ return (
         options={{fontSize: 12, automaticLayout: true}}
       />
     </Box>
+    <div>
+      <textarea readOnly={true} value={editorOutput} style={{width:'100%', height:'100px'}}></textarea>
+    </div>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 5 }}>
       <div style={{ display: 'flex', alignItems: 'center', paddingLeft:2}}>
         <IconButton aria-label='Dark Mode' 
