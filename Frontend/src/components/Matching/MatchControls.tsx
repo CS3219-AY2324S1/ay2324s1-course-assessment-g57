@@ -4,6 +4,9 @@ import ConnectionManager from "./ConnectionManager";
 
 const MatchControls = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
+  const [timeElapsed, setTimeElapsed] = useState();
+  const [isMatched, setIsMatched] = useState(false);
+  const [matchedMessage, setMatchedMessage] = useState("");
 
   useEffect(() => {
     const onConnect = () => {
@@ -21,13 +24,15 @@ const MatchControls = () => {
     socket.on("disconnect", onDisconnect);
 
     socket.on("matchFound", (message) => {
-      console.log(message);
+      setIsMatched(true);
+      setTimeElapsed(undefined);
+      setMatchedMessage(message);
     });
     socket.on("matchTimerCountdown", (timerCountdown) => {
-      console.log("Time Elapsed: " + timerCountdown.toString());
+      setTimeElapsed(timerCountdown);
     });
     socket.on("noMatchTimerExpired", () => {
-      console.log("No Match Found!");
+      setMatchedMessage("No Match Found!");
     });
 
     return () => {
@@ -52,6 +57,8 @@ const MatchControls = () => {
       {isConnected && (
         <div>
           <h1>Client ID: {socket.id} </h1>
+          <h2>{timeElapsed}</h2>
+          {isMatched && <h2>{matchedMessage}</h2>}
         </div>
       )}
 
