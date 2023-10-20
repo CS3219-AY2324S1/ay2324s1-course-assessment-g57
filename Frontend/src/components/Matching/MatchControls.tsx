@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { socket } from "../../lib/socket";
 import ConnectionManager from "./ConnectionManager";
+
+import { RoomContext } from "@/contexts/RoomContext";
 
 const MatchControls = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [difficulty, setDifficulty] = useState("");
   const [status, setStatus] = useState("Select difficulty and click Start Match");
   const [timeElapsed, setTimeElapsed] = useState("30");
+  const { roomId, setRoomId } = useContext(RoomContext);
 
   useEffect(() => {
     const onConnect = () => {
@@ -17,14 +20,16 @@ const MatchControls = () => {
 
     const onDisconnect = () => {
       setIsConnected(false);
+      setRoomId("");
       console.log("disconnected");
     };
 
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
 
-    socket.on("matchFound", (message) => {
+    socket.on("matchFound", (message, roomId) => {
       setTimeElapsed("30");
+      setRoomId(roomId);
       setStatus(message);
     });
     socket.on("matchTimerCountdown", (timerCountdown) => {
@@ -43,7 +48,7 @@ const MatchControls = () => {
   return (
     <div style={{backgroundColor: "green"}}>
       <h1>Client ID: {socket.id} </h1>
-      <h1>{status}</h1>
+      <h1>{status + `Room ID: ${roomId}`}</h1>
       <h2>Select difficulty level:</h2>
       {!isConnected && (
         <div>
