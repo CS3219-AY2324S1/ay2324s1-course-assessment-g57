@@ -10,7 +10,6 @@
   "bin": {
     "y-webrtc-signaling": "./server.js"
   },
-
   "keywords": [
     "Yjs"
   ],
@@ -21,6 +20,7 @@
     ]
   },
   "dependencies": {
+    "dotenv": "^16.3.1",
     "lib0": "^0.2.42",
     "simple-peer": "^9.11.0",
     "y-protocols": "^1.0.5"

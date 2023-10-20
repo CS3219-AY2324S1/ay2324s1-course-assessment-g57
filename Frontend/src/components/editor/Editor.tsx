@@ -1,8 +1,11 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { useState, useRef } from 'react'
 import Editor from "@monaco-editor/react"
 import * as Y from "yjs"
 import { WebrtcProvider } from "y-webrtc"
-import { MonacoBinding } from "../lib/y-monaco"
+import { MonacoBinding } from "../../lib/y-monaco"
 import {Box, Button, Card, CardBody, Select, Switch, IconButton} from "@chakra-ui/react"
 import { fromUint8Array, toUint8Array } from 'js-base64'
 
@@ -10,10 +13,12 @@ import * as random from 'lib0/random'
 
 import { MdOutlineDarkMode } from 'react-icons/md';
 
+
 // Setup Monaco Editor
 // Attach YJS Text to Monaco Editor
 
 function CodeEditor() {
+
   const editorRef = useRef(null);
   const [lang, setLang] = useState("python");
   const [loading, setLoading] = useState(false);
@@ -48,7 +53,10 @@ function CodeEditor() {
     have to generate a unique sessionID during matching so that matched
     users can have a shared room to code
     */
-    const provider = new WebrtcProvider("test-room*2345", doc, { signaling: [process.env.SIGNALING_SERVER] }); // room1, room2
+
+    const SIGNALING_SERVER = process.env.NEXT_PUBLIC_SIGNALING_SERVER_PROD || process.env.NEXT_PUBLIC_SIGNALING_SERVER_DEV;
+    console.log("ENV: " + process.env.NEXT_PUBLIC_SIGNALING_SERVER_PROD)
+    const provider = new WebrtcProvider("test-room*2345", doc, { signaling: [SIGNALING_SERVER] }); // room1, room2
     //provider awareness for each user
     provider.awareness.setLocalStateField('user', 
     {name: 'Anonymous ' + Math.floor(Math.random() * 100),
@@ -105,7 +113,7 @@ function CodeEditor() {
       headers: {
         'content-type': 'application/json',
         'Content-Type': 'application/json',
-        'X-RapidAPI-Key': '39c0444892msh5d9c1d40799eaebp18a0f7jsnfd2cb15b5212',
+        'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
         'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
       },
       data: {
@@ -128,7 +136,7 @@ function CodeEditor() {
           fields: '*'
         },
         headers: {
-          'X-RapidAPI-Key': '39c0444892msh5d9c1d40799eaebp18a0f7jsnfd2cb15b5212',
+          'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
           'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
         }
       };

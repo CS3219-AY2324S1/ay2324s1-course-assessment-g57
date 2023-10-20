@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+import dotenv from "dotenv";
+dotenv.config();
+
 import ws from 'ws'
 import http from 'http'
 import * as map from 'lib0/map'
@@ -11,7 +14,7 @@ const wsReadyStateClosed = 3 // eslint-disable-line
 
 const pingTimeout = 30000
 
-const port = process.env.PORT || 4444
+const port = process.env.NEXT_PUBLIC_PORT || 4444
 // @ts-ignore
 const wss = new ws.Server({ noServer: true })
 

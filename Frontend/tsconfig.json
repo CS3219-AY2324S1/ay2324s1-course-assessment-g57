@@ -24,11 +24,13 @@
       ]
     }
   },
+  "ts-node" : {
+    "files": true
+  },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx",
-    "env.d.ts"
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules"
