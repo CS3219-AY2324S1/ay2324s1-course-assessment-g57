@@ -16,13 +16,12 @@ export function defaultCreateUserForm(): CreateUserForm {
 
 export function defaultQuestion(): Question {
     return { 
-        _id: 0, 
+        id: 0, 
         title: "",
         categories: [],
         description: "",
         complexity: "easy",
-        link: "",
-        createdDate: ""
+        link: ""
     }
 }
 
