@@ -20,7 +20,7 @@ export default function Home() {
     }, []);
 
     return (
-        <Layout>
+        <Layout title={"Users"}>
             <h1 className="is-size-1">Users</h1>
             <UserTable users={users} client={client} fetchUsersFn={getUsers}/>
         </Layout>

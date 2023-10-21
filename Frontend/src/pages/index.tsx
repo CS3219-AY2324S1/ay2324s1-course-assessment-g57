@@ -2,6 +2,8 @@
 import { useUser } from '@auth0/nextjs-auth0/client'
 import React from "react";
 import Layout from "../components/Layout";
+import NavBar from '../components/Nav'
+import MatchControls from "@/components/Matching/MatchControls";
 
 const MainApp = () => {
     const { user, isLoading } = useUser()
@@ -14,6 +16,7 @@ const MainApp = () => {
                     peers.
                 </p>
             </section>
+            <MatchControls />
         </Layout>
     );
 };

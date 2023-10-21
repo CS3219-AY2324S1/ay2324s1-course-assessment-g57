@@ -3,16 +3,17 @@ import Header from "./Header";
 // import NavBar from './Nav'
 
 type LayoutProps = {
+  title?: string;
   user?: any;
   loading?: boolean;
   children: React.ReactNode;
 };
 
-const Layout = ({ user, loading = false, children }: LayoutProps) => {
+const Layout = ({ title, user, loading = false, children }: LayoutProps) => {
   return (
     <>
       <Head>
-        <title>PeerPrep</title>
+        <title>{title || "PeerPrep"}</title>
         <meta
           name="description"
           content="auto generated content by chatgpt so this is plagurism 100%"

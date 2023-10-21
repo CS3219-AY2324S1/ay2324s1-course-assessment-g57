@@ -27,7 +27,7 @@ export default function Home() {
     }, []);
 
     return (
-        <Layout user = {user} loading = {isLoading}>
+        <Layout title={"Questions"} user={user} loading ={isLoading}>
             <h1 className="is-size-1">Questions</h1>
             <QuestionTable questions={questions} client={client} fetchQnFn={fetchQuestions}/>
         </Layout>

@@ -152,7 +152,7 @@ type ProfileProps = {
 const Profile = ({ user, isLoading, dbUser }: ProfileProps) => {
   console.log(user);
   return (
-    <Layout user={user} loading={isLoading}>
+    <Layout title={"Profile"} user={user} loading={isLoading}>
       {isLoading ? <>Loading...</> : <ProfileCard user={user} dbUser={dbUser}/>}
     </Layout>
   )

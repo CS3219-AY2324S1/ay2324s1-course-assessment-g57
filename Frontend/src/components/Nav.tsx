@@ -25,6 +25,10 @@ const navComponent = ({user, loading}: NavBarProps) => {
                             Users
                         </Link>
 
+                        <Link className="navbar-item" href="/video">
+                            Video
+                        </Link>
+
                         <Link className="navbar-item" href="/code">
                             Code
                         </Link>

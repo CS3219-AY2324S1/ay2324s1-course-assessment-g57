@@ -22,6 +22,9 @@ const Header = ({user, loading}: HeaderProps) => {
           <Link href="/users" className="text-m font-semibold leading-6 text-gray-900">
             Users
           </Link>
+          <Link href="/video" className="text-m font-semibold leading-6 text-gray-900">
+            Video
+          </Link>
           <Link href="/code" className="text-m font-semibold leading-6 text-gray-900">
             Collaborate
           </Link>
