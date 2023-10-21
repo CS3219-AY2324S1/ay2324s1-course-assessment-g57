@@ -4,15 +4,20 @@ const http = require('http')
 const express = require('express')
 const { Server } = require('socket.io')
 const onStartMatch = require('./matchHandler')
+const cors = require("cors");
 
 
 const hostname = '127.0.0.1'
 const port = 4000
 
 const app = express()
+app.use(cors());
 const server = http.createServer(app)
 const io = new Server(server, {
-    connectionStateRecovery: {}
+    connectionStateRecovery: {},
+    cors: {
+        origin: "http://localhost:3000"
+    }
 });
 
 

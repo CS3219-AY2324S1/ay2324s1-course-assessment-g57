@@ -137,7 +137,7 @@ function onStartMatch(io, socket, difficulty) {
         partner.socket.join(roomId)
 
         message = `Paired ${newUser.socket.id} and ${partner.socket.id}`;
-        io.to(roomId).emit('matchFound', message)
+        io.to(roomId).emit('matchFound', message, roomId)
 
         console.log(message)
 

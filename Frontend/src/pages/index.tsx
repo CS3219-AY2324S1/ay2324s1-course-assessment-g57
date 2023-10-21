@@ -1,6 +1,7 @@
 import Head from "next/head";
 import React from "react";
 import NavBar from '../components/Nav'
+import MatchControls from "@/components/Matching/MatchControls";
 
 const MainApp = () => {
     return (
@@ -23,6 +24,7 @@ const MainApp = () => {
                         peers.
                     </p>
                 </section>
+                <MatchControls />
             </main>
         </>
     );
