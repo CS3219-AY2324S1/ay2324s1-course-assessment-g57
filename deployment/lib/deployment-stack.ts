@@ -14,48 +14,6 @@ export class DeploymentStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // Your code here
-    const userServiceRole = new iam.Role(this, 'UserServiceRole', {
-      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-      description: 'Role that manages User Service Lambda',
-      managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
-      ],
-    });
-
-    const usersTable = new dynamodb.Table(this, 'UsersTable', {
-      partitionKey: { name: 'user_id', type: dynamodb.AttributeType.STRING },
-      tableName: 'users',
-    });
-    const bucket = Bucket.fromBucketArn(this, 'Bucket', 'arn:aws:s3:::aws-cdk-lambda');
-    const userServiceLambda = new lambda.Function(this, 'UserService', {
-      code: lambda.Code.fromBucket(bucket, 'user-service.zip'),
-      handler: 'index.handler',
-      runtime: lambda.Runtime.NODEJS_18_X,
-      role: userServiceRole,
-      environment: {
-        USERS_TABLE: usersTable.tableName,
-      },
-    });
-
-    usersTable.grantReadWriteData(userServiceRole);
-
-    // const apigatewayRole = new iam.Role(this, 'ApiGatewayRole', {
-    //   assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-    //   description: 'Role that manages API Gateway',
-    //   inlinePolicies: {
-    //     'CloudwatchLogsPolicy': new iam.PolicyDocument({
-    //       statements: [
-    //         new iam.PolicyStatement({
-    //           effect: iam.Effect.ALLOW,
-    //           actions: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents'],
-    //           resources: ['arn:aws:logs:*:*:*'],
-    //         }),
-    //       ],
-    //     }),
-    //   }
-    // });
-
     const apiGateway = new apigateway.RestApi(this, 'BackendServicesApi', {
       restApiName: 'Backend Services',
       description: 'This api gateway routes requests to the respective services.',
@@ -82,6 +40,33 @@ export class DeploymentStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, 'apiUrl', {value: apiGateway.url});
 
+    // Your code here
+    const userServiceRole = new iam.Role(this, 'UserServiceRole', {
+      roleName: 'user-service-role',
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      description: 'Role that manages User Service Lambda',
+      managedPolicies: [
+        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
+      ],
+    });
+
+    const usersTable = new dynamodb.Table(this, 'UsersTable', {
+      partitionKey: { name: 'user_id', type: dynamodb.AttributeType.STRING },
+      tableName: 'users',
+    });
+    const bucket = Bucket.fromBucketArn(this, 'Bucket', 'arn:aws:s3:::aws-cdk-lambda');
+    const userServiceLambda = new lambda.Function(this, 'UserService', {
+      functionName: 'user-service',
+      code: lambda.Code.fromBucket(bucket, 'user-service.zip'),
+      handler: 'index.handler',
+      runtime: lambda.Runtime.NODEJS_18_X,
+      role: userServiceRole,
+      environment: {
+        USERS_TABLE: usersTable.tableName,
+      },
+    });
+
+    usersTable.grantReadWriteData(userServiceRole);
     // Create Resource
     // Configure as proxy resource
     // Enable API Gateway CORS
@@ -101,29 +86,49 @@ export class DeploymentStack extends cdk.Stack {
       anyMethod: true
     });
 
-    // const questionServiceRole = new iam.Role(this, 'questionServiceRole', {
-    //   assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-    //   description: 'Role that manages User Service Lambda',
-    //   managedPolicies: [
-    //     iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
-    //   ],
-    // });
+    const questionServiceRole = new iam.Role(this, 'questionServiceRole', {
+      roleName: 'question-service-role',
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      description: 'Role that manages Question Service Lambda',
+      managedPolicies: [
+        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
+      ],
+    });
 
-    // const questionsTable = new dynamodb.Table(this, 'QuestionsTable', {
-    //   partitionKey: { name: 'user_id', type: dynamodb.AttributeType.STRING },
-    //   tableName: 'questions',
-    // });
-    // const questionServiceLambda = new lambda.Function(this, 'questionService', {
-    //   code: lambda.Code.fromBucket(bucket, 'question-service.zip'),
-    //   handler: 'index.handler',
-    //   runtime: lambda.Runtime.NODEJS_18_X,
-    //   role: questionServiceRole,
-    //   environment: {
-    //     USERS_TABLE: usersTable.tableName,
-    //   },
-    // });
+    const questionsTable = new dynamodb.Table(this, 'QuestionsTable', {
+      partitionKey: { name: 'title', type: dynamodb.AttributeType.STRING },
+      tableName: 'questions',
+    });
 
-    // usersTable.grantReadWriteData(questionServiceRole);
+    const metadataTable = new dynamodb.Table(this, 'MetadataTable', {
+      partitionKey: { name: 'type', type: dynamodb.AttributeType.STRING },
+      tableName: 'metadata',
+    });
+
+    questionsTable.grantReadWriteData(questionServiceRole);
+    metadataTable.grantReadWriteData(questionServiceRole);
+    const questionServiceLambda = new lambda.Function(this, 'questionService', {
+      functionName: 'question-service',
+      code: lambda.Code.fromBucket(bucket, 'question-service.zip'),
+      handler: 'index.handler',
+      runtime: lambda.Runtime.NODEJS_18_X,
+      role: questionServiceRole,
+      environment: {
+        QUESTIONS_TABLE: questionsTable.tableName,
+      },
+      timeout: cdk.Duration.seconds(3)
+    });
+
+    const questionResource = apiGateway.root.addResource('questions');
+    questionResource.addMethod('GET', new apigateway.LambdaIntegration(questionServiceLambda, {proxy: true}));
+    questionResource.addMethod('POST', new apigateway.LambdaIntegration(questionServiceLambda, {proxy: true}));
+    questionResource.addProxy({
+      defaultIntegration: new apigateway.LambdaIntegration(questionServiceLambda),
+      defaultMethodOptions: {
+        authorizationType: apigateway.AuthorizationType.NONE,
+        apiKeyRequired: false,
+      },
+      anyMethod: true
+    });
   }
-
 }
