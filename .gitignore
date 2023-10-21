@@ -29,3 +29,7 @@ typings/
 .vs
 
 Frontend/package-lock.json
+server/package-lock.json
+
+# Sensitive Information
+.env
