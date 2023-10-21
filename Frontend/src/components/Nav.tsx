@@ -20,6 +20,10 @@ const navComponent = () => {
                             Users
                         </Link>
 
+                        <Link className="navbar-item" href="/video">
+                            Video
+                        </Link>
+
                         <Link className="navbar-item" href="/code">
                             Code
                         </Link>
