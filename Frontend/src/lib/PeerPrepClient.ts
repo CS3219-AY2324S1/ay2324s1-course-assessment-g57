@@ -12,24 +12,6 @@ export class PeerPrepClient {
         this.baseURLQuestion = baseURLQuestion || "http://localhost:3002";
     }
 
-
-    // public async getUser(user_id: string): Promise<User> {
-    //     const { accessToken } = await getAccessToken();
-    //     const response = await fetch(`${this.baseURL}/users/${user_id}`, {
-    //         headers: {
-    //             Authorization: `Bearer ${accessToken}`,
-    //         },
-    //     });
-    //     console.log(response)
-    //     return await response.json();   
-    // }
-
-    // public async getUser(id: string): Promise<User> {
-    //     const response = await fetch(`${this.baseURL}/users/${id}`);
-    //     console.log(response)
-    //     return await response.json();   
-    // }
-
     public async getUsers(): Promise<Array<User>> {
         const response = await fetch(`${this.baseURL}/users`);
         return await response.json();

@@ -9,6 +9,7 @@ import { aws_lambda as lambda } from 'aws-cdk-lib';
 import { aws_s3 as s3 } from 'aws-cdk-lib';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import { aws_codedeploy as codedeploy } from 'aws-cdk-lib';
 
 export class DeploymentStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -64,6 +65,23 @@ export class DeploymentStack extends cdk.Stack {
       environment: {
         USERS_TABLE: usersTable.tableName,
       },
+      description: `Generated on: ${new Date().toISOString()}`,
+    });
+
+    // const version = userServiceLambda.addVersion(new Date().toISOString());
+    const userLambdaVersion = new lambda.Version(this, 'user-service-lambda-version', {
+      lambda: userServiceLambda,
+      description: `Generated on: ${new Date().toISOString()}`,
+    });
+
+    const userAlias = new lambda.Alias(this, 'user-service-lambda-alias', {
+      aliasName: 'live',
+      version: userLambdaVersion,
+    });
+
+    new codedeploy.LambdaDeploymentGroup(this, 'user-service-deployment', {
+        alias: userAlias,
+        deploymentConfig: codedeploy.LambdaDeploymentConfig.ALL_AT_ONCE
     });
 
     usersTable.grantReadWriteData(userServiceRole);
@@ -107,6 +125,7 @@ export class DeploymentStack extends cdk.Stack {
 
     questionsTable.grantReadWriteData(questionServiceRole);
     metadataTable.grantReadWriteData(questionServiceRole);
+
     const questionServiceLambda = new lambda.Function(this, 'questionService', {
       functionName: 'question-service',
       code: lambda.Code.fromBucket(bucket, 'question-service.zip'),
@@ -116,7 +135,19 @@ export class DeploymentStack extends cdk.Stack {
       environment: {
         QUESTIONS_TABLE: questionsTable.tableName,
       },
-      timeout: cdk.Duration.seconds(3)
+      timeout: cdk.Duration.seconds(3),
+      description: `Generated on: ${new Date().toISOString()}`,
+    });
+
+    // const version = userServiceLambda.addVersion(new Date().toISOString());
+    const questionLambdaVersion = new lambda.Version(this, 'question-service-lambda-version', {
+      lambda: userServiceLambda,
+      description: `Generated on: ${new Date().toISOString()}`,
+    });
+
+    const questionAlias = new lambda.Alias(this, 'question-service-lambda-alias', {
+      aliasName: 'live',
+      version: questionLambdaVersion,
     });
 
     const questionResource = apiGateway.root.addResource('questions');

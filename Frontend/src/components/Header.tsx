@@ -19,9 +19,13 @@ const Header = ({user, loading}: HeaderProps) => {
           <Link href="/questions" className="text-m font-semibold leading-6 text-gray-900">
             Questions
           </Link>
-          <Link href="/users" className="text-m font-semibold leading-6 text-gray-900">
-            Users
-          </Link>
+          {
+            user?.peerprepRoles?.[0] === "Admin" ? (
+              <Link href="/users" className="text-m font-semibold leading-6 text-gray-900">
+                Users
+              </Link>
+            ): (<></>)
+          }
           <Link href="/video" className="text-m font-semibold leading-6 text-gray-900">
             Video
           </Link>

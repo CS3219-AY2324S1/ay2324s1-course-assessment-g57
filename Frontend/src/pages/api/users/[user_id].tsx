@@ -8,19 +8,17 @@ export default withApiAuthRequired(async function handler(
   res: NextApiResponse
 ) {
   try {
-    console.log(req.method);
-    console.log(req.query.user_id)
+    console.log("UserById", req.method)
+
     var { user_id } = req.query;
     const regex = /\|/; // regex to check for pipe character
     user_id = (user_id as string).replace(regex, "_") // clean user ID
     const { accessToken } = await getAccessToken(req, res);
-    console.log(accessToken)
+
     var reqHeaders: Record<string, string> = {
       Authorization: `Bearer ${accessToken}`,
     };
     var url = `${baseURL}/users/${user_id}`;
-
-    console.log(url)
 
     if (req.method === "GET") {
       const response = await fetch(url, {
