@@ -1,8 +1,11 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { useState, useRef } from 'react'
 import Editor from "@monaco-editor/react"
 import * as Y from "yjs"
 import { WebrtcProvider } from "y-webrtc"
-import { MonacoBinding } from "../lib/y-monaco"
+import { MonacoBinding } from "../../lib/y-monaco"
 import {Box, Button, Card, CardBody, Select, Switch, IconButton} from "@chakra-ui/react"
 import { fromUint8Array, toUint8Array } from 'js-base64'
 
@@ -10,14 +13,18 @@ import * as random from 'lib0/random'
 
 import { MdOutlineDarkMode } from 'react-icons/md';
 
+
 // Setup Monaco Editor
 // Attach YJS Text to Monaco Editor
 
 function CodeEditor() {
+
   const editorRef = useRef(null);
   const [lang, setLang] = useState("python");
   const [loading, setLoading] = useState(false);
   const [editorTheme, setEditorTheme] = useState("light")
+  const [editorOutput, setEditorOutput] = useState("");
+  const axios = require('axios');
 
   const usercolors = [
     { color: '#30bced', light: '#30bced33' },
@@ -43,10 +50,13 @@ function CodeEditor() {
     // Initialize YJS
     const doc = new Y.Doc(); // a collection of shared objects -> Text
     /* Connect to peers (or start connection) with WebRTC
-    // have to generate a unique sessionID during matching so that matched
+    have to generate a unique sessionID during matching so that matched
     users can have a shared room to code
     */
-    const provider = new WebrtcProvider("test-room*2345", doc); // room1, room2
+
+    const SIGNALING_SERVER = process.env.NEXT_PUBLIC_SIGNALING_SERVER_PROD || process.env.NEXT_PUBLIC_SIGNALING_SERVER_DEV;
+    console.log("ENV: " + process.env.NEXT_PUBLIC_SIGNALING_SERVER_PROD)
+    const provider = new WebrtcProvider("test-room*2345", doc, { signaling: [SIGNALING_SERVER] }); // room1, room2
     //provider awareness for each user
     provider.awareness.setLocalStateField('user', 
     {name: 'Anonymous ' + Math.floor(Math.random() * 100),
@@ -60,9 +70,22 @@ function CodeEditor() {
     console.log(provider.awareness);                
   }
 
+  function getLangID(lang : string) : number {
+    if (lang == "python") {
+      return 92
+    } 
+    else if (lang == "cpp") {
+      return 54
+    }
+    else if (lang == "csharp") {
+      return 51
+    } else {
+      return 91
+    }
+  }
 
   /*Save the code as a binary file*/
-  function submitCode() : string {
+  async function submitCode() {
     //@ts-ignore
     const data= editorRef.current.getValue();
     alert(data);
@@ -72,14 +95,73 @@ function CodeEditor() {
     var documentState = enc.encode(data);
     // Transform Uint8Array to a Base64-String
     const base64Encoded = fromUint8Array(documentState);
-    alert(base64Encoded)
+    //alert(base64Encoded)
     // Transform Base64-String back to an Uint8Array
-    const binaryEncoded = toUint8Array(base64Encoded);
-    alert(binaryEncoded);
+    //const binaryEncoded = toUint8Array(base64Encoded);
+    //alert(binaryEncoded);
     //convert back to string
-    alert(dec.decode(binaryEncoded));
+    //alert(dec.decode(binaryEncoded));
 
-    return base64Encoded;
+    const options = {
+      method: 'POST',
+      url: 'https://judge0-ce.p.rapidapi.com/submissions',
+      params: {
+        base64_encoded: 'true',
+        wait: 'true',
+        fields: 'token'
+      },
+      headers: {
+        'content-type': 'application/json',
+        'Content-Type': 'application/json',
+        'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
+        'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+      },
+      data: {
+        language_id: getLangID(lang),
+        source_code: base64Encoded
+      }
+    };
+    
+    try {
+      const response = await axios.request(options);
+      console.log("POST: " + response.data.token);
+      const testUrl = 'https://judge0-ce.p.rapidapi.com/submissions/' + response.data.token
+      console.log(testUrl)
+
+      const options2 = {
+        method: 'GET',
+        url: testUrl,
+        params: {
+          base64_encoded: 'false',
+          fields: '*'
+        },
+        headers: {
+          'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
+          'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+        }
+      };
+
+      try {
+        const response2 = await axios.request(options2);
+        console.log("GET:" + response2.data.stdout);
+        if (response2.data.stderr == null) {
+          console.log("A")
+          setLoading(false)
+          setEditorOutput(response2.data.stdout)
+        } else {
+          console.log("B")
+          setLoading(false)
+          setEditorOutput(response2.data.stderr)
+        }
+        
+      } catch (error) {
+        console.error(error);
+      }
+
+    } catch (error) {
+      console.error(error);
+    }
+    
   }
 
   function changeLang(lang:any) {
@@ -109,6 +191,9 @@ return (
         options={{fontSize: 12, automaticLayout: true}}
       />
     </Box>
+    <div>
+      <textarea readOnly={true} value={editorOutput} style={{width:'100%', height:'100px'}}></textarea>
+    </div>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 5 }}>
       <div style={{ display: 'flex', alignItems: 'center', paddingLeft:2}}>
         <IconButton aria-label='Dark Mode' 
