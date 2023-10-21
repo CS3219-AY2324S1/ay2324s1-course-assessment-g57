@@ -25,11 +25,6 @@ const questionSchema = new mongoose.Schema({
     },
     link: {
         type: String
-    },
-    createdDate: {
-        type: Date,
-        required: true,
-        default: Date.now
     }
 });
 

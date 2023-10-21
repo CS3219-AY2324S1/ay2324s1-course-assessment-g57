@@ -2,11 +2,10 @@ const dynamoose = require("dynamoose");
 
 const ddb = new dynamoose.aws.ddb.DynamoDB();
 
-// Set DynamoDB instance to the Dynamoose DDB instance
 dynamoose.aws.ddb.set(ddb);
 
 const QuestionModel = dynamoose.model("questions", {
-  _id: {
+  id: {
     type: Number,
     rangeKey: true,
     unique: true
