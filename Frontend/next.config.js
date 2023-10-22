@@ -1,17 +1,16 @@
 /** @type {import('next').NextConfig} */
- const nextConfig = { 
+const nextConfig = {
   reactStrictMode: true,
 
   webpack(config) {
     config.resolve.fallback = {
-
       // if you miss it, all the other options in fallback, specified
       // by next.js will be dropped.
-      ...config.resolve.fallback,  
+      ...config.resolve.fallback,
 
       fs: false, // the solution
     };
-    
+
     return config;
   },
   env: {
@@ -20,8 +19,8 @@
     AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
     AUTH0_BASE_URL: process.env.AUTH0_BASE_URL,
     AUTH0_SECRET: process.env.AUTH0_SECRET,
-    SERVER_URL: process.env.SERVER_URL
-  }
-}
+    SERVER_URL: process.env.SERVER_URL,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
-import AgoraUIKit, { layout } from "agora-react-uikit";
-import axios from "axios";
-import { Button } from "@chakra-ui/react";
+import React, { useState, useEffect } from 'react';
+import AgoraUIKit, { layout } from 'agora-react-uikit';
+import axios from 'axios';
+import { Button } from '@chakra-ui/react';
 
-const SERVER_URL = process.env.ENV === "DEV"
-  ? process.env.DEV_SERVER_URL
-  : process.env.END === "PROD"
+const SERVER_URL =
+  process.env.ENV === 'DEV'
+    ? process.env.DEV_SERVER_URL
+    : process.env.END === 'PROD'
     ? process.env.PROD_SERVER_URL
-    : "http://localhost:3500";
+    : 'http://localhost:3500';
 
 const UIKitVideo = ({ channel }: { channel: string }) => {
   const [videoCall, setVideoCall] = useState(false);
@@ -20,7 +21,7 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
         if (res.status === 200) {
           return res.data.rtcToken;
         } else {
-          return "";
+          return '';
         }
       })
       .catch((error) => {
@@ -40,7 +41,7 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
   }, []);
 
   const rtcProps = {
-    appId: process.env.AGORA_APP_ID || "ead9549ed5af43d5a769644e3136da85",
+    appId: process.env.AGORA_APP_ID || 'ead9549ed5af43d5a769644e3136da85',
     channel: channel,
     token: token,
     disableRtm: true,
@@ -54,7 +55,7 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
     gridVideoContainer: {}, // Style the container storing the individual cells in grid layout.
     iconSize: 13, // Customize size of the icons.
     localBtnContainer: {
-      backgroundColor: "#B2BEB5",
+      backgroundColor: '#B2BEB5',
     }, // Style the container for the buttons.
     localBtnStyles: {
       muteLocalVideo: {
@@ -73,11 +74,11 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
         borderRadius: 25,
         width: 60,
         height: 40,
-        backgroundColor: "#f66",
+        backgroundColor: '#f66',
         borderWidth: 1,
       }, // End Call Button.
     }, // Style for specific local buttons.
-    theme: "white", // Color tint for the icons in the buttons.
+    theme: 'white', // Color tint for the icons in the buttons.
   };
 
   const callbacks = {
@@ -87,7 +88,7 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
   return (
     <div>
       {videoCall && (
-        <div style={{ display: "flex", width: "50vw", height: "50vh" }}>
+        <div style={{ display: 'flex', width: '50vw', height: '50vh' }}>
           <AgoraUIKit
             rtcProps={rtcProps}
             callbacks={callbacks}
@@ -102,7 +103,7 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
             borderRadius: 25,
             width: 100,
             height: 60,
-            backgroundColor: "white",
+            backgroundColor: 'white',
             borderWidth: 1,
           }}
         >

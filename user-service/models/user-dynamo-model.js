@@ -1,13 +1,13 @@
-const dynamoose = require("dynamoose");
+const dynamoose = require('dynamoose');
 
-let ddb = new dynamoose.aws.ddb.DynamoDB();
+const ddb = new dynamoose.aws.ddb.DynamoDB();
 
 dynamoose.aws.ddb.set(ddb);
 
-const UserModel = dynamoose.model("users", {
+const UserModel = dynamoose.model('users', {
   user_id: {
     type: String,
-    hashKey: true
+    hashKey: true,
   },
   email: {
     type: String,
@@ -16,9 +16,9 @@ const UserModel = dynamoose.model("users", {
   username: {
     type: String,
     required: true,
-  }
+  },
 });
 
 module.exports = {
-  UserModel
+  UserModel,
 };

@@ -1,19 +1,19 @@
-export function isValidJsonString<T>(input: string): boolean {
-    try {
-        JSON.parse(input)
-    } catch (e: any) {
-        return false;
-    }
+export function isValidJsonString(input: string): boolean {
+  try {
+    JSON.parse(input);
+  } catch (e: any) {
+    return false;
+  }
 
-    return true
+  return true;
 }
 
 export function hasEmptyValues(input: any): boolean {
-    for(const value of Object.values(input)) {
-        if(value === "" || !value || value === null) return true;
-    }
+  for (const value of Object.values(input)) {
+    if (value === '' || !value || value === null) return true;
+  }
 
-    return false;
+  return false;
 }
 
 // Utility functions
@@ -22,10 +22,12 @@ export function cleanTitle(title: string): string {
   return title.replace(/\s+/g, '-').toLowerCase();
 }
 
-export function restoreTitle(cleanedTitle: string): string{
+export function restoreTitle(cleanedTitle: string): string {
   // Replace hyphens with spaces and capitalize words
   const words = cleanedTitle.split('-');
-  const restoredTitle = words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  const restoredTitle = words
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 
   return restoredTitle;
 }

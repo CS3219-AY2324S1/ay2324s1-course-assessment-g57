@@ -1,5 +1,6 @@
-const Pool = require('pg').Pool;
+const { Pool } = require('pg');
 const dotenv = require('dotenv');
+
 dotenv.config();
 
 // var bcrypt = require('bcryptjs');
@@ -9,7 +10,7 @@ const pool = new Pool({
   host: process.env.DB_HOST,
   database: process.env.DB_DATABASE,
   password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT
+  port: process.env.DB_PORT,
 });
 
 // const getUsers = (request, response) => {
@@ -43,39 +44,44 @@ const pool = new Pool({
   API for Auth0
 */
 const getUsers = (request, response) => {
-  pool.query('SELECT user_id, username, email FROM user_profile ORDER BY user_id ASC', (error, results) => {
-    console.log("Get all users")
-    if (error) {
-      console.error(error); // Log the error for debugging
-      response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
-    } else {
-      response.status(200).json(results.rows);
+  pool.query(
+    'SELECT user_id, username, email FROM user_profile ORDER BY user_id ASC',
+    (error, results) => {
+      console.log('Get all users');
+      if (error) {
+        console.error(error); // Log the error for debugging
+        response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
+      } else {
+        response.status(200).json(results.rows);
+      }
     }
-  });
+  );
 };
 
 const getUserById = (request, response) => {
-  const id = request.params.id;
-  console.log("Get user by id: " + id);
+  const { id } = request.params;
+  console.log(`Get user by id: ${id}`);
 
-  pool.query('SELECT user_id, username, email FROM user_profile WHERE user_id = $1', [id], (error, results) => {
-    if (error) {
-      console.error(error); // Log the error for debugging
-      response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
-    } else {
-      if (results.rows.length === 0) {
+  pool.query(
+    'SELECT user_id, username, email FROM user_profile WHERE user_id = $1',
+    [id],
+    (error, results) => {
+      if (error) {
+        console.error(error); // Log the error for debugging
+        response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
+      } else if (results.rows.length === 0) {
         response.status(404).json({ error: 'User not found' }); // Send a 404 Not Found response if no user is found
       } else {
         const user = results.rows[0];
         response.status(200).json(user);
       }
     }
-  });
+  );
 };
 
-//TODO: Update user_profile table to include username
+// TODO: Update user_profile table to include username
 const createUser = (request, response) => {
-  const { user_id, email, username} = request.body;
+  const { user_id, email, username } = request.body;
   pool.query(
     'INSERT INTO user_profile (user_id, email, username) VALUES ($1, $2, $3) RETURNING *',
     [user_id, email, username],
@@ -84,14 +90,14 @@ const createUser = (request, response) => {
         console.error(error); // Log the error for debugging
         response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
       } else {
-        response.status(201).json({ message: `User added!`});
+        response.status(201).json({ message: `User added!` });
       }
     }
   );
 };
 
 const updateUser = (request, response) => {
-  const { user_id, email, username} = request.body;
+  const { user_id, email, username } = request.body;
 
   pool.query(
     'UPDATE user_profile SET username = $1, email = $2 WHERE user_id = $3',
@@ -100,12 +106,12 @@ const updateUser = (request, response) => {
       if (error) {
         console.error(error); // Log the error for debugging
         response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
+      } else if (results.rowCount === 0) {
+        response.status(404).json({ error: 'User not found' }); // Send a 404 Not Found response if no user is found to update
       } else {
-        if (results.rowCount === 0) {
-          response.status(404).json({ error: 'User not found' }); // Send a 404 Not Found response if no user is found to update
-        } else {
-          response.status(200).json({message: `User modified with ID: ${id}`});
-        }
+        response
+          .status(200)
+          .json({ message: `User modified with ID: ${user_id}` });
       }
     }
   );
@@ -114,18 +120,22 @@ const updateUser = (request, response) => {
 const deleteUser = (request, response) => {
   const { user_id } = request.body;
 
-  pool.query('DELETE FROM user_profile WHERE userId = $1', [user_id], (error, results) => {
-    if (error) {
-      console.error(error); // Log the error for debugging
-      response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
-    } else {
-      if (results.rowCount === 0) {
+  pool.query(
+    'DELETE FROM user_profile WHERE userId = $1',
+    [user_id],
+    (error, results) => {
+      if (error) {
+        console.error(error); // Log the error for debugging
+        response.status(500).json({ error: 'Internal server error' }); // Send a 500 Internal Server Error response
+      } else if (results.rowCount === 0) {
         response.status(404).json({ error: 'User not found' }); // Send a 404 Not Found response if no user is found to delete
       } else {
-        response.status(200).json({ message: `User deleted with ID: ${id}`});
+        response
+          .status(200)
+          .json({ message: `User deleted with ID: ${user_id}` });
       }
     }
-  });
+  );
 };
 
 // const createUser = (request, response) => {
@@ -195,30 +205,29 @@ module.exports = {
   deleteUser,
 };
 
-
-function getDateTime() {
-  var now     = new Date(); 
-  var year    = now.getFullYear();
-  var month   = now.getMonth()+1; 
-  var day     = now.getDate();
-  var hour    = now.getHours();
-  var minute  = now.getMinutes();
-  var second  = now.getSeconds(); 
-  if(month.toString().length == 1) {
-       month = '0'+month;
-  }
-  if(day.toString().length == 1) {
-       day = '0'+day;
-  }   
-  if(hour.toString().length == 1) {
-       hour = '0'+hour;
-  }
-  if(minute.toString().length == 1) {
-       minute = '0'+minute;
-  }
-  if(second.toString().length == 1) {
-       second = '0'+second;
-  }   
-  var dateTime = year+'/'+month+'/'+day+' '+hour+':'+minute+':'+second;   
-   return dateTime;
-}
+// function getDateTime() {
+//   const now = new Date();
+//   const year = now.getFullYear();
+//   let month = now.getMonth() + 1;
+//   let day = now.getDate();
+//   let hour = now.getHours();
+//   let minute = now.getMinutes();
+//   let second = now.getSeconds();
+//   if (month.toString().length === 1) {
+//     month = `0${month}`;
+//   }
+//   if (day.toString().length === 1) {
+//     day = `0${day}`;
+//   }
+//   if (hour.toString().length === 1) {
+//     hour = `0${hour}`;
+//   }
+//   if (minute.toString().length === 1) {
+//     minute = `0${minute}`;
+//   }
+//   if (second.toString().length === 1) {
+//     second = `0${second}`;
+//   }
+//   const dateTime = `${year}/${month}/${day} ${hour}:${minute}:${second}`;
+//   return dateTime;
+// }

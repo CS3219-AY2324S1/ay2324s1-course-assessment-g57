@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   </head>
   <body>
-
     <h1>Client ID: <a id="clientId"></a></h1>
     <h1 id="status">Select difficulty and click Start Match</h1>
     <h2 id="timer">30s</h2>
@@ -16,57 +15,50 @@
       <option value="hard">Hard</option>
     </select>
 
-    <br>
+    <br />
     <button id="startMatchButton" onclick="startMatch()">Start Match</button>
-
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-
-      const status = document.getElementById('status')
-      const difficulty = document.getElementById('difficulty')
-      const clientId = document.getElementById('clientId')
-      const timer = document.getElementById('timer')
-      const startMatchButton = document.getElementById('startMatchButton')
-
+      const status = document.getElementById('status');
+      const difficulty = document.getElementById('difficulty');
+      const clientId = document.getElementById('clientId');
+      const timer = document.getElementById('timer');
+      const startMatchButton = document.getElementById('startMatchButton');
 
       function startMatch() {
         // Assumes frontend is served on the same domain as the server
         const socket = io();
 
-
         // Event handlers for socket connection
 
         // Start finding a match once socket is connected
-        socket.on("connect", () => {
-          clientId.innerHTML = socket.id
-          status.innerHTML = `Finding match with difficulty level ${difficulty.value}`
-          startMatchButton.disabled = true
+        socket.on('connect', () => {
+          clientId.innerHTML = socket.id;
+          status.innerHTML = `Finding match with difficulty level ${difficulty.value}`;
+          startMatchButton.disabled = true;
 
-          socket.emit("startMatch", difficulty.value)
+          socket.emit('startMatch', difficulty.value);
         });
 
-        socket.on("matchFound", (message) => {
-          status.innerHTML = message
+        socket.on('matchFound', (message) => {
+          status.innerHTML = message;
         });
 
-        socket.on("matchTimerCountdown", (timerCountdown) => {
-          timer.innerHTML = timerCountdown.toString() + "s"
+        socket.on('matchTimerCountdown', (timerCountdown) => {
+          timer.innerHTML = timerCountdown.toString() + 's';
         });
 
-        socket.on("noMatchTimerExpired", () => {
-          status.innerHTML = "No match found!"
-        })
+        socket.on('noMatchTimerExpired', () => {
+          status.innerHTML = 'No match found!';
+        });
 
         socket.on('disconnect', (reason) => {
-          startMatchButton.disabled = false
+          startMatchButton.disabled = false;
           console.log(`socket connected? ${socket.connected}`);
-          console.log(reason)
+          console.log(reason);
         });
-
       }
-
     </script>
-
   </body>
 </html>

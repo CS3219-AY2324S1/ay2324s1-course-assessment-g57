@@ -1,9 +1,8 @@
 // import Head from "next/head";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import React from "react";
-import Layout from "../components/Layout";
-import NavBar from "../components/Nav";
-import MatchControls from "@/components/Matching/MatchControls";
+import { useUser } from '@auth0/nextjs-auth0/client';
+import React from 'react';
+import Layout from '../components/Layout';
+import MatchControls from '@/components/Matching/MatchControls';
 
 const MainApp = () => {
   const { user, isLoading } = useUser();

@@ -1,5 +1,5 @@
-import Head from "next/head";
-import Header from "./Header";
+import Head from 'next/head';
+import Header from './Header';
 // import NavBar from './Nav'
 
 type LayoutProps = {
@@ -13,7 +13,7 @@ const Layout = ({ title, user, loading = false, children }: LayoutProps) => {
   return (
     <>
       <Head>
-        <title>{title || "PeerPrep"}</title>
+        <title>{title || 'PeerPrep'}</title>
         <meta
           name="description"
           content="auto generated content by chatgpt so this is plagurism 100%"
@@ -26,7 +26,9 @@ const Layout = ({ title, user, loading = false, children }: LayoutProps) => {
 
       {/* <NavBar /> */}
       <main>
-        <div className="md:container md:mx-autocontainer mx-auto">{children}</div>
+        <div className="md:container md:mx-autocontainer mx-auto">
+          {children}
+        </div>
       </main>
 
       <style jsx>{`
@@ -39,8 +41,8 @@ const Layout = ({ title, user, loading = false, children }: LayoutProps) => {
         body {
           margin: 0;
           color: #333;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-            Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+            Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
       `}</style>
     </>

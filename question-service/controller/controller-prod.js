@@ -1,5 +1,8 @@
-const { QuestionModel, MetadataModel } = require('../models/question-dynamo-model');
-const dynamoose = require("dynamoose");
+const dynamoose = require('dynamoose');
+const {
+  QuestionModel,
+  MetadataModel,
+} = require('../models/question-dynamo-model');
 
 // Get all questions
 const getQuestions = async (req, res) => {
@@ -25,10 +28,14 @@ const getQuestionById = async (req, res) => {
 
 const getQuestionByComplexity = async (req, res) => {
   try {
-    const questions = await QuestionModel.scan('complexity').eq(req.params.complexity).exec();
+    const questions = await QuestionModel.scan('complexity')
+      .eq(req.params.complexity)
+      .exec();
     if (questions.length === 0) {
       // Handle the case when there are no questions with the requested complexity.
-      res.status(404).json({ error: 'No questions found for the requested complexity' });
+      res
+        .status(404)
+        .json({ error: 'No questions found for the requested complexity' });
       return;
     }
 
@@ -48,19 +55,22 @@ const createQuestion = async (req, res) => {
   let newQuestionID;
   let questionCreated = false;
   const maxRetries = 1;
-  var retries = 0;
+  let retries = 0;
   console.log('Creating question', req.bod, 'with count:', retries);
   while (!questionCreated && retries < maxRetries) {
-    const question = await QuestionModel.query('title').eq(title).exec()
+    const question = await QuestionModel.query('title').eq(title).exec();
     if (question.length > 0) {
       res.status(409).json({ error: 'Question already exists' });
       return;
     }
 
     // Query the metadata table for the lastID with a consistent read
-    const metadata = await MetadataModel.query('type').eq('question').consistent().exec()
+    const metadata = await MetadataModel.query('type')
+      .eq('question')
+      .consistent()
+      .exec()
       .catch((err) => {
-        console.log('Unable to query metadata table', err)
+        console.log('Unable to query metadata table', err);
       });
 
     if (metadata && metadata[0]) {
@@ -68,40 +78,45 @@ const createQuestion = async (req, res) => {
     } else {
       newQuestionID = 1; // Initial ID
     }
-    
-    await dynamoose.transaction([ metadata != null
-      ? MetadataModel.transaction.update({
-        type: 'question',
-        lastID: newQuestionID,
+
+    await dynamoose
+      .transaction([
+        metadata != null
+          ? MetadataModel.transaction.update({
+              type: 'question',
+              lastID: newQuestionID,
+            })
+          : MetadataModel.transaction.create({
+              type: 'question',
+              lastID: newQuestionID,
+            }),
+        QuestionModel.transaction.create({
+          id: newQuestionID,
+          title,
+          categories,
+          complexity,
+          description,
+          link,
+        }),
+      ])
+      .then(() => {
+        questionCreated = true;
+        console.log('Transaction: Question created successfully');
       })
-      : MetadataModel.transaction.create({
-        type: 'question',
-        lastID: newQuestionID,
-      }),
-      QuestionModel.transaction.create({
-        id: newQuestionID,
-        title: title,
-        categories: categories,
-        complexity: complexity,
-        description: description,
-        link: link,
-      })
-    ]).then(() => {
-      questionCreated = true;
-      console.log('Transaction: Question created successfully')
-    })
-    .catch((err) => {
-      console.log('Unable to create question', err)
-      retries++;
-    });
+      .catch((err) => {
+        console.log('Unable to create question', err);
+        retries++;
+      });
     if (questionCreated) {
       res.status(201).json({
-        id: newQuestionID, 
-        message: 'Question created successfully' 
+        id: newQuestionID,
+        message: 'Question created successfully',
       });
       return;
     }
-    console.log(`Retrying: questionCreated: ${questionCreated}, attempts: ${retries}`);
+    console.log(
+      `Retrying: questionCreated: ${questionCreated}, attempts: ${retries}`
+    );
   }
   res.status(500).json({ error: 'Unable to create question' });
 };
@@ -136,7 +151,7 @@ const updateQuestion = async (req, res) => {
 const deleteQuestion = async (req, res) => {
   try {
     const question = await QuestionModel.get(req.params.id);
-    
+
     if (question) {
       await question.delete();
       res.status(200).json({ message: 'Question deleted successfully' });
@@ -155,5 +170,5 @@ module.exports = {
   createQuestion,
   updateQuestion,
   deleteQuestion,
-  getQuestionByComplexity
+  getQuestionByComplexity,
 };

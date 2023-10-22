@@ -1,85 +1,58 @@
-import { withPageAuthRequired } from '@auth0/nextjs-auth0/client'
-import Layout from '../components/Layout'
-import { Context, useState } from 'react'
-import React from "react";
-import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSession, getAccessToken, withApiAuthRequired } from '@auth0/nextjs-auth0';
-import { PeerPrepClient } from "@/lib/PeerPrepClient";
-import { User } from "../models/types";
-import { set } from '@auth0/nextjs-auth0/dist/session';
-import { stringify } from 'querystring';
-// import { getUser } from "./api/users/[user_id]";
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import Layout from '../components/Layout';
+import { useState } from 'react';
+import React from 'react';
 
 type AuthUser = {
-  user_id: string
-  email: string
-  email_verified: boolean
-  name: string
-  nickname: string
-  picture: string
-  sub: string
-  updated_at: string
-}
-
-type dbUser = {
-  user_id: string
-  email: string
-  username: string
-}
+  user_id: string;
+  email: string;
+  email_verified: boolean;
+  name: string;
+  nickname: string;
+  picture: string;
+  sub: string;
+  updated_at: string;
+};
 
 type ProfileCardProps = {
-  user: AuthUser
-  dbUser: dbUser
-}
+  user: AuthUser;
+};
 
-// const ProfileCard = ({ user }: ProfileCardProps) => {
-//   return (
-//     <div className="bg-sky-500">
-//       <h1>Profile</h1>
-
-//       <div>
-//         <h3>Profile</h3>
-//         <img src={user.picture} alt="user picture" />
-//         <p>nickname: {user.nickname}</p>
-//         <p>name: {user.name}</p>
-//       </div>
-//     </div>
-//   )
-// }
-const ProfileCard = ({ user, dbUser }: ProfileCardProps) => {
+const ProfileCard = ({ user }: ProfileCardProps) => {
   // const client = new PeerPrepClient();
   const [editing, setEditing] = useState(false);
   const [username, setUsername] = useState<string>();
   const [email, setEmail] = useState<string>();
 
   async function fetchUser() {
-    fetch(`/api/users/${user.sub}`).then((response) => response.json())
-    .then((fetchedUser) => {
-      setUsername(fetchedUser.username);
-      setEmail(fetchedUser.email);
-      // You can set the state with fetchedUser.username and fetchedUser.email here
-    })
-    .catch((error) => {
-      console.error('Error fetching user data:', error);
-    });
+    fetch(`/api/users/${user.sub}`)
+      .then((response) => response.json())
+      .then((fetchedUser) => {
+        setUsername(fetchedUser.username);
+        setEmail(fetchedUser.email);
+        // You can set the state with fetchedUser.username and fetchedUser.email here
+      })
+      .catch((error) => {
+        console.error('Error fetching user data:', error);
+      });
   }
 
   async function updateUserDetails() {
     fetch(`/api/users/${user.sub}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-          username: username,
-          email: email
-        })
-    }).then((response) => response.json())
-    .catch((error) => {
-      console.error('Error updating user data:', error);
-    });
+      method: 'PUT',
+      body: JSON.stringify({
+        username: username,
+        email: email,
+      }),
+    })
+      .then((response) => response.json())
+      .catch((error) => {
+        console.error('Error updating user data:', error);
+      });
   }
 
   React.useEffect(() => {
-      fetchUser()
+    fetchUser();
   }, []);
 
   const handleEditClick = () => {
@@ -106,7 +79,7 @@ const ProfileCard = ({ user, dbUser }: ProfileCardProps) => {
   return (
     <div>
       <h2>User Profile</h2>
-        {/* <img src={user.picture} alt="user picture" /> */}
+      {/* <img src={user.picture} alt="user picture" /> */}
       {editing ? (
         <div>
           <label htmlFor="username">Username:</label>
@@ -136,7 +109,9 @@ const ProfileCard = ({ user, dbUser }: ProfileCardProps) => {
           <p>
             <strong>Email:</strong> {email}
           </p>
-          <button className={"button"} onClick={handleEditClick}>Edit</button>
+          <button className={'button'} onClick={handleEditClick}>
+            Edit
+          </button>
         </div>
       )}
     </div>
@@ -144,19 +119,18 @@ const ProfileCard = ({ user, dbUser }: ProfileCardProps) => {
 };
 
 type ProfileProps = {
-  user?: any
-  isLoading: boolean
-  dbUser: dbUser
-}
+  user?: any;
+  isLoading: boolean;
+};
 
-const Profile = ({ user, isLoading, dbUser }: ProfileProps) => {
+const Profile = ({ user, isLoading }: ProfileProps) => {
   console.log(user);
   return (
-    <Layout title={"Profile"} user={user} loading={isLoading}>
-      {isLoading ? <>Loading...</> : <ProfileCard user={user} dbUser={dbUser}/>}
+    <Layout title={'Profile'} user={user} loading={isLoading}>
+      {isLoading ? <>Loading...</> : <ProfileCard user={user} />}
     </Layout>
-  )
-}
+  );
+};
 
 // Protected route, checking user authentication client-side.(CSR)
-export default withPageAuthRequired(Profile)
+export default withPageAuthRequired(Profile);

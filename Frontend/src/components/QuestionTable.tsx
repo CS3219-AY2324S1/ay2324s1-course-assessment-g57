@@ -1,12 +1,11 @@
-import React from "react";
+import React from 'react';
 import {
   Question,
-  AddQuestionForm,
+  // AddQuestionForm,
   defaultAddQuestionForm,
   defaultQuestion,
-} from "../models/types";
-import { PeerPrepClient } from "@/lib/PeerPrepClient";
-import { isValidJsonString, hasEmptyValues } from "@/lib/utils";
+} from '../models/types';
+import { isValidJsonString, hasEmptyValues } from '@/lib/utils';
 
 type QuestionTableProp = {
   // questions: Question[],
@@ -16,7 +15,7 @@ type QuestionTableProp = {
 
 const tableComponent = ({ user }: QuestionTableProp) => {
   const [currentQuestionEditJson, setCurrentQuestionEditJson] =
-    React.useState<string>("");
+    React.useState<string>('');
   const [currentQuestionAddJson, setQuestionAddJson] = React.useState<string>(
     JSON.stringify(defaultAddQuestionForm(), null, 4)
   );
@@ -33,11 +32,11 @@ const tableComponent = ({ user }: QuestionTableProp) => {
         return response.json();
       })
       .then((fetchedQuestions) => {
-        console.log("Fetched questions", fetchedQuestions);
+        console.log('Fetched questions', fetchedQuestions);
         setQuestions(fetchedQuestions);
       })
       .catch((error) => {
-        console.error("Error fetching questions", error);
+        console.error('Error fetching questions', error);
         setQuestions([]);
       });
   }
@@ -46,29 +45,29 @@ const tableComponent = ({ user }: QuestionTableProp) => {
     fetchQuestions();
   }, []);
 
-  console.log("Questions", questions);
+  console.log('Questions', questions);
 
   function sendToEditBox(question: Question) {
     // send json to textbox
     setCurrentQuestionEditJson(JSON.stringify(question, null, 4));
   }
 
-  async function handleEditSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleEditSubmit() {
     try {
       // try to parse the string in currentQuestionEditJson
       const question: Question = JSON.parse(currentQuestionEditJson);
       // const _ = await client.updateQuestion(question);
       fetch(`/api/questions/${question.title}`, {
-        method: "PUT",
+        method: 'PUT',
         body: currentQuestionEditJson,
       })
         .then((response) => {
-          setCurrentQuestionEditJson("");
+          setCurrentQuestionEditJson('');
           alert(`Updated question: ${question.id}!`);
           return response.json();
         })
         .catch((error) => {
-          console.error("Error updating question", error);
+          console.error('Error updating question', error);
         });
       // fetchQnFn();
     } catch (err: any) {
@@ -76,11 +75,11 @@ const tableComponent = ({ user }: QuestionTableProp) => {
     }
   }
 
-  async function handleAddSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleAddSubmit() {
     try {
-      const question: AddQuestionForm = JSON.parse(currentQuestionAddJson);
+      // const question: AddQuestionForm = JSON.parse(currentQuestionAddJson);
       fetch(`/api/questions`, {
-        method: "POST",
+        method: 'POST',
         body: currentQuestionAddJson,
       })
         .then((response) => {
@@ -89,7 +88,7 @@ const tableComponent = ({ user }: QuestionTableProp) => {
           return response.json();
         })
         .catch((error) => {
-          console.error("Error adding question", error);
+          console.error('Error adding question', error);
         });
       // fetchQnFn();
       setQuestionAddJson(JSON.stringify(defaultAddQuestionForm(), null, 4));
@@ -104,13 +103,13 @@ const tableComponent = ({ user }: QuestionTableProp) => {
   async function sendDelete(title: string) {
     try {
       fetch(`/api/questions/${title}`, {
-        method: "DELETE",
+        method: 'DELETE',
       })
         .then((response) => {
           return response.json();
         })
         .catch((error) => {
-          console.error("Error deleting question", error);
+          console.error('Error deleting question', error);
         });
       // fetchQnFn();
       alert(`Deleted question: ${title}`);
@@ -130,7 +129,7 @@ const tableComponent = ({ user }: QuestionTableProp) => {
             <th>Complexity</th>
             <th>Description</th>
             <th>Link</th>
-            {user?.peerprepRoles?.[0] === "Admin" ? (
+            {user?.peerprepRoles?.[0] === 'Admin' ? (
               <>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -141,7 +140,7 @@ const tableComponent = ({ user }: QuestionTableProp) => {
           </tr>
         </thead>
         <tbody>
-          {questions.map((val, idx) => {
+          {questions.map((val) => {
             return (
               <tr key={val.id}>
                 <td>{val.id}</td>
@@ -150,7 +149,7 @@ const tableComponent = ({ user }: QuestionTableProp) => {
                 <td>{val.complexity}</td>
                 <td>{val.description}</td>
                 <td>{val.link}</td>
-                {user?.peerprepRoles?.[0] === "Admin" ? (
+                {user?.peerprepRoles?.[0] === 'Admin' ? (
                   <>
                     <td>
                       <img
@@ -177,12 +176,12 @@ const tableComponent = ({ user }: QuestionTableProp) => {
           })}
         </tbody>
       </table>
-      {user?.peerprepRoles?.[0] === "Admin" ? (
+      {user?.peerprepRoles?.[0] === 'Admin' ? (
         <>
           <form
             method="post"
-            onSubmit={async (e) => {
-              await handleEditSubmit(e);
+            onSubmit={async () => {
+              await handleEditSubmit();
             }}
           >
             <section>
@@ -216,8 +215,8 @@ const tableComponent = ({ user }: QuestionTableProp) => {
             <h1 className="is-size-2">Add Question</h1>
             <form
               method="post"
-              onSubmit={async (e) => {
-                await handleAddSubmit(e);
+              onSubmit={async () => {
+                await handleAddSubmit();
               }}
             >
               <section>

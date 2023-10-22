@@ -1,44 +1,44 @@
-const dynamoose = require("dynamoose");
+const dynamoose = require('dynamoose');
 
 const ddb = new dynamoose.aws.ddb.DynamoDB();
 
 dynamoose.aws.ddb.set(ddb);
 
-const QuestionModel = dynamoose.model("questions", {
+const QuestionModel = dynamoose.model('questions', {
   id: {
     type: Number,
     rangeKey: true,
-    unique: true
+    unique: true,
   },
   title: {
     type: String,
     required: true,
-    hashKey: true
+    hashKey: true,
   },
   categories: {
-    type: Array, 
-    schema: [String]
+    type: Array,
+    schema: [String],
   },
   complexity: {
     type: String,
     required: true,
-    enum: ['easy', 'medium', 'hard']
+    enum: ['easy', 'medium', 'hard'],
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   link: {
-    type: String
+    type: String,
   },
 });
 
-const MetadataModel = dynamoose.model("metadata", {
-    type: String,
-    lastID: Number
+const MetadataModel = dynamoose.model('metadata', {
+  type: String,
+  lastID: Number,
 });
 
 module.exports = {
-    QuestionModel,
-    MetadataModel
+  QuestionModel,
+  MetadataModel,
 };
