@@ -12,7 +12,6 @@ export default withApiAuthRequired(async function handler(
   res: NextApiResponse
 ) {
   console.log('QuestionsByTitle', req.method);
-  console.log('QuestionsByTitle', req.query);
 
   let { title } = req.query;
   title = cleanTitle(title as string);
