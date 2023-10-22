@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome",
-    "fmt": "biome format --write src"
+    "fmt": "biome format --write src",
+    "style:all": "tsc && npm run style:lint && npm run style:prettier",
+    "style:lint": "eslint \"**/*.{js,jsx,ts,tsx}\"",
+    "style:prettier": "prettier --check '**/*.{js,jsx,ts,tsx}'",
+    "make-pretty": "prettier --write '**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.2.0",
@@ -27,6 +31,7 @@
     "envalid": "^8.0.0",
     "framer-motion": "^10.16.4",
     "js-base64": "^3.7.5",
+    "lib0": "^0.2.87",
     "next": "13.4.0",
     "next-fonts": "^1.5.1",
     "react": "18.2.0",
@@ -46,6 +51,8 @@
     "@types/react-dom": "18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
-    "eslint": "^8.52.0"
+    "eslint": "^8.52.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "prettier": "^3.0.3"
   }
 }

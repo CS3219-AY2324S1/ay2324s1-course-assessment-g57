@@ -1,7 +1,6 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import Layout from '../components/Layout';
-import { useState } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 
 type AuthUser = {
   user_id: string;

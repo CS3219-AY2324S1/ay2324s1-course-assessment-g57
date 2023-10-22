@@ -7,6 +7,7 @@ import {
 
 export class PeerPrepClient {
   private readonly baseURL: string;
+
   private readonly baseURLQuestion: string;
 
   constructor(
@@ -19,7 +20,7 @@ export class PeerPrepClient {
 
   public async getUsers(): Promise<Array<User>> {
     const response = await fetch(`${this.baseURL}/users`);
-    return await response.json();
+    return response.json();
   }
 
   public async createUser(user: CreateUserForm): Promise<void> {
@@ -31,7 +32,7 @@ export class PeerPrepClient {
       body: JSON.stringify(user),
     });
 
-    return await response.json();
+    return response.json();
   }
 
   public async updateUser(user: User): Promise<void> {
@@ -43,7 +44,7 @@ export class PeerPrepClient {
       body: JSON.stringify(user),
     });
 
-    return await response.json();
+    return response.json();
   }
 
   public async deleteUser(id: string): Promise<void> {
@@ -54,7 +55,7 @@ export class PeerPrepClient {
 
   public async getQuestions(): Promise<Array<Question>> {
     const response = await fetch(`${this.baseURLQuestion}/api/v1/questions`);
-    return await response.json();
+    return response.json();
   }
 
   public async createQuestion(question: AddQuestionForm): Promise<Question> {
@@ -65,7 +66,7 @@ export class PeerPrepClient {
       },
       body: JSON.stringify(question),
     });
-    return await response.json();
+    return response.json();
   }
 
   public async updateQuestion(question: Question): Promise<Question> {
@@ -79,7 +80,7 @@ export class PeerPrepClient {
         body: JSON.stringify(question),
       }
     );
-    return await response.json();
+    return response.json();
   }
 
   public async deleteQuestion(id: number): Promise<void> {

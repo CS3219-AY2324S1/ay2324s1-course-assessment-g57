@@ -1,5 +1,5 @@
 import React from 'react';
-import { socket } from '@/lib/socket';
+import socket from '@/lib/socket';
 import { Button } from '@chakra-ui/react';
 
 const ConnectionManager = () => {

@@ -1,0 +1,7 @@
+node_modules
+__generated__
+**/lint-staged.config.js
+**/next-env.d.ts
+**/tailwind.config.js
+**/next.config.js
+src/lib/y-monaco.js

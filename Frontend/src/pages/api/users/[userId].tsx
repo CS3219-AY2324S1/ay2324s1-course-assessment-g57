@@ -13,15 +13,15 @@ export default withApiAuthRequired(async function handler(
   try {
     console.log('UserById', req.method);
 
-    let { user_id } = req.query;
+    let { userId } = req.query;
     const regex = /\|/; // regex to check for pipe character
-    user_id = (user_id as string).replace(regex, '_'); // clean user ID
+    userId = (userId as string).replace(regex, '_'); // clean user ID
     const { accessToken } = await getAccessToken(req, res);
 
     const reqHeaders: Record<string, string> = {
       Authorization: `Bearer ${accessToken}`,
     };
-    const url = `${baseURL}/users/${user_id}`;
+    const url = `${baseURL}/users/${userId}`;
 
     if (req.method === 'GET') {
       const response = await fetch(url, {
@@ -46,7 +46,7 @@ export default withApiAuthRequired(async function handler(
         body: req.body,
       });
       if (response.ok) {
-        res.status(200).json({ message: `PUT user with ID ${user_id}` });
+        res.status(200).json({ message: `PUT user with ID ${userId}` });
       } else if (response.status === 404) {
         // If the user is not found, return a 404 Not Found response
         res.status(404).json({ error: 'User not found' });

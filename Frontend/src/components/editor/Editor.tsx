@@ -4,7 +4,7 @@ dotenv.config();
 // const axios = require('axios');
 import axios from 'axios';
 import { useState, useRef } from 'react';
-import Editor from '@monaco-editor/react';
+import { Editor } from '@monaco-editor/react';
 import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
 // import { MonacoBinding } from '../../lib/y-monaco';
@@ -78,12 +78,12 @@ function CodeEditor() {
     console.log(provider.awareness);
   }
 
-  function getLangID(lang: string): number {
-    if (lang == 'python') {
+  function getLangID(inputLang: string): number {
+    if (inputLang == 'python') {
       return 92;
-    } else if (lang == 'cpp') {
+    } else if (inputLang == 'cpp') {
       return 54;
-    } else if (lang == 'csharp') {
+    } else if (inputLang == 'csharp') {
       return 51;
     } else {
       return 91;
@@ -166,8 +166,8 @@ function CodeEditor() {
     }
   }
 
-  function changeLang(lang: any) {
-    setLang(lang);
+  function changeLang(inputLang: any) {
+    setLang(inputLang);
   }
 
   /*will have to modify this function to identify what

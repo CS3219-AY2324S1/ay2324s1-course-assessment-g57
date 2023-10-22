@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app';
 import '../../dist/output.css';
 import 'bulma/css/bulma.css';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
-import 'bulma/css/bulma.css';
+
 import { ChakraBaseProvider, extendTheme } from '@chakra-ui/react';
 
 import RoomContextProvider from '@/contexts/RoomContext';

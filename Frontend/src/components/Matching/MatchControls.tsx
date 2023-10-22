@@ -29,12 +29,12 @@ const MatchControls = () => {
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
 
-    socket.on('matchFound', (message, roomId) => {
+    socket.on('matchFound', (msg: string, room: string) => {
       setTimeElapsed('30');
-      setRoomId(roomId);
-      setStatus(message);
+      setRoomId(room);
+      setStatus(msg);
     });
-    socket.on('matchTimerCountdown', (timerCountdown) => {
+    socket.on('matchTimerCountdown', (timerCountdown: string) => {
       setTimeElapsed(timerCountdown);
     });
     socket.on('noMatchTimerExpired', () => {

@@ -14,12 +14,12 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
   const [videoCall, setVideoCall] = useState(false);
   const [token, setToken] = useState();
 
-  const getToken = async (channel: string) => {
+  const getToken = async (inputChannel: string) => {
     const res = await axios
-      .get(SERVER_URL + `/rtc/${channel}`)
-      .then((res) => {
-        if (res.status === 200) {
-          return res.data.rtcToken;
+      .get(SERVER_URL + `/rtc/${inputChannel}`)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.data.rtcToken;
         } else {
           return '';
         }
@@ -33,8 +33,8 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
 
   useEffect(() => {
     const init = async () => {
-      const token = await getToken(channel);
-      setToken(token);
+      const retrievedToken = await getToken(channel);
+      setToken(retrievedToken);
     };
 
     init();
