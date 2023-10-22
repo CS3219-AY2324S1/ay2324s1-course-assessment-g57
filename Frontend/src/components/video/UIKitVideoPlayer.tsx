@@ -3,10 +3,10 @@ import AgoraUIKit, { layout } from "agora-react-uikit";
 import axios from "axios";
 import { Button } from "@chakra-ui/react";
 
-const SERVER_URL = process.env.ENV === "DEV"
-  ? process.env.DEV_SERVER_URL
-  : process.env.END === "PROD"
-    ? process.env.PROD_SERVER_URL
+const SERVER_URL = process.env.NEXT_PUBLIC_ENV === "DEV"
+  ? process.env.NEXT_PUBLIC_DEV_SERVER_URL
+  : process.env.NEXT_PUBLIC_ENV === "PROD"
+    ? process.env.NEXT_PUBLIC_PROD_SERVER_URL
     : "http://localhost:3500";
 
 const UIKitVideo = ({ channel }: { channel: string }) => {
@@ -40,7 +40,7 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
   }, []);
 
   const rtcProps = {
-    appId: process.env.AGORA_APP_ID || "ead9549ed5af43d5a769644e3136da85",
+    appId: process.env.NEXT_PUBLIC_AGORA_APP_ID || "ead9549ed5af43d5a769644e3136da85",
     channel: channel,
     token: token,
     disableRtm: true,
