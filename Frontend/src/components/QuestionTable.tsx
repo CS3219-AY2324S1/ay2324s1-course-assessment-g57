@@ -13,7 +13,7 @@ type QuestionTableProp = {
   user?: any;
 };
 
-const tableComponent = ({ user }: QuestionTableProp) => {
+const TableComponent = ({ user }: QuestionTableProp) => {
   const [currentQuestionEditJson, setCurrentQuestionEditJson] =
     React.useState<string>('');
   const [currentQuestionAddJson, setQuestionAddJson] = React.useState<string>(
@@ -255,4 +255,4 @@ const tableComponent = ({ user }: QuestionTableProp) => {
   );
 };
 
-export default tableComponent;
+export default TableComponent;

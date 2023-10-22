@@ -9,7 +9,7 @@ type UserTableProp = {
   fetchUsersFn: () => void;
 };
 
-const tableComponent = ({ users, client, fetchUsersFn }: UserTableProp) => {
+const TableComponent = ({ users, client, fetchUsersFn }: UserTableProp) => {
   const [currentUserEditJson, setCurrentUserEditJson] =
     React.useState<string>('');
   const [currentAddUser, setCurrentAddUser] = React.useState<string>(
@@ -180,4 +180,4 @@ const tableComponent = ({ users, client, fetchUsersFn }: UserTableProp) => {
   );
 };
 
-export default tableComponent;
+export default TableComponent;

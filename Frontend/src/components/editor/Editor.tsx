@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-// const axios = require('axios');
 import axios from 'axios';
 import { useState, useRef } from 'react';
 import { Editor } from '@monaco-editor/react';
@@ -14,12 +13,13 @@ import { fromUint8Array } from 'js-base64';
 import * as random from 'lib0/random';
 
 import { MdOutlineDarkMode } from 'react-icons/md';
+// import { MonacoDiffEditor } from 'react-monaco-editor';
 
 // Setup Monaco Editor
 // Attach YJS Text to Monaco Editor
 
 function CodeEditor() {
-  const editorRef = useRef(null);
+  const editorRef = useRef<any>(null);
   const [lang, setLang] = useState('python');
   const [loading, setLoading] = useState(false);
   const [editorTheme, setEditorTheme] = useState('light');
@@ -92,13 +92,14 @@ function CodeEditor() {
 
   /*Save the code as a binary file*/
   async function submitCode() {
-    const data = editorRef.current.getValue();
+    const data = editorRef.current?.getValue();
     alert(data);
     setLoading(true);
     const enc = new TextEncoder();
     const documentState = enc.encode(data);
     // Transform Uint8Array to a Base64-String
     const base64Encoded = fromUint8Array(documentState);
+
     //alert(base64Encoded)
     // Transform Base64-String back to an Uint8Array
     //const binaryEncoded = toUint8Array(base64Encoded);

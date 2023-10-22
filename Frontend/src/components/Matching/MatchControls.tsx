@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { socket } from '../../lib/socket';
+import socket from '../../lib/socket';
 import ConnectionManager from './ConnectionManager';
 
 import { RoomContext } from '@/contexts/RoomContext';
