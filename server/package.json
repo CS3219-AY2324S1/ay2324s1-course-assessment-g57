@@ -5,7 +5,8 @@
   "type": "module",
   "sideEffects": false,
   "scripts": {
-    "start": "node ./server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "bin": {
     "y-webrtc-signaling": "./server.js"
@@ -31,6 +32,7 @@
     "@types/simple-peer": "^9.11.3",
     "concurrently": "^5.3.0",
     "http-server": "^0.12.3",
+    "nodemon": "^3.0.1",
     "rollup": "^1.32.1",
     "rollup-cli": "^1.0.9",
     "rollup-plugin-terser": "^5.3.1",

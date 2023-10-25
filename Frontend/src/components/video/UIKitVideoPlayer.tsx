@@ -13,26 +13,43 @@ const SERVER_URL =
 const UIKitVideo = ({ channel }: { channel: string }) => {
   const [videoCall, setVideoCall] = useState(false);
   const [token, setToken] = useState();
+  console.log(channel);
+  console.log('entered componenet');
 
   const getToken = async (inputChannel: string) => {
+    console.log('entered getToken');
+    const config = {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    };
+    const URL = SERVER_URL + `/rtc/${inputChannel}`;
+    console.log('URL', URL);
     const res = await axios
-      .get(SERVER_URL + `/rtc/${inputChannel}`)
+      .get(URL, config)
       .then((response) => {
+        console.log('Response data', response.data);
         if (response.status === 200) {
+          console.log(response.data.rtcToken);
           return response.data.rtcToken;
         } else {
+          console.log('failed res', response);
           return '';
         }
       })
       .catch((error) => {
+        console.log('wtf');
         console.log(error);
       });
+    console.log('res', res);
 
     return res;
   };
 
   useEffect(() => {
     const init = async () => {
+      console.log('enter useEffect');
       const retrievedToken = await getToken(channel);
       setToken(retrievedToken);
     };
@@ -98,7 +115,10 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
       )}
       {!videoCall && (
         <Button
-          onClick={() => setVideoCall(true)}
+          onClick={() => {
+            alert('Hello world');
+            setVideoCall(true);
+          }}
           style={{
             borderRadius: 25,
             width: 100,

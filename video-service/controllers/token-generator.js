@@ -11,6 +11,7 @@ const { APP_CERTIFICATE } = process.env;
 
 const generateRTCToken = (req, res) => {
   // Define necessary constants
+  console.log('hello world');
   const uid = 0;
   const role = RtcRole.SUBSCRIBER;
   const { channel } = req.params;
@@ -38,6 +39,8 @@ const generateRTCToken = (req, res) => {
     role,
     privilegeExpireTime
   );
+
+  console.log(`Token generated: ${token}`);
 
   return res.json({ rtcToken: token });
 };

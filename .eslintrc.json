@@ -7,6 +7,6 @@
     "no-console": "off",
     "func-names": "off",
     "camelcase": "warn",
-    "endOfLine": "auto"
+    "endOfLine": "2"
   }
 }

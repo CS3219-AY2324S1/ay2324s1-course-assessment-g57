@@ -9,10 +9,16 @@ const app = express();
 app.use(
   cors({
     // Update when deploy
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 204,
+    methods: 'GET',
   })
 );
 app.options('*', cors());
+// app.options('*', (req, res) => {
+//   res.status(204).end(); // Respond with a 204 No Content status for OPTIONS requests
+// });
+console.log('ping');
 
 // Define necessary constants
 const PORT = process.env.PORT || 3500;
