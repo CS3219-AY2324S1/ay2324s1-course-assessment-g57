@@ -6,7 +6,7 @@ import { useState, useRef } from 'react';
 import { Editor } from '@monaco-editor/react';
 import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
-// import { MonacoBinding } from '../../lib/y-monaco';
+import { MonacoBinding } from '../../lib/y-monaco';
 import { Box, Button, Select, Switch, IconButton } from '@chakra-ui/react';
 import { fromUint8Array } from 'js-base64';
 
@@ -66,15 +66,15 @@ function CodeEditor() {
       color: userColor.color,
       colorLight: userColor.light,
     });
-    // const type = doc.getText('monaco'); // doc { "monaco": "what our IDE is showing" }
+    const type = doc.getText('monaco'); // doc { "monaco": "what our IDE is showing" }
 
     // Bind YJS to Monaco
-    // const binding = new MonacoBinding(
-    //   type,
-    //   editorRef.current.getModel(),
-    //   new Set([editorRef.current]),
-    //   provider.awareness
-    // );
+    new MonacoBinding(
+      type,
+      editorRef.current.getModel(),
+      new Set([editorRef.current]),
+      provider.awareness
+    );
     console.log(provider.awareness);
   }
 
