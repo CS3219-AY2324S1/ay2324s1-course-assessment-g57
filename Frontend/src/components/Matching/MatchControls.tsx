@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import socket from '../../lib/socket';
 import ConnectionManager from './ConnectionManager';
+import { useRouter } from 'next/navigation';
 
 import { RoomContext } from '@/contexts/RoomContext';
 
@@ -12,6 +13,7 @@ const MatchControls = () => {
   );
   const [timeElapsed, setTimeElapsed] = useState('30');
   const { roomId, setRoomId } = useContext(RoomContext);
+  const { push } = useRouter();
 
   useEffect(() => {
     const onConnect = () => {
@@ -33,6 +35,8 @@ const MatchControls = () => {
       setTimeElapsed('30');
       setRoomId(room);
       setStatus(msg);
+      // go to another page
+      push(`/code?roomId=${roomId}`);
     });
     socket.on('matchTimerCountdown', (timerCountdown: string) => {
       setTimeElapsed(timerCountdown);
