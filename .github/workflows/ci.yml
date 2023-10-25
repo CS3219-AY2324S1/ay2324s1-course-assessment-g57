@@ -42,7 +42,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Build Tailwind CSS
+      - name: Build Taiwind CSS
         run: npx tailwindcss -i ./src/styles.css -o ./dist/output.css
 
       - name: Build
