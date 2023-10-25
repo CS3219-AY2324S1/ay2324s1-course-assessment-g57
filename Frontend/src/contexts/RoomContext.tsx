@@ -1,12 +1,14 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState } from 'react';
 
 export const RoomContext = createContext({
-  roomId: "",
-  setRoomId: (roomId: string) => {},
+  roomId: '',
+  setRoomId: (roomId: string) => {
+    console.log(roomId);
+  },
 });
 
 export const RoomContextProvider = ({ children }: { children: any }) => {
-  const [roomId, setRoomId] = useState("");
+  const [roomId, setRoomId] = useState('');
 
   return (
     <RoomContext.Provider

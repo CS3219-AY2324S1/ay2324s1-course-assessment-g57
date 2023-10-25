@@ -1,0 +1,52 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  frontend-ci:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [18.12.0]
+
+    defaults:
+      run:
+        working-directory: Frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Setup node env
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: ${{ matrix.node }}
+          registry-url: 'https://registry.yarnpkg.com'
+
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build Taiwind CSS
+        run: npx tailwindcss -i ./src/styles.css -o ./dist/output.css
+
+      - name: Build
+        run: yarn run build
+
+      - name: Run code style check
+        run: yarn run style:all
