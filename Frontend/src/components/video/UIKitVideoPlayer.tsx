@@ -5,9 +5,9 @@ import { Button } from '@chakra-ui/react';
 
 const SERVER_URL =
   process.env.ENV === 'DEV'
-    ? process.env.DEV_SERVER_URL
+    ? process.env.NEXT_PUBLIC_DEV_SERVER_URL
     : process.env.END === 'PROD'
-    ? process.env.PROD_SERVER_URL
+    ? process.env.NEXT_PUBLIC_PROD_SERVER_URL
     : 'http://localhost:3500';
 
 const UIKitVideo = ({ channel }: { channel: string }) => {

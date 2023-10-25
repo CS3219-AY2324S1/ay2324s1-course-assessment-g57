@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npx tailwindcss -i ./src/styles.css -o ./dist/output.css && next build",
     "start": "next start",
     "lint": "biome",
     "fmt": "biome format --write src",
