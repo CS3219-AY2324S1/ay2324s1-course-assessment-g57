@@ -37,9 +37,11 @@ const MatchControls = () => {
       setStatus(msg);
       push(`/code?room=${room}`);
     });
+
     socket.on('matchTimerCountdown', (timerCountdown: string) => {
       setTimeElapsed(timerCountdown);
     });
+
     socket.on('noMatchTimerExpired', () => {
       setStatus('No Match Found!');
     });
