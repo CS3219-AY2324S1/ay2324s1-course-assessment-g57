@@ -7,7 +7,10 @@ const navComponent = () => {
                 <div id="navBarMenu" className="navbar-menu">
                     <div className="navbar-end">
                         <div className="navbar-item">
-                            <Link className="button is-danger is-small" href="/">
+                            <Link
+                                className="button is-danger is-small"
+                                href="/"
+                            >
                                 Leave Room
                             </Link>
                         </div>
