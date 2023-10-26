@@ -96,7 +96,13 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
         </div>
       )}
       {!videoCall && (
-        <button className="button is-link" onClick={() => setVideoCall(true)}>
+        <button className="button is-link" onClick={() => {
+          if (!token) {
+            alert("Video Failed To Launch!");
+          } else {
+            setVideoCall(true)
+          }
+        }}>
           Start Call
         </button>
       )}
