@@ -10,14 +10,14 @@ import RoomContextProvider from '@/contexts/RoomContext';
 const theme = extendTheme({});
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { user } = pageProps;
-  return (
-    <UserProvider user={user}>
-      <RoomContextProvider>
-        <ChakraBaseProvider theme={theme}>
-          <Component {...pageProps} />
-        </ChakraBaseProvider>
-      </RoomContextProvider>
-    </UserProvider>
-  );
+    const { user } = pageProps;
+    return (
+        <UserProvider user={user}>
+            <RoomContextProvider>
+                <ChakraBaseProvider theme={theme}>
+                    <Component {...pageProps} />
+                </ChakraBaseProvider>
+            </RoomContextProvider>
+        </UserProvider>
+    );
 }
