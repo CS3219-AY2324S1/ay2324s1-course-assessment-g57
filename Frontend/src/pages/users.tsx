@@ -1,35 +1,25 @@
-import Head from "next/head";
-import NavBar from '../components/Nav'
-import { User, defaultUser } from "../models/types";
-import React from "react";
-import { PeerPrepClient } from "@/lib/PeerPrepClient";
-import dynamic from 'next/dynamic'
-import UserTable from '../components/UserTable'
+import Layout from '@/components/Layout';
+import { User, defaultUser } from '../models/types';
+import React from 'react';
+import { PeerPrepClient } from '@/lib/PeerPrepClient';
+import UserTable from '../components/UserTable';
 
 export default function Home() {
-    const client = new PeerPrepClient();
-    const [users, setUsers] = React.useState<User[]>([defaultUser()]);
+  const client = new PeerPrepClient();
+  const [users, setUsers] = React.useState<User[]>([defaultUser()]);
 
-    function getUsers() {
-        client.getUsers().then(setUsers)
-    }
+  function getUsers() {
+    client.getUsers().then(setUsers);
+  }
 
-    React.useEffect(() => {
-        getUsers();
-    }, []);
+  React.useEffect(() => {
+    getUsers();
+  }, []);
 
-    return (
-        <>
-            <Head>
-                <title>Users</title>
-            </Head>
-            <main>
-                <NavBar />
-                <section>
-                    <h1 className="is-size-1">Users</h1>
-                    <UserTable users={users} client={client} fetchUsersFn={getUsers}/>
-                </section>
-            </main>
-        </>
-    )
+  return (
+    <Layout title={'Users'}>
+      <h1 className="is-size-1">Users</h1>
+      <UserTable users={users} client={client} fetchUsersFn={getUsers} />
+    </Layout>
+  );
 }

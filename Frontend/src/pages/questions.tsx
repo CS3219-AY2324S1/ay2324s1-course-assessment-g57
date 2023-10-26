@@ -1,32 +1,19 @@
-import Head from "next/head";
-import NavBar from '../components/Nav'
-import React from "react";
-import { PeerPrepClient } from "@/lib/PeerPrepClient";
+import React from 'react';
 import QuestionTable from '../components/QuestionTable';
-import { Question, defaultQuestion } from "../models/types";
+import Layout from '../components/Layout';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
-export default function Home() {
-    const client = new PeerPrepClient();
-    const [questions, setQuestions] = React.useState<Question[]>([defaultQuestion()]);
+type QuestionPageProps = {
+  user?: any;
+  isLoading: boolean;
+};
+const QuestionPage = ({ user, isLoading }: QuestionPageProps) => {
+  return (
+    <Layout title={'Questions'} user={user} loading={isLoading}>
+      <h1 className="is-size-1">Questions</h1>
+      <QuestionTable user={user} />
+    </Layout>
+  );
+};
 
-    function fetchQuestions() {
-        client.getQuestions().then(setQuestions)
-    }
-
-    React.useEffect(() => {
-        fetchQuestions()
-    }, []);
-
-    return (
-        <>
-        <Head>
-            <title>Questions</title>
-        </Head>
-        <main>
-            <NavBar />
-            <h1 className="is-size-1">Questions</h1>
-            <QuestionTable questions={questions} client={client} fetchQnFn={fetchQuestions}/>
-        </main>
-        </>
-    )
-}
+export default withPageAuthRequired(QuestionPage);

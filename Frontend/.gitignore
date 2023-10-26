@@ -13,7 +13,10 @@
 /out/
 
 # production
+**.eslintcache
 /build
+*.zip
+
 
 # misc
 .DS_Store
