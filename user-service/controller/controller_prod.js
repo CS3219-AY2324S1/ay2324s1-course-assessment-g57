@@ -24,7 +24,6 @@ const getUserById = async (req, res) => {
                 return res.status(404).json({ error: 'User not found' });
             }
             res.status(200).json(user);
-            return user.json();
         })
         .catch((err) => {
             console.error('Unable to read user', err);
