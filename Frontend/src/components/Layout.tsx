@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Header from './Header';
-// import NavBar from './Nav'
+import NavBar from './Nav'
 
 type LayoutProps = {
   title?: string;
@@ -15,8 +15,8 @@ const Layout = ({ title, user, loading = false, children }: LayoutProps) => {
       <Head>
         <title>{title || 'PeerPrep'}</title>
         <meta
-          name="description"
-          content="auto generated content by chatgpt so this is plagurism 100%"
+          name="PeerPrep"
+          content="A collaborative platform for coders to practice technical interviews with their peers."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
@@ -24,7 +24,7 @@ const Layout = ({ title, user, loading = false, children }: LayoutProps) => {
 
       <Header user={user} loading={loading} />
 
-      {/* <NavBar /> */}
+      <NavBar />
       <main>
         <div className="md:container md:mx-autocontainer mx-auto">
           {children}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AgoraUIKit, { layout } from 'agora-react-uikit';
 import axios from 'axios';
-import { Button } from '@chakra-ui/react';
 
 const SERVER_URL =
   process.env.ENV === 'DEV'
@@ -55,7 +54,7 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
     gridVideoContainer: {}, // Style the container storing the individual cells in grid layout.
     iconSize: 13, // Customize size of the icons.
     localBtnContainer: {
-      backgroundColor: '#B2BEB5',
+      backgroundColor: '#3b3b3b',
     }, // Style the container for the buttons.
     localBtnStyles: {
       muteLocalVideo: {
@@ -88,7 +87,7 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
   return (
     <div>
       {videoCall && (
-        <div style={{ display: 'flex', width: '50vw', height: '50vh' }}>
+        <div style={{ display: 'flex', height: '50vh' }}>
           <AgoraUIKit
             rtcProps={rtcProps}
             callbacks={callbacks}
@@ -97,18 +96,9 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
         </div>
       )}
       {!videoCall && (
-        <Button
-          onClick={() => setVideoCall(true)}
-          style={{
-            borderRadius: 25,
-            width: 100,
-            height: 60,
-            backgroundColor: 'white',
-            borderWidth: 1,
-          }}
-        >
+        <button className="button is-link" onClick={() => setVideoCall(true)}>
           Start Call
-        </Button>
+        </button>
       )}
     </div>
   );

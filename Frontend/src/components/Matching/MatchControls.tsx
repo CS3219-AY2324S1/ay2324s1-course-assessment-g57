@@ -35,8 +35,7 @@ const MatchControls = () => {
       setTimeElapsed('30');
       setRoomId(room);
       setStatus(msg);
-      // go to another page
-      push(`/code?roomId=${roomId}`);
+      push(`/code?room=${room}`);
     });
     socket.on('matchTimerCountdown', (timerCountdown: string) => {
       setTimeElapsed(timerCountdown);
