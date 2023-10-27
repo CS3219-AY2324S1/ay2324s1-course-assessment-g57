@@ -22,6 +22,7 @@
   "dependencies": {
     "dotenv": "^16.3.1",
     "lib0": "^0.2.42",
+    "nodemon": "^3.0.1",
     "simple-peer": "^9.11.0",
     "y-protocols": "^1.0.5"
   },
