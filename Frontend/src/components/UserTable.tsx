@@ -4,180 +4,184 @@ import React from 'react';
 import { isValidJsonString, hasEmptyValues } from '@/lib/utils';
 
 type UserTableProp = {
-  users: User[];
-  client: PeerPrepClient;
-  fetchUsersFn: () => void;
+    users: User[];
+    client: PeerPrepClient;
+    fetchUsersFn: () => void;
 };
 
 const TableComponent = ({ users, client, fetchUsersFn }: UserTableProp) => {
-  const [currentUserEditJson, setCurrentUserEditJson] =
-    React.useState<string>('');
-  const [currentAddUser, setCurrentAddUser] = React.useState<string>(
-    JSON.stringify(defaultCreateUserForm(), null, 4)
-  );
+    const [currentUserEditJson, setCurrentUserEditJson] =
+        React.useState<string>('');
+    const [currentAddUser, setCurrentAddUser] = React.useState<string>(
+        JSON.stringify(defaultCreateUserForm(), null, 4)
+    );
 
-  function sendToEditBox(user: User) {
-    // send json to textbox
-    setCurrentUserEditJson(JSON.stringify(user, null, 4));
-  }
-
-  async function handleEditSubmit() {
-    try {
-      // try to parse the string in currentUserEditJson
-      const user: User = JSON.parse(currentUserEditJson);
-      // does not return json
-      await client.updateUser(user);
-      // we make parent fetch users
-      fetchUsersFn();
-      // then we clear the currentUserEditJson
-      setCurrentUserEditJson('');
-      alert(`Updated user: ${user.userid}!`);
-    } catch (err: any) {
-      console.log(err);
+    function sendToEditBox(user: User) {
+        // send json to textbox
+        setCurrentUserEditJson(JSON.stringify(user, null, 4));
     }
-  }
 
-  // OnClick Delete function
-  async function sendDelete(id: string) {
-    try {
-      await client.deleteUser(id);
-      fetchUsersFn();
-      alert(`Deleted user: ${id}`);
-    } catch (e: any) {
-      console.log(e);
+    async function handleEditSubmit() {
+        try {
+            // try to parse the string in currentUserEditJson
+            const user: User = JSON.parse(currentUserEditJson);
+            // does not return json
+            await client.updateUser(user);
+            // we make parent fetch users
+            fetchUsersFn();
+            // then we clear the currentUserEditJson
+            setCurrentUserEditJson('');
+            alert(`Updated user: ${user.userid}!`);
+        } catch (err: any) {
+            console.log(err);
+        }
     }
-  }
 
-  async function handleAddSubmit() {
-    try {
-      // try to parse the string in currentUserEditJson
-      const user: CreateUserForm = JSON.parse(currentAddUser);
-      // does not return json
-      await client.createUser(user);
-      // we make parent fetch users
-      fetchUsersFn();
-      // then we clear the currentUserEditJson
-      setCurrentAddUser(JSON.stringify(defaultCreateUserForm(), null, 4));
-      alert('Added user!');
-    } catch (err: any) {
-      console.log(err);
+    // OnClick Delete function
+    async function sendDelete(id: string) {
+        try {
+            await client.deleteUser(id);
+            fetchUsersFn();
+            alert(`Deleted user: ${id}`);
+        } catch (e: any) {
+            console.log(e);
+        }
     }
-  }
 
-  return (
-    <>
-      <section>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Username</th>
-              <th>Email</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((val) => {
-              return (
-                <tr key={val.userid}>
-                  <td>{val.userid}</td>
-                  <td>{val.username}</td>
-                  <td>{val.email}</td>
-                  <td>
-                    <img
-                      src="/assets/edit.svg"
-                      onClick={() => {
-                        sendToEditBox(val);
-                      }}
-                      style={{ width: 25 }}
-                    />
-                  </td>
-                  <td>
-                    <img
-                      src="/assets/trash.svg"
-                      onClick={() => sendDelete(val.userid)}
-                      style={{ width: 25 }}
-                    />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+    async function handleAddSubmit() {
+        try {
+            // try to parse the string in currentUserEditJson
+            const user: CreateUserForm = JSON.parse(currentAddUser);
+            // does not return json
+            await client.createUser(user);
+            // we make parent fetch users
+            fetchUsersFn();
+            // then we clear the currentUserEditJson
+            setCurrentAddUser(JSON.stringify(defaultCreateUserForm(), null, 4));
+            alert('Added user!');
+        } catch (err: any) {
+            console.log(err);
+        }
+    }
 
-        <form
-          method="post"
-          onSubmit={async () => {
-            await handleEditSubmit();
-          }}
-        >
-          <section>
-            <textarea
-              id="textareaedit"
-              className="textarea is-normal"
-              rows={10}
-              placeholder="json here"
-              disabled={currentUserEditJson.length === 0}
-              value={currentUserEditJson}
-              onChange={(e) => {
-                setCurrentUserEditJson(e.target.value);
-              }}
-            ></textarea>
-          </section>
-
-          <section>
-            <button
-              className="button is-primary"
-              disabled={!isValidJsonString(currentUserEditJson)}
-              type="submit"
-            >
-              Submit
-            </button>
-          </section>
-        </form>
-        <br />
-        <br />
-        <br />
-        <section>
-          <h1 className="is-size-2">Add User</h1>
-          <form
-            method="post"
-            onSubmit={async () => {
-              handleAddSubmit();
-            }}
-          >
+    return (
+        <>
             <section>
-              <textarea
-                id="textareaedit"
-                className="textarea is-normal"
-                rows={10}
-                placeholder="json here"
-                value={currentAddUser}
-                onChange={(e) => {
-                  setCurrentAddUser(e.target.value);
-                }}
-              ></textarea>
-            </section>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map((val) => {
+                            return (
+                                <tr key={val.userid}>
+                                    <td>{val.userid}</td>
+                                    <td>{val.username}</td>
+                                    <td>{val.email}</td>
+                                    <td>
+                                        <img
+                                            src="/assets/edit.svg"
+                                            onClick={() => {
+                                                sendToEditBox(val);
+                                            }}
+                                            style={{ width: 25 }}
+                                        />
+                                    </td>
+                                    <td>
+                                        <img
+                                            src="/assets/trash.svg"
+                                            onClick={() =>
+                                                sendDelete(val.userid)
+                                            }
+                                            style={{ width: 25 }}
+                                        />
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
 
-            <section>
-              <button
-                className="button is-primary"
-                type="submit"
-                disabled={
-                  !isValidJsonString(currentAddUser) ||
-                  (isValidJsonString(currentAddUser) &&
-                    hasEmptyValues(JSON.parse(currentAddUser)))
-                }
-              >
-                Submit
-              </button>
+                <form
+                    method="post"
+                    onSubmit={async () => {
+                        await handleEditSubmit();
+                    }}
+                >
+                    <section>
+                        <textarea
+                            id="textareaedit"
+                            className="textarea is-normal"
+                            rows={10}
+                            placeholder="json here"
+                            disabled={currentUserEditJson.length === 0}
+                            value={currentUserEditJson}
+                            onChange={(e) => {
+                                setCurrentUserEditJson(e.target.value);
+                            }}
+                        ></textarea>
+                    </section>
+
+                    <section>
+                        <button
+                            className="button is-primary"
+                            disabled={!isValidJsonString(currentUserEditJson)}
+                            type="submit"
+                        >
+                            Submit
+                        </button>
+                    </section>
+                </form>
+                <br />
+                <br />
+                <br />
+                <section>
+                    <h1 className="is-size-2">Add User</h1>
+                    <form
+                        method="post"
+                        onSubmit={async () => {
+                            handleAddSubmit();
+                        }}
+                    >
+                        <section>
+                            <textarea
+                                id="textareaedit"
+                                className="textarea is-normal"
+                                rows={10}
+                                placeholder="json here"
+                                value={currentAddUser}
+                                onChange={(e) => {
+                                    setCurrentAddUser(e.target.value);
+                                }}
+                            ></textarea>
+                        </section>
+
+                        <section>
+                            <button
+                                className="button is-primary"
+                                type="submit"
+                                disabled={
+                                    !isValidJsonString(currentAddUser) ||
+                                    (isValidJsonString(currentAddUser) &&
+                                        hasEmptyValues(
+                                            JSON.parse(currentAddUser)
+                                        ))
+                                }
+                            >
+                                Submit
+                            </button>
+                        </section>
+                    </form>
+                </section>
             </section>
-          </form>
-        </section>
-      </section>
-    </>
-  );
+        </>
+    );
 };
 
 export default TableComponent;

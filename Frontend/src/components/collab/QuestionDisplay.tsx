@@ -10,7 +10,7 @@ const questionDisplay = () => {
                 <br />
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default questionDisplay;
