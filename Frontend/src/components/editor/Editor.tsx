@@ -8,7 +8,7 @@ import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
 import { MonacoBinding } from '../../lib/y-monaco';
 import { Box, Button, Select, Switch, IconButton } from '@chakra-ui/react';
-import { fromUint8Array} from 'js-base64';
+import { fromUint8Array } from 'js-base64';
 
 import * as random from 'lib0/random';
 
@@ -86,7 +86,7 @@ function CodeEditor() {
         } else if (inputLang == 'csharp') {
             return '51';
         } else if (inputLang == 'kotlin') {
-            return '78'
+            return '78';
         } else {
             return '60';
         }
@@ -102,7 +102,7 @@ function CodeEditor() {
         // Transform Uint8Array to a Base64-String
         const base64Encoded = fromUint8Array(documentState);
 
-        alert(base64Encoded)
+        alert(base64Encoded);
         // Transform Base64-String back to an Uint8Array
         // const binaryEncoded = toUint8Array(base64Encoded);
         // alert(binaryEncoded);
@@ -121,7 +121,7 @@ function CodeEditor() {
             },
             data: {
                 source_code: base64Encoded,
-                language_id: getLangID(lang)
+                language_id: getLangID(lang),
             },
         };
 
@@ -129,15 +129,14 @@ function CodeEditor() {
             const response = await axios.request(options);
             console.log('POST: ' + response.data.token);
             const testUrl =
-                'http://34.41.197.38/submissions/' +
-                response.data.token;
+                'http://34.41.197.38/submissions/' + response.data.token;
             console.log(testUrl);
 
             const options2 = {
                 method: 'GET',
                 url: testUrl,
                 params: {
-                    base64_encoded: 'false'
+                    base64_encoded: 'false',
                 },
             };
 
