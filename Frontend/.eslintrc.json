@@ -1,43 +1,43 @@
 {
-  "root": true,
-  "parser": "@typescript-eslint/parser",
-  "plugins": ["import", "@typescript-eslint"],
-  "extends": [
-    "next",
-    "plugin:import/recommended",
-    "airbnb-typescript",
-    "plugin:prettier/recommended"
-  ],
-  "parserOptions": {
-    "ecmaVersion": 2020, // Allows us to parse modern ECMAScript features
-    "sourceType": "module", // Allows use of imports
-    "project": ["./tsconfig.json"]
-  },
-  "env": {
-    "es6": true,
-    "node": true,
-    "browser": true
-  },
-  "rules": {
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-unused-expressions": [
-      "error",
-      { "allowShortCircuit": true, "allowTernary": true }
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["import", "@typescript-eslint"],
+    "extends": [
+        "next",
+        "plugin:import/recommended",
+        "airbnb-typescript",
+        "plugin:prettier/recommended"
     ],
-    "react/jsx-filename-extension": [
-      0,
-      { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
-    ],
-    "import/extensions": [
-      "error",
-      { "ts": "never", "tsx": "never", "js": "never", "jsx": "never" }
-    ],
-    "import/no-extraneous-dependencies": [
-      "error",
-      { "devDependencies": ["**/*.test.tsx", "**/*.test.ts"] }
-    ],
-    "prettier/prettier": "off",
-    "react/react-in-jsx-scope": "off"
-  }
+    "parserOptions": {
+        "ecmaVersion": 2020, // Allows us to parse modern ECMAScript features
+        "sourceType": "module", // Allows use of imports
+        "project": ["./tsconfig.json"]
+    },
+    "env": {
+        "es6": true,
+        "node": true,
+        "browser": true
+    },
+    "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-unused-expressions": [
+            "error",
+            { "allowShortCircuit": true, "allowTernary": true }
+        ],
+        "react/jsx-filename-extension": [
+            0,
+            { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+        ],
+        "import/extensions": [
+            "error",
+            { "ts": "never", "tsx": "never", "js": "never", "jsx": "never" }
+        ],
+        "import/no-extraneous-dependencies": [
+            "error",
+            { "devDependencies": ["**/*.test.tsx", "**/*.test.ts"] }
+        ],
+        "prettier/prettier": "off",
+        "react/react-in-jsx-scope": "off"
+    }
 }

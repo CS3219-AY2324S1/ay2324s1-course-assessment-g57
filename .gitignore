@@ -33,3 +33,4 @@ server/package-lock.json
 
 # Sensitive Information
 .env
+Frontend/yarn.lock
