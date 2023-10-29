@@ -111,7 +111,7 @@ function CodeEditor() {
 
         const options = {
             method: 'POST',
-            url: 'http://34.41.197.38/submissions',
+            url: 'http://34.70.59.59/submissions',
             params: {
                 base64_encoded: 'true',
                 wait: 'true',
@@ -129,7 +129,7 @@ function CodeEditor() {
             const response = await axios.request(options);
             console.log('POST: ' + response.data.token);
             const testUrl =
-                'http://34.41.197.38/submissions/' + response.data.token;
+                'http://34.70.59.59/submissions/' + response.data.token;
             console.log(testUrl);
 
             const options2 = {
