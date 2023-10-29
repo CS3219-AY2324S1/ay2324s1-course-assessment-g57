@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import Header from './Header';
-import NavBar from './Nav';
 
 type LayoutProps = {
     title?: string;
@@ -27,7 +26,7 @@ const Layout = ({ title, user, loading = false, children }: LayoutProps) => {
 
             <Header user={user} loading={loading} />
 
-            <NavBar />
+            {/* <NavBar /> */}
             <main>
                 <div className="md:container md:mx-autocontainer mx-auto">
                     {children}

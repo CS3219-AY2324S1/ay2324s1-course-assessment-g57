@@ -1,7 +1,5 @@
 import { getAccessToken, withApiAuthRequired } from '@auth0/nextjs-auth0';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Question } from '../../models/types';
-import { cleanTitle, restoreTitle } from '@/lib/utils';
 
 const baseURL =
     process.env.ENV == 'PROD'
@@ -12,12 +10,12 @@ export default withApiAuthRequired(async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    console.log('Get Questions', req.method);
+    console.log('Get Users', req.method);
     const { accessToken } = await getAccessToken(req, res);
     const reqHeaders: Record<string, string> = {
         Authorization: `Bearer ${accessToken}`,
     };
-    const url = `${baseURL}/questions`;
+    const url = `${baseURL}/users`;
 
     if (req.method == 'POST') {
         const request = JSON.parse(req.body);
@@ -26,23 +24,21 @@ export default withApiAuthRequired(async function handler(
             method: 'POST',
             headers: reqHeaders,
             body: JSON.stringify({
-                title: cleanTitle(request.title),
-                categories: request.categories,
-                complexity: request.complexity,
-                description: request.description,
-                link: request.link,
+                user: request.userid,
+                username: request.username,
+                email: request.email,
             }),
         });
 
         if (response.ok) {
-            console.log('Question created successfully');
-            const question = await response.json();
+            console.log('User created successfully');
+            const user = await response.json();
             // question.title = restoreTitle(question.title);
-            res.status(200).json(question);
+            res.status(200).json(user);
         } else {
-            console.log('Failed to create question', response.status);
+            console.log('Failed to create user', response.status);
             res.status(response.status).json({
-                error: 'Failed to create question',
+                error: 'Failed to create user',
             });
         }
     } else if (req.method == 'GET') {
@@ -51,16 +47,13 @@ export default withApiAuthRequired(async function handler(
         });
 
         if (response.ok) {
-            const questions = await response.json();
-            questions.map(
-                (question: Question) =>
-                    (question.title = restoreTitle(question.title))
-            );
-            res.status(200).json(questions);
+            const users = await response.json();
+            users.map((user: any) => (user.userid = user.user_id));
+            res.status(200).json(users);
         } else {
-            console.log('Failed to fetch questions', response.status);
+            console.log('Failed to fetch users', response.status);
             res.status(response.status).json({
-                error: 'Failed to fetch questions',
+                error: 'Failed to fetch users',
             });
         }
     }

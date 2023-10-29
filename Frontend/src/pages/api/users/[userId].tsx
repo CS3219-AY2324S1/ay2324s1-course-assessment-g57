@@ -29,11 +29,14 @@ export default withApiAuthRequired(async function handler(
             });
             if (response.ok) {
                 const userData = await response.json();
+                console.log('User fetched successfully');
                 res.status(200).json(userData);
             } else if (response.status === 404) {
                 // If the user is not found, return a 404 Not Found response
+                console.log('User not found');
                 res.status(404).json({ error: 'User not found' });
             } else {
+                console.log('Failed to fetch user data');
                 res.status(response.status).json({
                     error: 'Failed to fetch user data',
                 });
@@ -46,11 +49,14 @@ export default withApiAuthRequired(async function handler(
                 body: req.body,
             });
             if (response.ok) {
+                console.log('User updated successfully');
                 res.status(200).json({ message: `PUT user with ID ${userId}` });
             } else if (response.status === 404) {
                 // If the user is not found, return a 404 Not Found response
+                console.log('User not found');
                 res.status(404).json({ error: 'User not found' });
             } else {
+                console.log('Failed to update user data');
                 res.status(response.status).json({
                     error: 'Failed to update user data',
                 });
