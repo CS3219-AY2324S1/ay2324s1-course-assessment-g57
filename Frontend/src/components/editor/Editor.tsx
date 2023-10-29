@@ -78,15 +78,17 @@ function CodeEditor() {
         console.log(provider.awareness);
     }
 
-    function getLangID(inputLang: string): number {
+    function getLangID(inputLang: string): String {
         if (inputLang == 'python') {
-            return 92;
+            return '71';
         } else if (inputLang == 'cpp') {
-            return 54;
+            return '54';
         } else if (inputLang == 'csharp') {
-            return 51;
+            return '51';
+        } else if (inputLang == 'kotlin') {
+            return '78';
         } else {
-            return 91;
+            return '60';
         }
     }
 
@@ -100,30 +102,26 @@ function CodeEditor() {
         // Transform Uint8Array to a Base64-String
         const base64Encoded = fromUint8Array(documentState);
 
-        //alert(base64Encoded)
+        alert(base64Encoded);
         // Transform Base64-String back to an Uint8Array
-        //const binaryEncoded = toUint8Array(base64Encoded);
-        //alert(binaryEncoded);
+        // const binaryEncoded = toUint8Array(base64Encoded);
+        // alert(binaryEncoded);
         //convert back to string
         //alert(dec.decode(binaryEncoded));
 
         const options = {
             method: 'POST',
-            url: 'https://judge0-ce.p.rapidapi.com/submissions',
+            url: 'http://34.41.197.38/submissions',
             params: {
                 base64_encoded: 'true',
                 wait: 'true',
-                fields: 'token',
             },
             headers: {
-                'content-type': 'application/json',
                 'Content-Type': 'application/json',
-                'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
-                'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
             },
             data: {
-                language_id: getLangID(lang),
                 source_code: base64Encoded,
+                language_id: getLangID(lang),
             },
         };
 
@@ -131,8 +129,7 @@ function CodeEditor() {
             const response = await axios.request(options);
             console.log('POST: ' + response.data.token);
             const testUrl =
-                'https://judge0-ce.p.rapidapi.com/submissions/' +
-                response.data.token;
+                'http://34.41.197.38/submissions/' + response.data.token;
             console.log(testUrl);
 
             const options2 = {
@@ -140,11 +137,6 @@ function CodeEditor() {
                 url: testUrl,
                 params: {
                     base64_encoded: 'false',
-                    fields: '*',
-                },
-                headers: {
-                    'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
-                    'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
                 },
             };
 
