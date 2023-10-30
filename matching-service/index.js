@@ -12,31 +12,33 @@ const app = express();
 app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
-  connectionStateRecovery: {},
-  cors: {
-    origin: 'http://localhost:3000',
-  },
+    connectionStateRecovery: {},
+    cors: {
+        origin: 'http://localhost:3000',
+    },
 });
 
 // Registers the event handlers for socket connections
 function onConnection(io, socket) {
-  console.log(`User ${socket.id} connected`);
+    console.log(`User ${socket.id} connected`);
 
-  socket.on('startMatch', (difficulty) => onStartMatch(io, socket, difficulty));
+    socket.on('startMatch', (difficulty) =>
+        onStartMatch(io, socket, difficulty)
+    );
 
-  socket.on('disconnect', () => {
-    console.log(`User ${socket.id} disconnected`);
-  });
+    socket.on('disconnect', () => {
+        console.log(`User ${socket.id} disconnected`);
+    });
 }
 
 app.use(express.json());
 
 app.get('/', (request, response) => {
-  response.sendFile(path.join(__dirname, './index.html'));
+    response.sendFile(path.join(__dirname, './index.html'));
 });
 
 io.on('connection', (socket) => onConnection(io, socket));
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+server.listen(port, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
 });

@@ -15,6 +15,11 @@ const MatchControls = () => {
     const { roomId, setRoomId } = useContext(RoomContext);
     const { push } = useRouter();
 
+    console.log('ENV', process.env.ENV);
+    console.log('NEXT_PUBLIC_ENV', process.env.NEXT_PUBLIC_ENV);
+    console.log('DEV_URL', process.env.NEXT_PUBLIC_MATCHING_SERVER_URL_DEV);
+    console.log('PROD_URL', process.env.NEXT_PUBLIC_MATCHING_SERVER_URL_PROD);
+
     useEffect(() => {
         const onConnect = () => {
             setIsConnected(true);

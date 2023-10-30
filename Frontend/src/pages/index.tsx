@@ -6,7 +6,6 @@ import MatchControls from '@/components/Matching/MatchControls';
 
 const MainApp = () => {
     const { user, isLoading } = useUser();
-    console.log(user);
     return (
         <Layout user={user} loading={isLoading}>
             <section style={{ padding: 15 }}>
