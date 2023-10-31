@@ -18,7 +18,7 @@ import { MdOutlineDarkMode } from 'react-icons/md';
 // Setup Monaco Editor
 // Attach YJS Text to Monaco Editor
 
-function CodeEditor() {
+function CodeEditor({ roomId }: { roomId: string }) {
     const editorRef = useRef<any>(null);
     const [lang, setLang] = useState('python');
     const [loading, setLoading] = useState(false);
@@ -57,7 +57,7 @@ function CodeEditor() {
             process.env.NEXT_PUBLIC_SIGNALING_SERVER_PROD ||
             process.env.NEXT_PUBLIC_SIGNALING_SERVER_DEV;
         console.log('ENV: ' + process.env.NEXT_PUBLIC_SIGNALING_SERVER_PROD);
-        const provider = new WebrtcProvider('test-room*2345', doc, {
+        const provider = new WebrtcProvider(roomId, doc, {
             signaling: [SIGNALING_SERVER as string],
         }); // room1, room2
         //provider awareness for each user
@@ -111,7 +111,7 @@ function CodeEditor() {
 
         const options = {
             method: 'POST',
-            url: 'http://34.41.197.38/submissions',
+            url: 'http://34.70.59.59/submissions',
             params: {
                 base64_encoded: 'true',
                 wait: 'true',
@@ -129,7 +129,7 @@ function CodeEditor() {
             const response = await axios.request(options);
             console.log('POST: ' + response.data.token);
             const testUrl =
-                'http://34.41.197.38/submissions/' + response.data.token;
+                'http://34.70.59.59/submissions/' + response.data.token;
             console.log(testUrl);
 
             const options2 = {

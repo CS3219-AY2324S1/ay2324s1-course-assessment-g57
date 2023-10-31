@@ -69,7 +69,6 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 .catch((error) => {
                     console.error('Error updating question', error);
                 });
-            // fetchQnFn();
         } catch (err: any) {
             console.log(err);
         }

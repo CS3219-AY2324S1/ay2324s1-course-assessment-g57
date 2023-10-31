@@ -32,7 +32,7 @@ const CodeEditorPage = () => {
                     <AgoraUIKit channel={roomId || ''} />
                 </div>
                 <div className="column is-three-fifths">
-                    <MonacoEditorComponentWithNoSSR />
+                    <MonacoEditorComponentWithNoSSR roomId={roomId || ''} />
                 </div>
             </div>
         </>
