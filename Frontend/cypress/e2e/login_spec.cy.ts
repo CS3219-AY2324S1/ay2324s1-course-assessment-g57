@@ -9,8 +9,8 @@ describe('The Login Process', () => {
       cy.wait("@getAuth");
 
       cy.origin('https://dev-r67hrnstb5x4ekjv.us.auth0.com/*', () => {
+        // Valid Username and Password.
         cy.get("input[name=username]").type("danielTestUser");
-
         cy.get("input[name=password]").type(`Password!{enter}`);
       });
 
@@ -19,6 +19,8 @@ describe('The Login Process', () => {
       cy.getCookie('appSession').should('exist');
 
       cy.get("a[href*=logout]").click();
+
+      cy.getCookie('appSession').should('not.exist');
     })
 })
   
