@@ -3,6 +3,8 @@ import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import TopBar from '../components/collab/TopBar';
 import QuestionDisplay from '../components/collab/QuestionDisplay';
+import socket from '../lib/socket';
+
 
 const MonacoEditorComponentWithNoSSR = dynamic(
     () => import('../components/editor/Editor'),
@@ -21,6 +23,7 @@ const CodeEditorPage = () => {
         const id = searchParams.get('room');
         console.log(id);
         setRoomId(id);
+        socket.emit("questionUpdate", {id: 1});
     }, []);
 
     return (

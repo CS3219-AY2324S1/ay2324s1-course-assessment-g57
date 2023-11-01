@@ -4,7 +4,7 @@ const navComponent = () => {
     return (
         <>
             <nav
-                className="navbar"
+                className="navbar is-fixed-top"
                 role="navigation"
                 aria-label="main navigation"
             >
