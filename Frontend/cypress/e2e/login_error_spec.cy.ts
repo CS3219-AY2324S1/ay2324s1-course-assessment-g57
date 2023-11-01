@@ -9,30 +9,37 @@ describe('Login Process Error Handling', () => {
         cy.wait("@getAuth");
   
         cy.origin('https://dev-r67hrnstb5x4ekjv.us.auth0.com/*', () => {
+          const testUsername = Cypress.env("testUsername");
+          const testPassword = Cypress.env("testPassword");
+          const testEmail = Cypress.env("testEmail");
+          const testInvalidUsername = Cypress.env("testInvalidUsername");
+          const testInvalidPassword = Cypress.env("testInvalidPassword");
+          const testInvalidEmail = Cypress.env("testInvalidEmail");
+
           // Invalid Username, gives proper error handling message.
-          cy.get("input[name=username]").type("danielTestUser1");
-          cy.get("input[name=password]").type(`Password!{enter}`);
+          cy.get("input[name=username]").type(testInvalidUsername);
+          cy.get("input[name=password]").type(`${testPassword}{enter}`);
           cy.get("span[id=error-element-password]").should("exist").should('contain', "username");
           cy.get("input[name=username]").clear();
           cy.get("input[name=password]").clear();
   
           // Invalid Email, gives proper error handling message.
-          cy.get("input[name=username]").type("danielTestUser1@gmail.com");
-          cy.get("input[name=password]").type(`Password!{enter}`);
+          cy.get("input[name=username]").type(testInvalidEmail);
+          cy.get("input[name=password]").type(`${testPassword}{enter}`);
           cy.get("span[id=error-element-password]").should("exist").should('contain', "username");
           cy.get("input[name=username]").clear();
           cy.get("input[name=password]").clear();
   
           // Invalid Password, gives proper error handling message.
-          cy.get("input[name=username]").type("danielTestUser");
-          cy.get("input[name=password]").type(`Password!!{enter}`);
+          cy.get("input[name=username]").type(testUsername);
+          cy.get("input[name=password]").type(`${testInvalidPassword}{enter}`);
           cy.get("span[id=error-element-password]").should("exist").should('contain', "password");
           cy.get("input[name=username]").clear();
           cy.get("input[name=password]").clear();
   
           // Valid Username and Password.
-          cy.get("input[name=username]").type("danielTestUser");
-          cy.get("input[name=password]").type(`Password!{enter}`);
+          cy.get("input[name=username]").type(testEmail);
+          cy.get("input[name=password]").type(`${testPassword}{enter}`);
         });
   
         cy.url().should('include', 'http://localhost:3000');

@@ -9,5 +9,13 @@ export default defineConfig({
     baseUrl: "http://localhost:3000",
   },
   viewportWidth: 1280,
-  viewportHeight: 800
+  viewportHeight: 800,
+  env: {
+    testUsername: "danielTestUser",
+    testPassword: "Password!",
+    testEmail: "danielTestUser@gmail.com",
+    testInvalidUsername: "danielTestUser1",
+    testInvalidPassword: "Password!!",
+    testInvalidEmail: "danielTestUser1@gmail.com"
+  }
 });
