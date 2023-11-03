@@ -28,5 +28,8 @@
   },
   "lint-staged": {
     "!(**/src/pages/api/**)[**].tsx": "prettier --write --ignore-unknown"
+  },
+  "dependencies": {
+    "pip": "^0.0.1"
   }
 }
