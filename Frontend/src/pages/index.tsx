@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 const MainApp = () => {
     return (
         <>
@@ -24,12 +26,20 @@ const MainApp = () => {
                         <div className="navbar-item">
                             <div className="field is-grouped">
                                 <p className="control">
-                                    <a className="button is-primary">Sign up</a>
+                                    <Link
+                                        className="button is-primary"
+                                        href="/"
+                                    >
+                                        Sign Up
+                                    </Link>
                                 </p>
                                 <p className="control">
-                                    <a className="button is-light" href="">
+                                    <Link
+                                        className="button is-light"
+                                        href="/"
+                                    >
                                         Login
-                                    </a>
+                                    </Link>
                                 </p>
                             </div>
                         </div>

@@ -9,18 +9,18 @@ type QuestionDisplayProp = {
 const questionDisplay = ({ qnId, getNewQnFn }: QuestionDisplayProp) => {
     const [question, setQuestion] = React.useState<Question>(defaultQuestion());
 
+    async function getQnById(_id: number) {
+        const response = await fetch(`/api/questions`);
+        const jsonRes: Question[] = await response.json();
+        // console.log(qnId);
+        // console.log(jsonRes);
+        const qn = jsonRes.filter((s) => s._id == parseInt(qnId))[0];
+        // setQuestion(qn);
+    }
+
     React.useEffect(() => {
         getQnById(parseInt(qnId));
     }, [qnId]);
-
-    async function getQnById(id: number) {
-        const response = await fetch(`/api/questions`);
-        const jsonRes: Question[] = await response.json();
-        console.log(qnId);
-        console.log(jsonRes);
-        const qn = jsonRes.filter((s) => s._id == parseInt(qnId))[0];
-        setQuestion(qn);
-    }
 
     return (
         <div className="box">

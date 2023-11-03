@@ -1,7 +1,5 @@
 import Layout from '@/components/Layout';
-// import { User, defaultUser } from '../models/types';
 import React from 'react';
-// import { PeerPrepClient } from '@/lib/PeerPrepClient';
 import UserTable from '../components/UserTable';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
