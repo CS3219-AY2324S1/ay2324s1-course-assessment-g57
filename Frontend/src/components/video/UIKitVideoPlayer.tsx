@@ -3,13 +3,9 @@ import AgoraUIKit, { layout } from 'agora-react-uikit';
 import axios from 'axios';
 
 const SERVER_URL =
-    process.env.NEXT_PUBLIC_ENV === 'DEV'
-        ? process.env.NEXT_PUBLIC_DEV_SERVER_URL || 'http://localhost:3500'
-        : process.env.NEXT_PUBLIC_PROD_SERVER_URL || 'http://localhost:3500';
+    process.env.NEXT_PUBLIC_PROD_SERVER_URL || 'http://localhost:3500';
 
 const UIKitVideo = ({ channel }: { channel: string }) => {
-    console.log('roomId is: ', channel);
-    // channel = 'test123';
     const [videoCall, setVideoCall] = useState(false);
     const [token, setToken] = useState();
 
