@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const MainApp = () => {
     return (
@@ -10,10 +11,10 @@ const MainApp = () => {
             >
                 <div className="navbar-brand">
                     <a className="navbar-item" href="/">
-                        <img
-                            src="logo.png"
+                        <Image
+                            src="/logo.png"
                             alt="PeerPrep: The collaborative way to practice technical interview questions"
-                            height="28"
+                            height="28" width="88"
                         />
                         <h1 className="is-size-4 has-text-weight-semibold">
                             PeerPrep
@@ -47,7 +48,7 @@ const MainApp = () => {
                 </div>
             </nav>
 
-            <section className="hero is-primary is-halfheight">
+            <section className="hero is-link is-halfheight">
                 <div className="hero-body">
                     <div className="container">
                         <div className="column is-two-fifths">
@@ -69,17 +70,30 @@ const MainApp = () => {
 
             <section className="hero is-large">
                 <div className="hero-body">
-                    <p className="title">Why choose PeerPrep?</p>
-                    <p className="subtitle">Primary subtitle</p>
+                    <p className="title">Features</p>
+
                 </div>
             </section>
 
             <section className="hero is-primary">
                 <div className="hero-body">
-                    <p className="title">Primary hero</p>
-                    <p className="subtitle">Primary subtitle</p>
+                    <p className="title">Development Team</p>
+                    <div className="column">
+
+                    </div>
                 </div>
             </section>
+
+            <footer className="footer">
+                <div className="column is-half">
+                    <p>
+                        PeerPrep by Group 57, CS3219 AY2324S1 
+                    </p>
+                </div>
+                <div className="content has-text-centered">
+                    
+                </div>
+            </footer>
         </>
     );
 };

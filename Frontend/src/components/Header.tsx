@@ -16,7 +16,7 @@ const Header = ({ user, loading }: HeaderProps) => {
             >
                 <div className="flex lg:flex-1">
                     <Link href="/dashboard" className="-m-1.5 p-1.5">
-                        <Image className="h-8 w-auto" src="./logo.png" alt="" />
+                        <Image className="h-8 w-auto" src="/logo.png" alt="logo" width="123" height="123"/>
                     </Link>
                 </div>
                 <Popover.Group className="hidden lg:flex lg:gap-x-12">

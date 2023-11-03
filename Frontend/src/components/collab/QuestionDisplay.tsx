@@ -1,12 +1,13 @@
 import { Question, defaultQuestion } from '../../models/types';
 import React from 'react';
+import Image from 'next/image';
 
 type QuestionDisplayProp = {
     qnId: string;
     getNewQnFn: () => void;
 };
 
-const questionDisplay = ({ qnId, getNewQnFn }: QuestionDisplayProp) => {
+const QuestionDisplay = ({ qnId, getNewQnFn }: QuestionDisplayProp) => {
     const [question, setQuestion] = React.useState<Question>(defaultQuestion());
 
     async function getQnById(_id: number) {
@@ -15,7 +16,7 @@ const questionDisplay = ({ qnId, getNewQnFn }: QuestionDisplayProp) => {
         // console.log(qnId);
         // console.log(jsonRes);
         const qn = jsonRes.filter((s) => s._id == parseInt(qnId))[0];
-        // setQuestion(qn);
+        setQuestion(qn);
     }
 
     React.useEffect(() => {
@@ -33,7 +34,7 @@ const questionDisplay = ({ qnId, getNewQnFn }: QuestionDisplayProp) => {
                         }}
                         className="button is-small is-rounded is-primary is-pulled-right"
                     >
-                        <img src="/assets/change.svg" alt="Change Questions" />
+                        <Image src="/assets/change.svg" alt="Change Questions"/>
                     </button>
                 </div>
                 <h1 className="is-size-3">{question.title}</h1>
@@ -44,4 +45,4 @@ const questionDisplay = ({ qnId, getNewQnFn }: QuestionDisplayProp) => {
     );
 };
 
-export default questionDisplay;
+export default QuestionDisplay;

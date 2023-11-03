@@ -78,7 +78,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
     return (
         <div>
             <h2>User Profile</h2>
-            {/* <img src={user.picture} alt="user picture" /> */}
+            {/* <Image src={user.picture} alt="profile picture" /> */}
             {editing ? (
                 <div>
                     <label htmlFor="username">Username:</label>

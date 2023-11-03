@@ -1,11 +1,7 @@
-import {
-    User,
-    defaultUser,
-    // CreateUserForm,
-    // defaultCreateUserForm,
-} from '../models/types';
+import { User, defaultUser } from '../models/types';
 import React from 'react';
 import { isValidJsonString } from '@/lib/utils';
+import Image from 'next/image';
 
 type UserTableProp = {
     // users: User[];
@@ -151,21 +147,12 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                                     'Admin' ? (
                                         <>
                                             <td>
-                                                <img
+                                                <Image
                                                     src="/assets/edit.svg"
                                                     onClick={() => {
                                                         sendToEditBox(val);
                                                     }}
-                                                    style={{ width: 25 }}
-                                                />
-                                            </td>
-                                            <td>
-                                                <img
-                                                    src="/assets/trash.svg"
-                                                    onClick={() =>
-                                                        sendDelete(val.userid)
-                                                    }
-                                                    style={{ width: 25 }}
+                                                    width="25" height="25" alt="edit"
                                                 />
                                             </td>
                                         </>
@@ -212,51 +199,6 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                                 </button>
                             </section>
                         </form>
-                        <br />
-                        <br />
-                        <br />
-                        {/* <section>
-                            <h1 className="is-size-2">Add User</h1>
-                            <form
-                                method="post"
-                                onSubmit={async () => {
-                                    handleAddSubmit();
-                                }}
-                            >
-                                <section>
-                                    <textarea
-                                        id="textareaedit"
-                                        className="textarea is-normal"
-                                        rows={10}
-                                        placeholder="json here"
-                                        value={currentAddUser}
-                                        onChange={(e) => {
-                                            setCurrentAddUser(e.target.value);
-                                        }}
-                                    ></textarea>
-                                </section>
-
-                                <section>
-                                    <button
-                                        className="button is-primary"
-                                        type="submit"
-                                        disabled={
-                                            !isValidJsonString(
-                                                currentAddUser
-                                            ) ||
-                                            (isValidJsonString(
-                                                currentAddUser
-                                            ) &&
-                                                hasEmptyValues(
-                                                    JSON.parse(currentAddUser)
-                                                ))
-                                        }
-                                    >
-                                        Submit
-                                    </button>
-                                </section>
-                            </form>
-                        </section> */}
                     </>
                 ) : (
                     <></>

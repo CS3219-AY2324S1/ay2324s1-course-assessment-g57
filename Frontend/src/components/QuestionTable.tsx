@@ -1,10 +1,6 @@
 import React from 'react';
-import {
-    Question,
-    // AddQuestionForm,
-    defaultAddQuestionForm,
-    defaultQuestion,
-} from '../models/types';
+import Image from 'next/image';
+import { Question, defaultAddQuestionForm, defaultQuestion,} from '../models/types';
 import { isValidJsonString, hasEmptyValues } from '@/lib/utils';
 
 type QuestionTableProp = {
@@ -155,21 +151,21 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                 {user?.peerprepRoles?.[0] === 'Admin' ? (
                                     <>
                                         <td>
-                                            <img
+                                            <Image
                                                 src="/assets/edit.svg"
                                                 onClick={() => {
                                                     sendToEditBox(val);
                                                 }}
-                                                style={{ width: 25 }}
+                                                width="25" height="25" alt="edit"
                                             />
                                         </td>
                                         <td>
-                                            <img
+                                            <Image
                                                 src="/assets/trash.svg"
                                                 onClick={() =>
                                                     sendDelete(val.title)
                                                 }
-                                                style={{ width: 25 }}
+                                                width="25" height="25" alt="delete"
                                             />
                                         </td>
                                     </>

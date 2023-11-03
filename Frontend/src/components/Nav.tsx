@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const navComponent = () => {
     return (
@@ -10,7 +11,7 @@ const navComponent = () => {
             >
                 <div className="navbar-brand">
                     <a className="navbar-item" href="/">
-                        <img src="/assets/trash.svg" width="50" />
+                        <Image src="/assets/trash.svg" width="50" height="50" alt="delete" />
                     </a>
                 </div>
 
