@@ -35,3 +35,8 @@ server/package-lock.json
 # Sensitive Information
 .env
 Frontend/yarn.lock
+
+
+leetcode-qns-service/dev-env
+package-lock.json
+leetcode-qns-service/.DS_Store
