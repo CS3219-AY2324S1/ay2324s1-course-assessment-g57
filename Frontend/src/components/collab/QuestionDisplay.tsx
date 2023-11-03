@@ -34,7 +34,7 @@ const QuestionDisplay = ({ qnId, getNewQnFn }: QuestionDisplayProp) => {
                         }}
                         className="button is-small is-rounded is-primary is-pulled-right"
                     >
-                        <Image src="/assets/change.svg" alt="Change Questions"/>
+                        <Image src="/assets/change.svg" alt="Change Questions" width="10" height="10"/>
                     </button>
                 </div>
                 <h1 className="is-size-3">{question.title}</h1>

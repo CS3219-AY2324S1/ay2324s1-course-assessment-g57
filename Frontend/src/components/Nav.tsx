@@ -10,9 +10,9 @@ const navComponent = () => {
                 aria-label="main navigation"
             >
                 <div className="navbar-brand">
-                    <a className="navbar-item" href="/">
+                    <Link className="navbar-item" href="/">
                         <Image src="/assets/trash.svg" width="50" height="50" alt="delete" />
-                    </a>
+                    </Link>
                 </div>
 
                 <div id="navBarMenu" className="navbar-menu">

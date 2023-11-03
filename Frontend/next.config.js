@@ -1,3 +1,5 @@
+const { hostname } = require('os');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
@@ -21,6 +23,14 @@ const nextConfig = {
         AUTH0_SECRET: process.env.AUTH0_SECRET,
         SERVER_URL: process.env.SERVER_URL,
     },
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'avatars.githubusercontent.com'
+            }
+        ]
+    }
 };
 
 module.exports = nextConfig;
