@@ -19,6 +19,7 @@ export default defineConfig({
     testInvalidUsername: "danielTestUser1",
     testInvalidPassword: "Password!!",
     testInvalidEmail: "danielTestUser1@gmail.com",
+    testLongUsername: "danielTestingUser",
   },
 
   component: {

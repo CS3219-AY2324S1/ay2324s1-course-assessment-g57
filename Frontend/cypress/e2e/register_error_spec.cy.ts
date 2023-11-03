@@ -14,17 +14,60 @@ describe('The Error Handling for the Register Process', () => {
             const testEmail = Cypress.env("testEmail");
             const testInvalidUsername = Cypress.env("testInvalidUsername");
             const testInvalidEmail = Cypress.env("testInvalidEmail");
+            const testLongUsername = Cypress.env("testLongUsername");
             
             cy.get("a[href*='signup']").click();
 
             // Check that you are on the register page.
             cy.get("header").should("contain", "Sign Up");
 
+            // Username not filled in.
+            cy.get("input[name=email]").type(testEmail);
+            cy.get("input[name=password]").type(`${testPassword}{enter}`);
+            cy.get("input[name=username]:invalid").should("have.length", 1);
+            cy.get("input[name=username").then(($input) => {
+                expect($input[0].validationMessage).to.eq("Please fill in this field.")
+            })
+            cy.get("input[name=username]").clear();
+            cy.get("input[name=email]").clear();
+            cy.get("input[name=password]").clear();
+
+            // Email not filled in.
+            cy.get("input[name=username]").type(testUsername);
+            cy.get("input[name=password]").type(`${testPassword}{enter}`);
+            cy.get("input[name=email]:invalid").should("have.length", 1);
+            cy.get("input[name=email").then(($input) => {
+                expect($input[0].validationMessage).to.eq("Please fill in this field.")
+            })
+            cy.get("input[name=username]").clear();
+            cy.get("input[name=email]").clear();
+            cy.get("input[name=password]").clear();
+
+            // Password not filled in.
+            cy.get("input[name=username]").type(testUsername);
+            cy.get("input[name=email]").type(`${testEmail}{enter}`);
+            cy.get("input[name=password]:invalid").should("have.length", 1);
+            cy.get("input[name=password").then(($input) => {
+                expect($input[0].validationMessage).to.eq("Please fill in this field.")
+            })
+            cy.get("input[name=username]").clear();
+            cy.get("input[name=email]").clear();
+            cy.get("input[name=password]").clear();
+
             // Username already taken.
             cy.get("input[name=username]").type(testUsername);
             cy.get("input[name=email]").type(testInvalidEmail);
             cy.get("input[name=password]").type(`${testPassword}{enter}`);
             cy.get("div[id=prompt-alert]").should("exist").should("contain", "Something went wrong");
+            cy.get("input[name=username]").clear();
+            cy.get("input[name=email]").clear();
+            cy.get("input[name=password]").clear();
+
+            // Username too long or does not meet requirements.
+            cy.get("input[name=username]").type(testLongUsername);
+            cy.get("input[name=email]").type(testInvalidEmail);
+            cy.get("input[name=password]").type(`${testPassword}{enter}`);
+            cy.get("span[id=error-element-username]").should("exist").should("contain", "alphanumeric").should("contain", "between 1 and 15");
             cy.get("input[name=username]").clear();
             cy.get("input[name=email]").clear();
             cy.get("input[name=password]").clear();

@@ -16,6 +16,9 @@ describe('Login Process Error Handling', () => {
           const testInvalidPassword = Cypress.env("testInvalidPassword");
           const testInvalidEmail = Cypress.env("testInvalidEmail");
 
+          // Check that you are on the login page.
+          cy.get("header").should("contain", "Log in");
+
           // Invalid Username, gives proper error handling message.
           cy.get("input[name=username]").type(testInvalidUsername);
           cy.get("input[name=password]").type(`${testPassword}{enter}`);
