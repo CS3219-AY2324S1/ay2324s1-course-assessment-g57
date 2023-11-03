@@ -1,12 +1,12 @@
-import {Question, defaultQuestion} from '../../models/types';
+import { Question, defaultQuestion } from '../../models/types';
 import React from 'react';
 
 type QuestionDisplayProp = {
-    qnId: string,
+    qnId: string;
     getNewQnFn: () => void;
 };
 
-const questionDisplay = ({qnId, getNewQnFn}: QuestionDisplayProp) => {
+const questionDisplay = ({ qnId, getNewQnFn }: QuestionDisplayProp) => {
     const [question, setQuestion] = React.useState<Question>(defaultQuestion());
 
     React.useEffect(() => {
@@ -18,7 +18,7 @@ const questionDisplay = ({qnId, getNewQnFn}: QuestionDisplayProp) => {
         const jsonRes: Question[] = await response.json();
         console.log(qnId);
         console.log(jsonRes);
-        const qn = jsonRes.filter(s => s._id == parseInt(qnId))[0];
+        const qn = jsonRes.filter((s) => s._id == parseInt(qnId))[0];
         setQuestion(qn);
     }
 
@@ -26,7 +26,13 @@ const questionDisplay = ({qnId, getNewQnFn}: QuestionDisplayProp) => {
         <div className="box">
             <div className="content">
                 <div>
-                    <button onClick={async () => { getNewQnFn(); await getQnById(parseInt(qnId)); }} className="button is-small is-rounded is-primary is-pulled-right">
+                    <button
+                        onClick={async () => {
+                            getNewQnFn();
+                            await getQnById(parseInt(qnId));
+                        }}
+                        className="button is-small is-rounded is-primary is-pulled-right"
+                    >
                         <img src="/assets/change.svg" alt="Change Questions" />
                     </button>
                 </div>
