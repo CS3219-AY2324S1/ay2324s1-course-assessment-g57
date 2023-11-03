@@ -36,7 +36,7 @@ describe("The Collaboration Flow", () => {
             .should("be.visible")
             .click()
             .focused()
-            .type("print 'hello world'");
+            .type("print('hello world')");
         
         cy.get("div[class=view-line]").should("be.visible").should("contain", "print");
 
