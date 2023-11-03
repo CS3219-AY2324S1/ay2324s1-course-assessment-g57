@@ -31,7 +31,7 @@ const MainApp = () => {
                                 <p className="control">
                                     <Link
                                         className="button is-light"
-                                        href="/"
+                                        href="/api/auth/login"
                                     >
                                         Login
                                     </Link>
@@ -39,7 +39,7 @@ const MainApp = () => {
                                 <p className="control">
                                     <Link
                                         className="button is-primary"
-                                        href="/"
+                                        href="/api/auth/login"
                                     >
                                         Sign Up
                                     </Link>
