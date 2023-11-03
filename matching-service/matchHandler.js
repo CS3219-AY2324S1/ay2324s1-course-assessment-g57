@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
+const axios = require('axios');
 
 // Stores the user socket ID as the key and the User object as the value
 const queue = new Map();
@@ -75,7 +76,7 @@ function findMatch(newUser) {
   return result;
 }
 
-function onStartMatch(io, socket, difficulty) {
+async function onStartMatch(io, socket, difficulty) {
   const newUser = new User(mapClientDifficultyToEnum(difficulty), socket, null);
 
   // Set up match timer
@@ -123,7 +124,18 @@ function onStartMatch(io, socket, difficulty) {
     partner.socket.join(roomId);
 
     message = `Paired ${newUser.socket.id} and ${partner.socket.id}`;
-    io.to(roomId).emit('matchFound', message, roomId);
+
+    const qn = await axios.get('http://localhost:3002/questions');
+    const newQn = qn.data.filter(s => s.complexity === difficulty);    
+    const maxSz = newQn.length;
+    const idx = Math.floor(Math.random() * maxSz);
+
+    console.log(difficulty);
+    console.log(newQn);
+    console.log(idx);
+    console.log(newQn[idx]._id);
+    
+    io.to(roomId).emit('matchFound', message, roomId, newQn[idx]._id);
 
     console.log(message);
 

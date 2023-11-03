@@ -2,12 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import socket from '../../lib/socket';
 import ConnectionManager from './ConnectionManager';
 import { useRouter } from 'next/navigation';
-
 import { RoomContext } from '@/contexts/RoomContext';
 
 const MatchControls = () => {
     const [isConnected, setIsConnected] = useState(socket.connected);
-    const [difficulty, setDifficulty] = useState('');
+    const [difficulty, setDifficulty] = useState('easy');
     const [status, setStatus] = useState(
         'Select difficulty and click Start Match'
     );
@@ -15,10 +14,10 @@ const MatchControls = () => {
     const { roomId, setRoomId } = useContext(RoomContext);
     const { push } = useRouter();
 
-    console.log('ENV', process.env.ENV);
-    console.log('NEXT_PUBLIC_ENV', process.env.NEXT_PUBLIC_ENV);
-    console.log('DEV_URL', process.env.NEXT_PUBLIC_MATCHING_SERVER_URL_DEV);
-    console.log('PROD_URL', process.env.NEXT_PUBLIC_MATCHING_SERVER_URL_PROD);
+    // console.log('ENV', process.env.ENV);
+    // console.log('NEXT_PUBLIC_ENV', process.env.NEXT_PUBLIC_ENV);
+    // console.log('DEV_URL', process.env.NEXT_PUBLIC_MATCHING_SERVER_URL_DEV);
+    // console.log('PROD_URL', process.env.NEXT_PUBLIC_MATCHING_SERVER_URL_PROD);
 
     useEffect(() => {
         const onConnect = () => {
@@ -36,11 +35,11 @@ const MatchControls = () => {
         socket.on('connect', onConnect);
         socket.on('disconnect', onDisconnect);
 
-        socket.on('matchFound', (msg: string, room: string) => {
+        socket.on('matchFound', (msg: string, room: string, qnId: number) => {
             setTimeElapsed('30');
             setRoomId(room);
             setStatus(msg);
-            push(`/code?room=${room}`);
+            push(`/code?room=${room}&qnId=${qnId}&difficulty=${difficulty}`);
         });
 
         socket.on('matchTimerCountdown', (timerCountdown: string) => {

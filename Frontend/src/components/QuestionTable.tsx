@@ -63,7 +63,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             })
                 .then((response) => {
                     setCurrentQuestionEditJson('');
-                    alert(`Updated question: ${question.id}!`);
+                    alert(`Updated question: ${question._id}!`);
                     return response.json();
                 })
                 .catch((error) => {
@@ -145,8 +145,8 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 <tbody>
                     {questions.map((val) => {
                         return (
-                            <tr key={val.id}>
-                                <td>{val.id}</td>
+                            <tr key={val._id}>
+                                <td>{val._id}</td>
                                 <td>{val.title}</td>
                                 <td>{val.categories}</td>
                                 <td>{val.complexity}</td>
