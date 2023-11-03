@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import dynamic from 'next/dynamic';
-import { useSearchParams } from 'next/navigation';
 import TopBar from '../components/collab/TopBar';
 import QuestionDisplay from '../components/collab/QuestionDisplay';
 import socket from '../lib/socket';
+import { RoomContext } from '@/contexts/RoomContext';
 
 const MonacoEditorComponentWithNoSSR = dynamic(
     () => import('../components/editor/Editor'),
@@ -49,7 +49,6 @@ const CodeEditorPage = () => {
     function getNewQn() {
         socket.emit('questionUpdate', { roomId, difficulty: currDifficulty });
     }
-
     return (
         <>
             <TopBar />

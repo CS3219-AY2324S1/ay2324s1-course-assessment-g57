@@ -54,9 +54,9 @@ function CodeEditor({ roomId }: { roomId: string }) {
     */
 
         const SIGNALING_SERVER =
-            process.env.NEXT_PUBLIC_SIGNALING_SERVER_PROD ||
-            process.env.NEXT_PUBLIC_SIGNALING_SERVER_DEV;
-        console.log('ENV: ' + process.env.NEXT_PUBLIC_SIGNALING_SERVER_PROD);
+            process.env.NEXT_PUBLIC_ENV == 'PROD'
+                ? process.env.NEXT_PUBLIC_SIGNALING_SERVER_PROD
+                : process.env.NEXT_PUBLIC_SIGNALING_SERVER_DEV;
         const provider = new WebrtcProvider(roomId, doc, {
             signaling: [SIGNALING_SERVER as string],
         }); // room1, room2
@@ -75,7 +75,6 @@ function CodeEditor({ roomId }: { roomId: string }) {
             new Set([editorRef.current]),
             provider.awareness
         );
-        console.log(provider.awareness);
     }
 
     function getLangID(inputLang: string): String {
