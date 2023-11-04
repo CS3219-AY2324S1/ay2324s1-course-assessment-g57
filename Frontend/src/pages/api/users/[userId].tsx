@@ -1,10 +1,7 @@
 import { getAccessToken, withApiAuthRequired } from '@auth0/nextjs-auth0';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-const baseURL =
-    process.env.ENV == 'PROD'
-        ? process.env.PROD_SERVER_BASE_URL
-        : process.env.DEV_USER_SERVICE_URL;
+const baseURL = process.env.PROD_SERVER_BASE_URL || 'http://localhost:3001';
 
 export default withApiAuthRequired(async function handler(
     req: NextApiRequest,
