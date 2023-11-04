@@ -60,35 +60,33 @@ function CodeEditor({ roomId }: { roomId: string }) {
             process.env.NEXT_PUBLIC_ENV == 'PROD'
                 ? process.env.NEXT_PUBLIC_SIGNALING_SERVER_PROD
                 : process.env.NEXT_PUBLIC_SIGNALING_SERVER_DEV;
-        try {
-            const provider = new WebrtcProvider(roomId, doc, {
-                signaling: [SIGNALING_SERVER as string],
-            });
-            // Code to handle successful creation of the provider instance
-            //@ts-ignore
-            setProvider(provider)
-            
-            //provider awareness for each user
-            provider.awareness.setLocalStateField('user', {
-                name: 'Anonymous ' + Math.floor(Math.random() * 100),
-                color: userColor.color,
-                colorLight: userColor.light,
-            });
-            const type = doc.getText('monaco'); // doc { "monaco": "what our IDE is showing" }
 
-            // Bind YJS to Monaco
-            new MonacoBinding(
-                type,
-                editorRef.current.getModel(),
-                new Set([editorRef.current]),
-                provider.awareness
-            );
-        } catch (error) {
-            // Code to handle errors that occur during the creation of the provider instance
-            console.error('Error creating WebrtcProvider:', error);
-        }
-                
+        // Code to handle successful creation of the provider instance
+        //@ts-ignore
+        const newProvider = new WebrtcProvider(roomId, doc, {
+            signaling: [SIGNALING_SERVER as string],
+        })
         
+
+        //provider awareness for each user
+        //@ts-ignore
+        newProvider.awareness.setLocalStateField('user', {
+            name: 'Anonymous ' + Math.floor(Math.random() * 100),
+            color: userColor.color,
+            colorLight: userColor.light,
+        });
+        const type = doc.getText('monaco'); // doc { "monaco": "what our IDE is showing" }
+
+        // Bind YJS to Monaco
+        new MonacoBinding(
+            type,
+            editorRef.current.getModel(),
+            new Set([editorRef.current]),
+            //@ts-ignore
+            newProvider.awareness
+        );
+        //@ts-ignore
+        setProvider(newProvider);
     }
 
     function getLangID(inputLang: string): String {
@@ -193,8 +191,7 @@ function CodeEditor({ roomId }: { roomId: string }) {
 
     function destoryConn() {
         //@ts-ignore
-        provider.destroy()
-        
+        provider.destroy();
     }
 
     return (
@@ -243,12 +240,13 @@ function CodeEditor({ roomId }: { roomId: string }) {
                         paddingLeft={2}
                         paddingRight={5}
                     />
-                    <Link onClick={destoryConn}
-                                className="button is-danger is-small"
-                                href="/"
-                            >
-                                Leave Room
-                            </Link>
+                    <Link
+                        onClick={destoryConn}
+                        className="button is-danger is-small"
+                        href="/"
+                    >
+                        Leave Room
+                    </Link>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center' }}>
