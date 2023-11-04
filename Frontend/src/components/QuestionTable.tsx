@@ -1,6 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
-import { Question, defaultAddQuestionForm, defaultQuestion,} from '../models/types';
+import {
+    Question,
+    defaultAddQuestionForm,
+    defaultQuestion,
+} from '../models/types';
 import { isValidJsonString, hasEmptyValues } from '@/lib/utils';
 
 type QuestionTableProp = {
@@ -126,7 +130,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                         <th>Title</th>
                         <th>Category</th>
                         <th>Complexity</th>
-                        <th>Description</th>
+                        {/* <th>Description</th> */}
                         <th>Link</th>
                         {user?.peerprepRoles?.[0] === 'Admin' ? (
                             <>
@@ -146,7 +150,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                 <td>{val.title}</td>
                                 <td>{val.categories}</td>
                                 <td>{val.complexity}</td>
-                                <td>{val.description}</td>
+                                {/* <td>{val.description}</td> */}
                                 <td>{val.link}</td>
                                 {user?.peerprepRoles?.[0] === 'Admin' ? (
                                     <>
@@ -156,7 +160,9 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                                 onClick={() => {
                                                     sendToEditBox(val);
                                                 }}
-                                                width="25" height="25" alt="edit"
+                                                width="25"
+                                                height="25"
+                                                alt="edit"
                                             />
                                         </td>
                                         <td>
@@ -165,7 +171,9 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                                 onClick={() =>
                                                     sendDelete(val.title)
                                                 }
-                                                width="25" height="25" alt="delete"
+                                                width="25"
+                                                height="25"
+                                                alt="delete"
                                             />
                                         </td>
                                     </>

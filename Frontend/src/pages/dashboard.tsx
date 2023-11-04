@@ -1,11 +1,16 @@
-// import Head from "next/head";
-import { useUser } from '@auth0/nextjs-auth0/client';
 import React from 'react';
 import Layout from '../components/Layout';
 import MatchControls from '@/components/Matching/MatchControls';
+import QuestionTable from '../components/QuestionTable';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
-const MainApp = () => {
-    const { user, isLoading } = useUser();
+type QuestionProps = {
+    user?: any;
+    isLoading: boolean;
+};
+
+const Dashboard = ({ user, isLoading }: QuestionProps) => {
+    // const { user, isLoading } = useUser();
     console.log(user);
     return (
         <Layout user={user} loading={isLoading}>
@@ -16,6 +21,7 @@ const MainApp = () => {
                     interviews with their peers.
                 </p>
             </section>
+
             {user ? (
                 <>
                     <h2 className="is-size-2">
@@ -26,8 +32,10 @@ const MainApp = () => {
             ) : (
                 <></>
             )}
+
+            <QuestionTable user={user} />
         </Layout>
     );
 };
 
-export default MainApp;
+export default withPageAuthRequired(Dashboard);

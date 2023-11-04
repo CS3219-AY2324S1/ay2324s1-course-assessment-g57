@@ -11,7 +11,12 @@ const navComponent = () => {
             >
                 <div className="navbar-brand">
                     <Link className="navbar-item" href="/">
-                        <Image src="/assets/trash.svg" width="50" height="50" alt="delete" />
+                        <Image
+                            src="/assets/trash.svg"
+                            width="50"
+                            height="50"
+                            alt="delete"
+                        />
                     </Link>
                 </div>
 

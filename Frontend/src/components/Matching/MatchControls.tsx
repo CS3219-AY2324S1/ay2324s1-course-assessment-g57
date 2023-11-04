@@ -40,7 +40,6 @@ const MatchControls = () => {
             setRoomId(room);
             setStatus(msg);
             push(`/code?room=${room}&qnId=${qnId}&difficulty=${difficulty}`);
-
         });
 
         socket.on('matchTimerCountdown', (timerCountdown: string) => {

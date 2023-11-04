@@ -152,7 +152,9 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                                                     onClick={() => {
                                                         sendToEditBox(val);
                                                     }}
-                                                    width="25" height="25" alt="edit"
+                                                    width="25"
+                                                    height="25"
+                                                    alt="edit"
                                                 />
                                             </td>
                                         </>
