@@ -26,7 +26,6 @@ function CodeEditor({ roomId }: { roomId: string }) {
     const [loading, setLoading] = useState(false);
     const [editorTheme, setEditorTheme] = useState('light');
     const [editorOutput, setEditorOutput] = useState('');
-    const doc1 = new Y.Doc()
     const [provider, setProvider] = useState(null);
 
     const usercolors = [
