@@ -14,7 +14,6 @@ import Link from 'next/link';
 import * as random from 'lib0/random';
 
 import { MdOutlineDarkMode } from 'react-icons/md';
-import { error } from 'console';
 // import { MonacoDiffEditor } from 'react-monaco-editor';
 
 // Setup Monaco Editor
