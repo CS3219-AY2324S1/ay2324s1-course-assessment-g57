@@ -9,10 +9,12 @@ import { WebrtcProvider } from 'y-webrtc';
 import { MonacoBinding } from '../../lib/y-monaco';
 import { Box, Button, Select, Switch, IconButton } from '@chakra-ui/react';
 import { fromUint8Array } from 'js-base64';
+import Link from 'next/link';
 
 import * as random from 'lib0/random';
 
 import { MdOutlineDarkMode } from 'react-icons/md';
+import { error } from 'console';
 // import { MonacoDiffEditor } from 'react-monaco-editor';
 
 // Setup Monaco Editor
@@ -24,6 +26,8 @@ function CodeEditor({ roomId }: { roomId: string }) {
     const [loading, setLoading] = useState(false);
     const [editorTheme, setEditorTheme] = useState('light');
     const [editorOutput, setEditorOutput] = useState('');
+    const doc1 = new Y.Doc()
+    const [provider, setProvider] = useState(null);
 
     const usercolors = [
         { color: '#30bced', light: '#30bced33' },
@@ -57,24 +61,35 @@ function CodeEditor({ roomId }: { roomId: string }) {
             process.env.NEXT_PUBLIC_ENV == 'PROD'
                 ? process.env.NEXT_PUBLIC_SIGNALING_SERVER_PROD
                 : process.env.NEXT_PUBLIC_SIGNALING_SERVER_DEV;
-        const provider = new WebrtcProvider(roomId, doc, {
-            signaling: [SIGNALING_SERVER as string],
-        }); // room1, room2
-        //provider awareness for each user
-        provider.awareness.setLocalStateField('user', {
-            name: 'Anonymous ' + Math.floor(Math.random() * 100),
-            color: userColor.color,
-            colorLight: userColor.light,
-        });
-        const type = doc.getText('monaco'); // doc { "monaco": "what our IDE is showing" }
+        try {
+            const provider = new WebrtcProvider(roomId, doc, {
+                signaling: [SIGNALING_SERVER as string],
+            });
+            // Code to handle successful creation of the provider instance
+            //@ts-ignore
+            setProvider(provider)
+            
+            //provider awareness for each user
+            provider.awareness.setLocalStateField('user', {
+                name: 'Anonymous ' + Math.floor(Math.random() * 100),
+                color: userColor.color,
+                colorLight: userColor.light,
+            });
+            const type = doc.getText('monaco'); // doc { "monaco": "what our IDE is showing" }
 
-        // Bind YJS to Monaco
-        new MonacoBinding(
-            type,
-            editorRef.current.getModel(),
-            new Set([editorRef.current]),
-            provider.awareness
-        );
+            // Bind YJS to Monaco
+            new MonacoBinding(
+                type,
+                editorRef.current.getModel(),
+                new Set([editorRef.current]),
+                provider.awareness
+            );
+        } catch (error) {
+            // Code to handle errors that occur during the creation of the provider instance
+            console.error('Error creating WebrtcProvider:', error);
+        }
+                
+        
     }
 
     function getLangID(inputLang: string): String {
@@ -177,6 +192,12 @@ function CodeEditor({ roomId }: { roomId: string }) {
             : setEditorTheme('light');
     }
 
+    function destoryConn() {
+        //@ts-ignore
+        provider.destroy()
+        
+    }
+
     return (
         <div>
             <Box style={{ height: '500px', width: '100%' }}>
@@ -223,6 +244,12 @@ function CodeEditor({ roomId }: { roomId: string }) {
                         paddingLeft={2}
                         paddingRight={5}
                     />
+                    <Link onClick={destoryConn}
+                                className="button is-danger is-small"
+                                href="/"
+                            >
+                                Leave Room
+                            </Link>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center' }}>
