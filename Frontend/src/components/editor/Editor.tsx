@@ -51,9 +51,9 @@ function CodeEditor({ roomId }: { roomId: string }) {
         // Initialize YJS
         const doc = new Y.Doc(); // a collection of shared objects -> Text
         /* Connect to peers (or start connection) with WebRTC
-    have to generate a unique sessionID during matching so that matched
-    users can have a shared room to code
-    */
+        have to generate a unique sessionID during matching so that matched
+        users can have a shared room to code
+        */
 
         const SIGNALING_SERVER =
             process.env.NEXT_PUBLIC_ENV == 'PROD'
@@ -64,8 +64,7 @@ function CodeEditor({ roomId }: { roomId: string }) {
         //@ts-ignore
         const newProvider = new WebrtcProvider(roomId, doc, {
             signaling: [SIGNALING_SERVER as string],
-        })
-        
+        });
 
         //provider awareness for each user
         //@ts-ignore
@@ -175,9 +174,9 @@ function CodeEditor({ roomId }: { roomId: string }) {
     }
 
     /*will have to modify this function to identify what
-  is the default language specified by the user and
-  add selected property to the other options
-  */
+    is the default language specified by the user and
+    add selected property to the other options
+    */
     function isSelected() {
         return true;
     }
