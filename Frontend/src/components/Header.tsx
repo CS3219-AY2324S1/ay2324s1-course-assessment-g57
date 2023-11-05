@@ -26,12 +26,12 @@ const Header = ({ user, loading }: HeaderProps) => {
                     </Link>
                 </div>
                 <Popover.Group className="hidden lg:flex lg:gap-x-12">
-                    <Link
+                    {/* <Link
                         href="/questions"
                         className="text-m font-semibold leading-6 text-gray-900"
                     >
                         Questions
-                    </Link>
+                    </Link> */}
                     {user?.peerprepRoles?.[0] === 'Admin' ? (
                         <Link
                             href="/users"
@@ -43,6 +43,7 @@ const Header = ({ user, loading }: HeaderProps) => {
                         <></>
                     )}
                 </Popover.Group>
+
                 {!loading &&
                     (user ? (
                         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-5">

@@ -11,30 +11,34 @@ type QuestionProps = {
 
 const Dashboard = ({ user, isLoading }: QuestionProps) => {
     // const { user, isLoading } = useUser();
-    console.log(user);
+    // console.log(user);
+
     return (
-        <Layout user={user} loading={isLoading}>
-            <section style={{ padding: 15 }}>
-                <h1 className="is-size-1">PeerPrep</h1>
-                <p>
-                    PeerPrep is a platform for students to practice technical
-                    interviews with their peers.
-                </p>
-            </section>
+        <>
+            <Layout user={user} loading={isLoading}>
+                {user ? (
+                    <>
+                        <section className="section">
+                            <p className="is-size-3">
+                                Welcome back, {user.nickname}!
+                            </p>
+                        </section>
 
-            {user ? (
-                <>
-                    <h2 className="is-size-2">
-                        Pick a difficulty and match with someone!
-                    </h2>
-                    <MatchControls />
-                </>
-            ) : (
-                <></>
-            )}
+                        <section className="section">
+                            <h2 className="is-size-4">Match with a Peer!</h2>
+                            <MatchControls />
+                        </section>
 
-            <QuestionTable user={user} />
-        </Layout>
+                        <section className="section">
+                            <h1 className="is-size-3">Questions Database</h1>
+                            <QuestionTable user={user} />
+                        </section>
+                    </>
+                ) : (
+                    <></>
+                )}
+            </Layout>
+        </>
     );
 };
 

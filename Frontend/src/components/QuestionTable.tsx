@@ -123,10 +123,10 @@ const TableComponent = ({ user }: QuestionTableProp) => {
 
     return (
         <>
-            <table className="table">
+            <table className="table is-bordered is-striped is-hoverable is-fullwidth">
                 <thead>
                     <tr>
-                        <th>id</th>
+                        {/* <th>id</th> */}
                         <th>Title</th>
                         <th>Category</th>
                         <th>Complexity</th>
@@ -146,7 +146,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                     {questions.map((val) => {
                         return (
                             <tr key={val._id}>
-                                <td>{val._id}</td>
+                                {/* <td>{val._id}</td> */}
                                 <td>{val.title}</td>
                                 <td>{val.categories}</td>
                                 <td>{val.complexity}</td>

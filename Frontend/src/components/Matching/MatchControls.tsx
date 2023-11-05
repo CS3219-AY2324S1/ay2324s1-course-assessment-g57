@@ -56,8 +56,9 @@ const MatchControls = () => {
         };
     }, []);
 
+
     return (
-        <div style={{ backgroundColor: 'green' }}>
+        <div className="container">
             <h1>Client ID: {socket.id} </h1>
             <h1>{status + `Room ID: ${roomId}`}</h1>
             <h2>Select difficulty level:</h2>
@@ -65,6 +66,7 @@ const MatchControls = () => {
                 <div>
                     <select
                         id="difficulty"
+                        className="select is-link is-normal"
                         onChange={(event) => setDifficulty(event.target.value)}
                     >
                         <option value="easy">Easy</option>

@@ -76,44 +76,65 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
     };
 
     return (
-        <div>
-            <h2>User Profile</h2>
-            {/* <Image src={user.picture} alt="profile picture" /> */}
-            {editing ? (
-                <div>
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        value={username}
-                        onChange={handleUsernameChange}
-                    />
-                    <br />
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="text"
-                        id="email"
-                        value={email}
-                        onChange={handleEmailChange}
-                    />
-                    <br />
-                    <button onClick={handleSaveClick}>Save</button>
-                    <button onClick={handleCancelClick}>Cancel</button>
+        <section className="section">
+            <div className="container">
+                <div className="columns is-centered">
+                    <div className="column is-half">
+                        <h2 className="is-size-1">User Profile</h2>
+                        <img src={user.picture} alt="profile picture" />
+                        {editing ? (
+                            <div>
+                                <label htmlFor="displayName">
+                                    Display Name:
+                                </label>
+                                <input
+                                    type="text"
+                                    id="displayName"
+                                    value={username}
+                                    onChange={handleUsernameChange}
+                                />
+                                <br />
+                                <label htmlFor="email">Email:</label>
+                                <input
+                                    type="text"
+                                    id="email"
+                                    value={email}
+                                    onChange={handleEmailChange}
+                                />
+                                <br />
+                                <button
+                                    className="button"
+                                    onClick={handleSaveClick}
+                                >
+                                    Save
+                                </button>
+                                <button
+                                    className="button"
+                                    onClick={handleCancelClick}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        ) : (
+                            <div>
+                                <p>
+                                    <strong>Username:</strong> {username}
+                                </p>
+                                <p>
+                                    <strong>Email:</strong> {email}
+                                </p>
+                                <button
+                                    className="button"
+                                    onClick={handleEditClick}
+                                >
+                                    Edit
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
-            ) : (
-                <div>
-                    <p>
-                        <strong>Username:</strong> {username}
-                    </p>
-                    <p>
-                        <strong>Email:</strong> {email}
-                    </p>
-                    <button className={'button'} onClick={handleEditClick}>
-                        Edit
-                    </button>
-                </div>
-            )}
-        </div>
+            </div>
+        </section>
     );
 };
 

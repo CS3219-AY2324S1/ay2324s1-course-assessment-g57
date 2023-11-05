@@ -1,7 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-const navComponent = () => {
+type NavProps = {
+    user?: any;
+    loading?: boolean;
+};
+
+const navComponent = ({ user }: NavProps) => {
     return (
         <>
             <nav
@@ -10,33 +15,59 @@ const navComponent = () => {
                 aria-label="main navigation"
             >
                 <div className="navbar-brand">
-                    <Link className="navbar-item" href="/">
+                    <Link className="navbar-item" href="/dashboard">
                         <Image
-                            src="/assets/trash.svg"
-                            width="50"
-                            height="50"
-                            alt="delete"
+                            src="/logo.png"
+                            className="h-8 w-auto sm:h-10"
+                            width="400"
+                            height="400"
+                            alt="peerprep logo"
                         />
+                        <h1 className="is-size-4 has-text-weight-semibold">
+                            PeerPrep
+                        </h1>
                     </Link>
                 </div>
 
-                <div id="navBarMenu" className="navbar-menu">
+                <div className="navbar-menu">
                     <div className="navbar-start">
-                        <Link className="navbar-item" href="/questions">
-                            Questions
-                        </Link>
+                        <div className="navbar-item">
+                            <div className="field is-grouped">
+                                {user?.peerprepRoles?.[0] === 'Admin' ? (
+                                    <p className="control">
+                                        <Link href="/users">
+                                            <p className="has-text-weight-medium">
+                                                Users
+                                            </p>
+                                        </Link>
+                                    </p>
+                                ) : (
+                                    <></>
+                                )}
 
-                        <Link className="navbar-item" href="/users">
-                            Users
-                        </Link>
-
-                        <Link className="navbar-item" href="/video">
-                            Video
-                        </Link>
-
-                        <Link className="navbar-item" href="/code">
-                            Code
-                        </Link>
+                                <p className="control">
+                                    <Link href="/profile">
+                                        <p className="has-text-weight-medium">
+                                            Profile
+                                        </p>
+                                    </Link>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="navbar-end">
+                        <div className="navbar-item">
+                            <div className="field is-grouped">
+                                <p className="control">
+                                    <Link
+                                        className="button is-light is-danger"
+                                        href="/api/auth/logout"
+                                    >
+                                        Log Out
+                                    </Link>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </nav>

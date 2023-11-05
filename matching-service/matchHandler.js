@@ -125,17 +125,17 @@ async function onStartMatch(io, socket, difficulty) {
 
     message = `Paired ${newUser.socket.id} and ${partner.socket.id}`;
 
-    const qn = await axios.get('http://localhost:3002/questions');
-    const newQn = qn.data.filter(s => s.complexity === difficulty);    
-    const maxSz = newQn.length;
-    const idx = Math.floor(Math.random() * maxSz);
+    const qn = await axios.get('https://34k0nfj43f.execute-api.ap-southeast-1.amazonaws.com/dev/questions/complexity/' + difficulty);
+    // const newQn = qn.data.filter(s => s.complexity === difficulty);    
+    // const maxSz = newQn.length;
+    // const idx = Math.floor(Math.random() * maxSz);
 
-    console.log(difficulty);
-    console.log(newQn);
-    console.log(idx);
-    console.log(newQn[idx]._id);
+    // console.log(difficulty);
+    // console.log(newQn);
+    // console.log(idx);
+    // console.log(newQn[idx]._id);
     
-    io.to(roomId).emit('matchFound', message, roomId, newQn[idx]._id);
+    io.to(roomId).emit('matchFound', message, roomId, qn._id);
 
     console.log(message);
 

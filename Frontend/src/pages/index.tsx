@@ -4,58 +4,53 @@ import Image from 'next/image';
 const MainApp = () => {
     return (
         <>
-            <div className="has-navbar-fixed-top">
-                {/* Navbar Section */}
-                <nav
-                    className="navbar is-fixed-top"
-                    role="navigation"
-                    aria-label="main nagivation"
-                >
-                    <div className="navbar-brand">
-                        <Link className="navbar-item" href="/">
-                            <Image
-                                src="/logo.png"
-                                alt="PeerPrep: The collaborative way to practice technical interview questions"
-                                height="28"
-                                width="88"
-                            />
-                            <h1 className="is-size-4 has-text-weight-semibold">
-                                PeerPrep
-                            </h1>
-                        </Link>
-                    </div>
+            {/* Navbar Section */}
+            <nav
+                className="navbar is-fixed-top"
+                role="navigation"
+                aria-label="main nagivation"
+            >
+                <div className="navbar-brand">
+                    <Link className="navbar-item" href="/">
+                        <Image
+                            src="/logo.png"
+                            alt="PeerPrep: The collaborative way to practice technical interview questions"
+                            height="28"
+                            width="88"
+                        />
+                        <h1 className="is-size-4 has-text-weight-semibold">
+                            PeerPrep
+                        </h1>
+                    </Link>
+                </div>
 
-                    <div className="navbar-menu">
-                        <div className="navbar-end">
-                            <div className="navbar-item">
-                                <div className="field is-grouped">
-                                    <p className="control">
-                                        <Link
-                                            className="button is-light"
-                                            href="/api/auth/login"
-                                        >
-                                            Login
-                                        </Link>
-                                    </p>
-                                    <p className="control">
-                                        <Link
-                                            className="button is-primary"
-                                            href="/api/auth/login"
-                                        >
-                                            Sign Up
-                                        </Link>
-                                    </p>
-                                </div>
+                <div className="navbar-menu">
+                    <div className="navbar-end">
+                        <div className="navbar-item">
+                            <div className="field is-grouped">
+                                <p className="control">
+                                    <Link
+                                        className="button is-light"
+                                        href="/api/auth/login"
+                                    >
+                                        Login
+                                    </Link>
+                                </p>
+                                <p className="control">
+                                    <Link
+                                        className="button is-primary"
+                                        href="/api/auth/login"
+                                    >
+                                        Sign Up
+                                    </Link>
+                                </p>
                             </div>
                         </div>
                     </div>
-                </nav>
+                </div>
+            </nav>
 
-                {/* Fix a weird visual bug with fixed navbar over the hero content */}
-                <section>
-                    <br />
-                </section>
-
+            <div className="has-navbar-fixed-top">
                 {/* Main Section */}
                 <section className="hero is-link is-medium">
                     <div className="hero-body">
@@ -392,7 +387,7 @@ const MainApp = () => {
                             AY2324S1
                         </p>
                         <p>
-                            View source code on{' '}
+                            View source code on
                             <Link href="https://github.com/CS3219-AY2324S1/ay2324s1-course-assessment-g57">
                                 Github
                             </Link>

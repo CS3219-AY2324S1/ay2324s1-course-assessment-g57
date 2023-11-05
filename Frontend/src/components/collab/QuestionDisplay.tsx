@@ -15,6 +15,8 @@ const QuestionDisplay = ({ qnId, getNewQnFn }: QuestionDisplayProp) => {
         const jsonRes: Question[] = await response.json();
         // console.log(qnId);
         // console.log(jsonRes);
+        console.log(_id);
+
         const qn = jsonRes.filter((s) => s._id == parseInt(qnId))[0];
         setQuestion(qn);
     }

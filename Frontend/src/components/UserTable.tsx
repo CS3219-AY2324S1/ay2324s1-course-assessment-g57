@@ -73,25 +73,25 @@ const TableComponent = ({ authUser }: UserTableProp) => {
     }
 
     // OnClick Delete function
-    async function sendDelete(id: string) {
-        try {
-            // await client.deleteUser(id);
-            // fetchUsersFn();
-            fetch(`/api/users/${id}`, {
-                method: 'DELETE',
-            })
-                .then((response) => {
-                    return response.json();
-                })
-                .catch((error) => {
-                    console.error('Error deleting user', error);
-                });
-            // fetchQnFn();
-            alert(`Deleted user: ${id}`);
-        } catch (e: any) {
-            console.log(e);
-        }
-    }
+    // async function sendDelete(id: string) {
+    //     try {
+    //         // await client.deleteUser(id);
+    //         // fetchUsersFn();
+    //         fetch(`/api/users/${id}`, {
+    //             method: 'DELETE',
+    //         })
+    //             .then((response) => {
+    //                 return response.json();
+    //             })
+    //             .catch((error) => {
+    //                 console.error('Error deleting user', error);
+    //             });
+    //         // fetchQnFn();
+    //         alert(`Deleted user: ${id}`);
+    //     } catch (e: any) {
+    //         console.log(e);
+    //     }
+    // }
 
     // async function handleAddSubmit() {
     //     try {
@@ -143,9 +143,7 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                                     <td>{val.userid}</td>
                                     <td>{val.username}</td>
                                     <td>{val.email}</td>
-                                    {authUser?.peerprepRoles?.[0] ===
-                                    'Admin' ? (
-                                        <>
+                                    
                                             <td>
                                                 <Image
                                                     src="/assets/edit.svg"
@@ -157,18 +155,14 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                                                     alt="edit"
                                                 />
                                             </td>
-                                        </>
-                                    ) : (
-                                        <></>
-                                    )}
+                                        
                                 </tr>
                             );
                         })}
                     </tbody>
                 </table>
 
-                {authUser?.peerprepRoles?.[0] === 'Admin' ? (
-                    <>
+                
                         <form
                             method="post"
                             onSubmit={async () => {
@@ -201,10 +195,6 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                                 </button>
                             </section>
                         </form>
-                    </>
-                ) : (
-                    <></>
-                )}
             </section>
         </>
     );
