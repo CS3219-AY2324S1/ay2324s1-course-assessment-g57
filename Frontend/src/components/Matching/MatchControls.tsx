@@ -56,7 +56,6 @@ const MatchControls = () => {
         };
     }, []);
 
-
     return (
         <div className="container">
             <h1>Client ID: {socket.id} </h1>

@@ -100,9 +100,9 @@ const MainApp = () => {
                             <div className="column has-text-centered">
                                 <h1 className="is-size-1">Why PeerPrep?</h1>
                                 <p className="is-size-4">
-                                    Let&lsquo;s take a look at the features that make
-                                    PeerPrep your choice for technical interview
-                                    preparation.
+                                    Let&lsquo;s take a look at the features that
+                                    make PeerPrep your choice for technical
+                                    interview preparation.
                                 </p>
                             </div>
                         </div>
