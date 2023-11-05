@@ -25,7 +25,7 @@ const CodeEditorPage = () => {
     );
 
     socket.on('questionUpdate', (data) => {
-        const { roomId, qnId } = data;
+        const { qnId } = data;
         // console.log(`roomid ${roomId}`);
         // console.log(`updating id with: ${qnId}`);
         setCurrentQnId(`${qnId}`);

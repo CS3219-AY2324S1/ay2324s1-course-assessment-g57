@@ -143,7 +143,9 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                                     <td>{val.userid}</td>
                                     <td>{val.username}</td>
                                     <td>{val.email}</td>
-                                    
+                                    {authUser?.peerprepRoles?.[0] ===
+                                    'Admin' ? (
+                                        <>
                                             <td>
                                                 <Image
                                                     src="/assets/edit.svg"
@@ -155,14 +157,18 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                                                     alt="edit"
                                                 />
                                             </td>
-                                        
+                                        </>
+                                    ) : (
+                                        <></>
+                                    )}
                                 </tr>
                             );
                         })}
                     </tbody>
                 </table>
 
-                
+                {authUser?.peerprepRoles?.[0] === 'Admin' ? (
+                    <>
                         <form
                             method="post"
                             onSubmit={async () => {
@@ -195,6 +201,10 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                                 </button>
                             </section>
                         </form>
+                    </>
+                ) : (
+                    <></>
+                )}
             </section>
         </>
     );
