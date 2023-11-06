@@ -80,9 +80,9 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
         EndCall: () => setVideoCall(false),
     };
 
-  return (
-    <div>
-      {/* {videoCall && (
+    return (
+        <div>
+            {/* {videoCall && (
         <div style={{ display: 'flex', height: '50vh' }}>
           <AgoraUIKit
             rtcProps={rtcProps}
@@ -102,7 +102,7 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
           Start Call
         </button>
       )} */}
-      {videoCall && (
+            {videoCall && (
                 <div style={{ display: 'flex', height: '50vh' }}>
                     <AgoraUIKit
                         rtcProps={rtcProps}
@@ -119,8 +119,8 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
                     Start Call
                 </button>
             )}
-    </div>
-  );
+        </div>
+    );
 };
 
 export default UIKitVideo;
