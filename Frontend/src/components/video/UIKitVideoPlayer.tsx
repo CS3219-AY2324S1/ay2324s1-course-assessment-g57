@@ -82,7 +82,7 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
 
   return (
     <div>
-      {videoCall && (
+      {/* {videoCall && (
         <div style={{ display: 'flex', height: '50vh' }}>
           <AgoraUIKit
             rtcProps={rtcProps}
@@ -101,7 +101,24 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
         }}>
           Start Call
         </button>
-      )}
+      )} */}
+      {videoCall && (
+                <div style={{ display: 'flex', height: '50vh' }}>
+                    <AgoraUIKit
+                        rtcProps={rtcProps}
+                        callbacks={callbacks}
+                        styleProps={styleProps}
+                    />
+                </div>
+            )}
+            {!videoCall && (
+                <button
+                    className="button is-link"
+                    onClick={() => setVideoCall(true)}
+                >
+                    Start Call
+                </button>
+            )}
     </div>
   );
 };
