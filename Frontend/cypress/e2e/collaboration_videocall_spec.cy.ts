@@ -29,9 +29,7 @@ describe("The Use of the Video Call", () => {
         // can get a token for the video chat.
         cy.intercept("https://34k0nfj43f.execute-api.ap-southeast-1.amazonaws.com/dev/*").as("getToken");
         cy.get("button[class='button is-link'", { timeout: 10000 }).should("be.visible");
-        cy.wait("@getToken").then((intercept) => {
-            expect(intercept?.response).to.exist;
-        })
+        cy.wait("@getToken").then((intercept) => expect(intercept?.response).to.exist)
 
         // Leave the room.
         cy.get("a[href*='/']").should("exist").click();

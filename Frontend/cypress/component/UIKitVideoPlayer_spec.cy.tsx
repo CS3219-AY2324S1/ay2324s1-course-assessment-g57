@@ -4,7 +4,7 @@ import UIKitVideo from "@/components/video/UIKitVideoPlayer";
 
 describe('Video Player Component Test', () => {
   it('mounts', () => {
-    // cy.mount(<UIKitVideo channel="TestVideoChat"/>);
+    cy.mount(<UIKitVideo channel="TestVideoChat"/>);
 
     // // Check button to start the video call and start the call
     // cy.get("button[class='button is-link'", { timeout: 10000 }).should("be.visible").click();
