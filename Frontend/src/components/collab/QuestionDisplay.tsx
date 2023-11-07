@@ -3,27 +3,22 @@ import React from 'react';
 import Image from 'next/image';
 
 type QuestionDisplayProp = {
-    qnId: string;
+    qnTitle: string;
     getNewQnFn: () => void;
 };
 
-const QuestionDisplay = ({ qnId, getNewQnFn }: QuestionDisplayProp) => {
+const QuestionDisplay = ({ qnTitle, getNewQnFn }: QuestionDisplayProp) => {
     const [question, setQuestion] = React.useState<Question>(defaultQuestion());
 
-    async function getQnById(_id: number) {
-        const response = await fetch(`/api/questions`);
-        const jsonRes: Question[] = await response.json();
-        // console.log(qnId);
-        // console.log(jsonRes);
-        console.log(_id);
-
-        const qn = jsonRes.filter((s) => s._id == parseInt(qnId))[0];
+    async function getQnByTitle(title: string) {
+        const response = await fetch(`/api/questions/${title}`);
+        const qn = await response.json();
         setQuestion(qn);
     }
 
     React.useEffect(() => {
-        getQnById(parseInt(qnId));
-    }, [qnId]);
+        getQnByTitle(qnTitle);
+    }, [qnTitle]);
 
     return (
         <div className="box">
@@ -32,7 +27,7 @@ const QuestionDisplay = ({ qnId, getNewQnFn }: QuestionDisplayProp) => {
                     <button
                         onClick={async () => {
                             getNewQnFn();
-                            await getQnById(parseInt(qnId));
+                            await getQnByTitle(qnTitle);
                         }}
                         className="button is-small is-rounded is-primary is-pulled-right"
                     >
@@ -46,7 +41,10 @@ const QuestionDisplay = ({ qnId, getNewQnFn }: QuestionDisplayProp) => {
                 </div>
                 <h1 className="is-size-3">{question.title}</h1>
                 <p className="is-size-5">{question.categories}</p>
-                <p>{question.description}</p>
+                <div
+                    dangerouslySetInnerHTML={{ __html: question.description }}
+                ></div>
+                {/* <p>{question.description}</p> */}
             </div>
         </div>
     );

@@ -24,7 +24,7 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                 return response.json();
             })
             .then((fetchedUsers) => {
-                console.log('Fetched users', fetchedUsers);
+                console.log('Fetched users');
                 setUsers(fetchedUsers);
             })
             .catch((error) => {

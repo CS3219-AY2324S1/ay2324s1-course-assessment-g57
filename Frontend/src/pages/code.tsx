@@ -17,30 +17,25 @@ const AgoraUIKit = dynamic(
 const CodeEditorPage = () => {
     const searchParams = useSearchParams();
     const [roomId, setRoomId] = useState(searchParams.get('room'));
-    const [currentQnId, setCurrentQnId] = useState<string>(
-        searchParams.get('qnId') || '0'
+    const [currentQnTitle, setCurrentQnTitle] = useState<string>(
+        searchParams.get('qnTitle') || ''
     );
     const [currDifficulty, setDifficulty] = useState(
         searchParams.get('difficulty')
     );
 
     socket.on('questionUpdate', (data) => {
-        const { qnId } = data;
-        // console.log(`roomid ${roomId}`);
-        // console.log(`updating id with: ${qnId}`);
-        setCurrentQnId(`${qnId}`);
-        // console.log(`now : ${currentQnId}`);
+        const { qnTitle } = data;
+        setCurrentQnTitle(`${qnTitle}`);
     });
 
     useEffect(() => {
         const id = searchParams.get('room');
-        const qnId = searchParams.get('qnId');
+        const qnTitle = searchParams.get('qnTitle');
         const difficulty = searchParams.get('difficulty');
 
-        // console.log(id);
-
         setRoomId(id);
-        setCurrentQnId(qnId || '0');
+        setCurrentQnTitle(qnTitle || '');
         setDifficulty(difficulty);
 
         socket.emit('questionUpdate', { roomId, difficulty });
@@ -55,7 +50,10 @@ const CodeEditorPage = () => {
             <TopBar />
             <div className="columns">
                 <div className="column">
-                    <QuestionDisplay qnId={currentQnId} getNewQnFn={getNewQn} />
+                    <QuestionDisplay
+                        qnTitle={currentQnTitle}
+                        getNewQnFn={getNewQn}
+                    />
                     <AgoraUIKit channel={roomId || ''} />
                 </div>
                 <div className="column is-three-fifths">

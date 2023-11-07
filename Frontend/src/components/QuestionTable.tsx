@@ -56,7 +56,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 return response.json();
             })
             .then((fetchedQuestions) => {
-                console.log('Fetched questions', fetchedQuestions);
+                console.log('Fetched questions');
                 setQuestions(fetchedQuestions);
             })
             .catch((error) => {
@@ -68,8 +68,6 @@ const TableComponent = ({ user }: QuestionTableProp) => {
     React.useEffect(() => {
         fetchQuestions();
     }, []);
-
-    console.log('Questions', questions);
 
     function sendToEditBox(question: Question) {
         // send json to textbox
