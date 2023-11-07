@@ -27,7 +27,7 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                 return response.json();
             })
             .then((fetchedUsers) => {
-                console.log('Fetched users', fetchedUsers);
+                console.log('Fetched users');
                 setUsers(fetchedUsers);
             })
             .catch((error) => {
@@ -59,7 +59,6 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                 body: currentUserEditJson,
             })
                 .then((response) => {
-                    console.log(response);
                     setCurrentUserEditJson('');
                     alert(`Updated user: ${user.userid}!`);
                     return response.json();

@@ -23,8 +23,9 @@ const io = new Server(server, {
 function onConnection(io, socket) {
     console.log(`User ${socket.id} connected`);
 
-    socket.on('startMatch', async (difficulty) =>
-        await onStartMatch(io, socket, difficulty)
+    socket.on(
+        'startMatch',
+        async (difficulty) => await onStartMatch(io, socket, difficulty)
     );
 
     socket.on('disconnect', () => {
@@ -32,18 +33,18 @@ function onConnection(io, socket) {
     });
 
     socket.on('questionUpdate', async (data) => {
-        const qn = await axios.get('https://34k0nfj43f.execute-api.ap-southeast-1.amazonaws.com/dev/questions/complexity/' + data.difficulty);
-        // const newQn = qn.data.filter(s => s.complexity === data.difficulty);    
-        // const maxSz = newQn.length;
-        // const idx = Math.floor(Math.random() * maxSz);
-    
-        // console.log(data.difficulty);
-        // console.log(newQn);
-        // console.log(idx);
-        // console.log(newQn[idx]._id);
-        // console.log(data.roomId);
+        const response = await axios.get(
+            'https://34k0nfj43f.execute-api.ap-southeast-1.amazonaws.com/dev/questions/complexity/' +
+                data.difficulty
+        );
+        const qn = await response.data;
 
-        io.to(data.roomId).emit('questionUpdate', { roomId: data.roomId, qnId: qn._id} );
+        console.log('Updating Question: ' + qn.title);
+
+        io.to(data.roomId).emit('questionUpdate', {
+            roomId: data.roomId,
+            qnTitle: qn.title,
+        });
     });
 }
 

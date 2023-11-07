@@ -18,7 +18,25 @@ export default withApiAuthRequired(async function handler(
     };
     const url = `${baseURL}/questions/${title}`;
 
-    if (req.method === 'PUT') {
+    if (req.method === 'GET') {
+        const response = await fetch(url, {
+            headers: reqHeaders,
+        });
+        if (response.ok) {
+            const questionData = await response.json();
+            console.log('Question fetched successfully');
+            res.status(200).json(questionData);
+        } else if (response.status === 404) {
+            // If the user is not found, return a 404 Not Found response
+            console.log('Question not found');
+            res.status(404).json({ error: 'Question not found' });
+        } else {
+            console.log('Failed to fetch question data');
+            res.status(response.status).json({
+                error: 'Failed to fetch question data',
+            });
+        }
+    } else if (req.method === 'PUT') {
         reqHeaders['Content-Type'] = 'application/json';
         const response = await fetch(url, {
             method: 'PUT',
