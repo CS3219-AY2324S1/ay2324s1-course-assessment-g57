@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import MatchControls from '@/components/Matching/MatchControls';
 import QuestionTable from '../components/QuestionTable';
@@ -10,9 +10,28 @@ type QuestionProps = {
 };
 
 const Dashboard = ({ user, isLoading }: QuestionProps) => {
+
+    const [username, setUsername] = useState<string>();
+    
+    async function fetchUser() {
+        fetch(`/api/users/${user.sub}`)
+            .then((response) => response.json())
+            .then((fetchedUser) => {
+                setUsername(fetchedUser.username);
+                // You can set the state with fetchedUser.username and fetchedUser.email here
+            })
+            .catch((error) => {
+                console.error('Error fetching user data:', error);
+            });
+    }
+
     // const { user, isLoading } = useUser();
     // console.log(user);
 
+    React.useEffect(() => {
+        fetchUser();
+    }, []);
+    
     return (
         <>
             <Layout user={user} loading={isLoading}>
@@ -20,7 +39,7 @@ const Dashboard = ({ user, isLoading }: QuestionProps) => {
                     <>
                         <section className="section">
                             <p className="is-size-3">
-                                Welcome back, {user.nickname}!
+                                Welcome back, {username}!
                             </p>
                         </section>
 

@@ -43,7 +43,7 @@ function onConnection(io, socket) {
         // console.log(newQn[idx]._id);
         // console.log(data.roomId);
 
-        io.to(data.roomId).emit('questionUpdate', { roomId: data.roomId, qnId: qn._id} );
+        io.to(data.roomId).emit('questionUpdate', { roomId: data.roomId, qn: qn, qnId: qn._id} );
     });
 }
 

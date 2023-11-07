@@ -98,7 +98,7 @@ const MainApp = () => {
                     <div className="container">
                         <div className="columns is-centered">
                             <div className="column has-text-centered">
-                                <h1 className="is-size-1">Why PeerPrep?</h1>
+                                <h1 className="is-size-2">Why PeerPrep?</h1>
                                 <p className="is-size-4">
                                     Let&lsquo;s take a look at the features that
                                     make PeerPrep your choice for technical
@@ -151,7 +151,7 @@ const MainApp = () => {
                                         <p>
                                             Work together with others. Determine
                                             your own rules. Work on the
-                                            questions you want
+                                            questions you want.
                                         </p>
                                     </div>
                                 </div>

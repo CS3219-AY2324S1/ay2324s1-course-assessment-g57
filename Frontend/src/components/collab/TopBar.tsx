@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import socket from '@/lib/socket';
 
-const navComponent = () => {
+const TopBar = () => {
     function disconnect() {
         socket.disconnect();
     }
@@ -27,4 +27,4 @@ const navComponent = () => {
     );
 };
 
-export default navComponent;
+export default TopBar;

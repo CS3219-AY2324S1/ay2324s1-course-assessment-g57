@@ -6,7 +6,7 @@ type NavProps = {
     loading?: boolean;
 };
 
-const navComponent = ({ user }: NavProps) => {
+const Nav = ({ user }: NavProps) => {
     return (
         <>
             <nav
@@ -36,9 +36,9 @@ const navComponent = ({ user }: NavProps) => {
                                 {user?.peerprepRoles?.[0] === 'Admin' ? (
                                     <p className="control">
                                         <Link href="/users">
-                                            <p className="has-text-weight-medium">
+                                            <div className="has-text-weight-medium">
                                                 Users
-                                            </p>
+                                            </div>
                                         </Link>
                                     </p>
                                 ) : (
@@ -75,4 +75,4 @@ const navComponent = ({ user }: NavProps) => {
     );
 };
 
-export default navComponent;
+export default Nav;

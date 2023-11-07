@@ -1,7 +1,5 @@
 import { User, defaultUser } from '../models/types';
 import React from 'react';
-import { isValidJsonString } from '@/lib/utils';
-import Image from 'next/image';
 
 type UserTableProp = {
     // users: User[];
@@ -11,8 +9,7 @@ type UserTableProp = {
 };
 
 const TableComponent = ({ authUser }: UserTableProp) => {
-    const [currentUserEditJson, setCurrentUserEditJson] =
-        React.useState<string>('');
+    // const [currentUserEditJson, setCurrentUserEditJson] = React.useState<string>('');
     // const [currentAddUser, setCurrentAddUser] = React.useState<string>(
     //     JSON.stringify(defaultCreateUserForm(), null, 4)
     // );
@@ -40,37 +37,37 @@ const TableComponent = ({ authUser }: UserTableProp) => {
         fetchUsers();
     }, []);
 
-    function sendToEditBox(user: User) {
-        // send json to textbox
-        setCurrentUserEditJson(JSON.stringify(user, null, 4));
-    }
+    // function sendToEditBox(user: User) {
+    //     // send json to textbox
+    //     setCurrentUserEditJson(JSON.stringify(user, null, 4));
+    // }
 
-    async function handleEditSubmit() {
-        try {
-            // try to parse the string in currentUserEditJson
-            const user: User = JSON.parse(currentUserEditJson);
-            // does not return json
-            // await client.updateUser(user);
-            // we make parent fetch users
-            // fetchUsersFn();
-            // then we clear the currentUserEditJson
-            fetch(`/api/users/${user.userid}`, {
-                method: 'PUT',
-                body: currentUserEditJson,
-            })
-                .then((response) => {
-                    console.log(response);
-                    setCurrentUserEditJson('');
-                    alert(`Updated user: ${user.userid}!`);
-                    return response.json();
-                })
-                .catch((error) => {
-                    console.error('Error updating user', error);
-                });
-        } catch (err: any) {
-            console.log(err);
-        }
-    }
+    // async function handleEditSubmit() {
+    //     try {
+    //         // try to parse the string in currentUserEditJson
+    //         const user: User = JSON.parse(currentUserEditJson);
+    //         // does not return json
+    //         // await client.updateUser(user);
+    //         // we make parent fetch users
+    //         // fetchUsersFn();
+    //         // then we clear the currentUserEditJson
+    //         fetch(`/api/users/${user.userid}`, {
+    //             method: 'PUT',
+    //             body: currentUserEditJson,
+    //         })
+    //             .then((response) => {
+    //                 console.log(response);
+    //                 setCurrentUserEditJson('');
+    //                 alert(`Updated user: ${user.userid}!`);
+    //                 return response.json();
+    //             })
+    //             .catch((error) => {
+    //                 console.error('Error updating user', error);
+    //             });
+    //     } catch (err: any) {
+    //         console.log(err);
+    //     }
+    // }
 
     // OnClick Delete function
     // async function sendDelete(id: string) {
@@ -143,7 +140,7 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                                     <td>{val.userid}</td>
                                     <td>{val.username}</td>
                                     <td>{val.email}</td>
-                                    {authUser?.peerprepRoles?.[0] ===
+                                    {/* {authUser?.peerprepRoles?.[0] ===
                                     'Admin' ? (
                                         <>
                                             <td>
@@ -160,14 +157,14 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                                         </>
                                     ) : (
                                         <></>
-                                    )}
+                                    )} */}
                                 </tr>
                             );
                         })}
                     </tbody>
                 </table>
 
-                {authUser?.peerprepRoles?.[0] === 'Admin' ? (
+                {/* {authUser?.peerprepRoles?.[0] === 'Admin' ? (
                     <>
                         <form
                             method="post"
@@ -204,7 +201,7 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                     </>
                 ) : (
                     <></>
-                )}
+                )} */}
             </section>
         </>
     );

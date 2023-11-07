@@ -6,6 +6,15 @@ import {
     defaultQuestion,
 } from '../models/types';
 import { isValidJsonString, hasEmptyValues } from '@/lib/utils';
+import {
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    useDisclosure,
+} from '@chakra-ui/react';
 
 type QuestionTableProp = {
     // questions: Question[],
@@ -22,6 +31,21 @@ const TableComponent = ({ user }: QuestionTableProp) => {
     const [questions, setQuestions] = React.useState<Question[]>([
         defaultQuestion(),
     ]);
+    const {
+        isOpen: isViewOpen,
+        onOpen: onViewOpen,
+        onClose: onViewClose,
+    } = useDisclosure();
+    const {
+        isOpen: isEditOpen,
+        onOpen: onEditOpen,
+        onClose: onEditClose,
+    } = useDisclosure();
+    const {
+        isOpen: isAddOpen,
+        onOpen: onAddOpen,
+        onClose: onAddClose,
+    } = useDisclosure();
 
     function fetchQuestions() {
         fetch(`/api/questions`)
@@ -97,7 +121,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             );
             alert(`Added question!`);
         } catch (err: any) {
-            alert(err);
+            // alert(err);
             console.log(err);
         }
     }
@@ -121,107 +145,197 @@ const TableComponent = ({ user }: QuestionTableProp) => {
         }
     }
 
+    function createMarkup(desc: string) {
+        return { __html: desc };
+    }
+
     return (
         <>
-            <table className="table is-bordered is-striped is-hoverable is-fullwidth">
-                <thead>
-                    <tr>
-                        {/* <th>id</th> */}
-                        <th>Title</th>
-                        <th>Category</th>
-                        <th>Complexity</th>
-                        {/* <th>Description</th> */}
-                        <th>Link</th>
-                        {user?.peerprepRoles?.[0] === 'Admin' ? (
-                            <>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                            </>
-                        ) : (
-                            <></>
-                        )}
-                    </tr>
-                </thead>
-                <tbody>
-                    {questions.map((val) => {
-                        return (
-                            <tr key={val._id}>
-                                {/* <td>{val._id}</td> */}
-                                <td>{val.title}</td>
-                                <td>{val.categories}</td>
-                                <td>{val.complexity}</td>
-                                {/* <td>{val.description}</td> */}
-                                <td>{val.link}</td>
-                                {user?.peerprepRoles?.[0] === 'Admin' ? (
-                                    <>
-                                        <td>
-                                            <Image
-                                                src="/assets/edit.svg"
-                                                onClick={() => {
-                                                    sendToEditBox(val);
-                                                }}
-                                                width="25"
-                                                height="25"
-                                                alt="edit"
-                                            />
-                                        </td>
-                                        <td>
-                                            <Image
-                                                src="/assets/trash.svg"
-                                                onClick={() =>
-                                                    sendDelete(val.title)
-                                                }
-                                                width="25"
-                                                height="25"
-                                                alt="delete"
-                                            />
-                                        </td>
-                                    </>
-                                ) : (
-                                    <></>
-                                )}
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
+            {/* View Question Details Modal */}
+            <Modal
+                isOpen={isViewOpen}
+                onClose={onViewClose}
+                scrollBehavior={'inside'}
+                isCentered
+            >
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Question Details</ModalHeader>
+                    <ModalBody>{/* TODO */}</ModalBody>
+
+                    <ModalFooter>
+                        <button
+                            className="button is-outlined"
+                            onClick={onViewClose}
+                        >
+                            Close
+                        </button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+
+            {/* Edit Question Details Modal */}
+            <Modal
+                isOpen={isEditOpen}
+                onClose={onEditClose}
+                scrollBehavior={'inside'}
+                isCentered
+            >
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Question Details</ModalHeader>
+                    <ModalBody>
+                        <form
+                            method="post"
+                            onSubmit={async () => {
+                                await handleEditSubmit();
+                            }}
+                        >
+                            <section>
+                                <textarea
+                                    id="textareaedit"
+                                    className="textarea is-normal"
+                                    placeholder="json here"
+                                    value={currentQuestionEditJson}
+                                    onChange={(e) => {
+                                        setCurrentQuestionEditJson(
+                                            e.target.value
+                                        );
+                                    }}
+                                ></textarea>
+                            </section>
+                        </form>
+                    </ModalBody>
+                    <ModalFooter>
+                        <button
+                            className="button is-outlined"
+                            onClick={onEditClose}
+                        >
+                            Close
+                        </button>
+                        <button
+                            className="button is-outlined"
+                            type="submit"
+                            disabled={
+                                !isValidJsonString(currentQuestionEditJson)
+                            }
+                            onClick={handleEditSubmit}
+                        >
+                            Submit
+                        </button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+
+            {/* Add Question Modal */}
+            <Modal
+                isOpen={isAddOpen}
+                onClose={onEditClose}
+                scrollBehavior={'inside'}
+                isCentered
+            >
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Question Details</ModalHeader>
+                    <ModalBody>{/* TODO */}</ModalBody>
+                    <ModalFooter>
+                        <button
+                            className="button is-outlined"
+                            onClick={onEditClose}
+                        >
+                            Close
+                        </button>
+                        <button
+                            className="button is-outlined"
+                            onClick={handleEditSubmit}
+                        >
+                            Submit
+                        </button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+
+            {/* Main content body */}
+            <div className="table-container">
+                <table className="table is-bordered is-striped is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            {/* <th>id</th> */}
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Complexity</th>
+                            {/* <th>Description</th> */}
+                            <th>View Details</th>
+                            {user?.peerprepRoles?.[0] === 'Admin' ? (
+                                <>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </>
+                            ) : (
+                                <></>
+                            )}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {questions.map((val) => {
+                            return (
+                                <tr key={val._id}>
+                                    {/* <td>{val._id}</td> */}
+                                    <td>{val.title}</td>
+                                    <td>{val.categories}</td>
+                                    <td>{val.complexity}</td>
+                                    {/* <td>
+                                        <div
+                                            dangerouslySetInnerHTML={createMarkup(
+                                                val.description
+                                            )}
+                                        ></div>
+                                    </td> */}
+                                    <td>
+                                        <button
+                                            className="button"
+                                            onClick={onViewOpen}
+                                        >
+                                            View Details
+                                        </button>
+                                    </td>
+
+                                    {user?.peerprepRoles?.[0] === 'Admin' ? (
+                                        <>
+                                            <td>
+                                                <Image
+                                                    src="/assets/edit.svg"
+                                                    onClick={() => {
+                                                        sendToEditBox(val);
+                                                    }}
+                                                    width="25"
+                                                    height="25"
+                                                    alt="edit"
+                                                />
+                                            </td>
+                                            <td>
+                                                <Image
+                                                    src="/assets/trash.svg"
+                                                    onClick={() =>
+                                                        sendDelete(val.title)
+                                                    }
+                                                    width="25"
+                                                    height="25"
+                                                    alt="delete"
+                                                />
+                                            </td>
+                                        </>
+                                    ) : (
+                                        <></>
+                                    )}
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
             {user?.peerprepRoles?.[0] === 'Admin' ? (
                 <>
-                    <form
-                        method="post"
-                        onSubmit={async () => {
-                            await handleEditSubmit();
-                        }}
-                    >
-                        <section>
-                            <textarea
-                                id="textareaedit"
-                                className="textarea is-normal"
-                                rows={10}
-                                placeholder="json here"
-                                value={currentQuestionEditJson}
-                                onChange={(e) => {
-                                    setCurrentQuestionEditJson(e.target.value);
-                                }}
-                            ></textarea>
-                        </section>
-
-                        <section>
-                            <button
-                                className="button is-primary"
-                                type="submit"
-                                disabled={
-                                    !isValidJsonString(currentQuestionEditJson)
-                                }
-                            >
-                                Submit
-                            </button>
-                        </section>
-                    </form>
-
-                    <br />
-                    <br />
-                    <br />
                     <section>
                         <h1 className="is-size-2">Add Question</h1>
                         <form

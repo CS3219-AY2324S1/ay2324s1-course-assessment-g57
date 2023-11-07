@@ -1,7 +1,11 @@
 export type User = {
     userid: string;
-    username: string;
+    username: string; //display name
     email: string;
+    nickname?: string;
+    name?: string;
+    picture?: string;
+
 };
 
 export type CreateUserForm = Pick<User, 'username' | 'email'> & {
