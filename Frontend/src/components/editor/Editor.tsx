@@ -9,6 +9,7 @@ import { WebrtcProvider } from 'y-webrtc';
 import { MonacoBinding } from '../../lib/y-monaco';
 import { Box, Button, Select, Switch, IconButton } from '@chakra-ui/react';
 import { fromUint8Array } from 'js-base64';
+import Link from 'next/link';
 
 import * as random from 'lib0/random';
 
@@ -24,6 +25,7 @@ function CodeEditor({ roomId }: { roomId: string }) {
     const [loading, setLoading] = useState(false);
     const [editorTheme, setEditorTheme] = useState('light');
     const [editorOutput, setEditorOutput] = useState('');
+    const [provider, setProvider] = useState(null);
 
     const usercolors = [
         { color: '#30bced', light: '#30bced33' },
@@ -49,19 +51,24 @@ function CodeEditor({ roomId }: { roomId: string }) {
         // Initialize YJS
         const doc = new Y.Doc(); // a collection of shared objects -> Text
         /* Connect to peers (or start connection) with WebRTC
-    have to generate a unique sessionID during matching so that matched
-    users can have a shared room to code
-    */
+        have to generate a unique sessionID during matching so that matched
+        users can have a shared room to code
+        */
 
         const SIGNALING_SERVER =
             process.env.NEXT_PUBLIC_ENV == 'PROD'
                 ? process.env.NEXT_PUBLIC_SIGNALING_SERVER_PROD
                 : process.env.NEXT_PUBLIC_SIGNALING_SERVER_DEV;
-        const provider = new WebrtcProvider(roomId, doc, {
+
+        // Code to handle successful creation of the provider instance
+        //@ts-ignore
+        const newProvider = new WebrtcProvider(roomId, doc, {
             signaling: [SIGNALING_SERVER as string],
-        }); // room1, room2
+        });
+
         //provider awareness for each user
-        provider.awareness.setLocalStateField('user', {
+        //@ts-ignore
+        newProvider.awareness.setLocalStateField('user', {
             name: 'Anonymous ' + Math.floor(Math.random() * 100),
             color: userColor.color,
             colorLight: userColor.light,
@@ -73,8 +80,11 @@ function CodeEditor({ roomId }: { roomId: string }) {
             type,
             editorRef.current.getModel(),
             new Set([editorRef.current]),
-            provider.awareness
+            //@ts-ignore
+            newProvider.awareness
         );
+        //@ts-ignore
+        setProvider(newProvider);
     }
 
     function getLangID(inputLang: string): String {
@@ -164,9 +174,9 @@ function CodeEditor({ roomId }: { roomId: string }) {
     }
 
     /*will have to modify this function to identify what
-  is the default language specified by the user and
-  add selected property to the other options
-  */
+    is the default language specified by the user and
+    add selected property to the other options
+    */
     function isSelected() {
         return true;
     }
@@ -175,6 +185,11 @@ function CodeEditor({ roomId }: { roomId: string }) {
         editorTheme == 'light'
             ? setEditorTheme('vs-dark')
             : setEditorTheme('light');
+    }
+
+    function destoryConn() {
+        //@ts-ignore
+        provider.destroy();
     }
 
     return (
@@ -223,6 +238,13 @@ function CodeEditor({ roomId }: { roomId: string }) {
                         paddingLeft={2}
                         paddingRight={5}
                     />
+                    <Link
+                        onClick={destoryConn}
+                        className="button is-danger is-small"
+                        href="/"
+                    >
+                        Leave Room
+                    </Link>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center' }}>
