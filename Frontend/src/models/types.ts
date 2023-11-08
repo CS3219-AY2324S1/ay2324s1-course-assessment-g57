@@ -5,7 +5,6 @@ export type User = {
     nickname?: string;
     name?: string;
     picture?: string;
-
 };
 
 export type CreateUserForm = Pick<User, 'username' | 'email'> & {

@@ -2,7 +2,6 @@ import { Popover } from '@headlessui/react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-
 /*
     File is not in use and can be deleted
  */
