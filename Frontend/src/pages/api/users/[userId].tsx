@@ -59,7 +59,25 @@ export default withApiAuthRequired(async function handler(
                 });
             }
         } else if (req.method === 'DELETE') {
-            res.status(204).end();
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: reqHeaders,
+            });
+            if (response.ok) {
+                console.log('User deleted successfully');
+                res.status(200).json({
+                    message: `DELETE user with ID ${userId}`,
+                });
+            } else if (response.status === 404) {
+                // If the user is not found, return a 404 Not Found response
+                console.log('User not found');
+                res.status(404).json({ error: 'User not found' });
+            } else {
+                console.log('Failed to delete user');
+                res.status(response.status).json({
+                    error: 'Failed to delete user',
+                });
+            }
         } else {
             res.status(405).end(); // Method Not Allowed for other HTTP methods
         }

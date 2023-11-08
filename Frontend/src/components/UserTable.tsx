@@ -8,7 +8,7 @@ type UserTableProp = {
     authUser?: any;
 };
 
-const TableComponent = ({ authUser }: UserTableProp) => {
+const TableComponent = ({}: UserTableProp) => {
     // const [currentUserEditJson, setCurrentUserEditJson] = React.useState<string>('');
     // const [currentAddUser, setCurrentAddUser] = React.useState<string>(
     //     JSON.stringify(defaultCreateUserForm(), null, 4)

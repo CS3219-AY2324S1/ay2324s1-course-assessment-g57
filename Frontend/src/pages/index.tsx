@@ -217,7 +217,7 @@ const MainApp = () => {
                                         <figure className="image is-square">
                                             <Image
                                                 src="https://avatars.githubusercontent.com/u/45633172"
-                                                alt="Oven's profile picture"
+                                                alt="Owen's profile picture"
                                                 height="128"
                                                 width="128"
                                             />
