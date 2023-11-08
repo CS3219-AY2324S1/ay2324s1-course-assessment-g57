@@ -1,6 +1,12 @@
 name: Using Cypress GH Action
 
-on: [push]
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+        branches:
+            - master
 
 jobs:
     single-run:
@@ -9,9 +15,12 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
+            - name: Create env file
+              run: |
+                  echo "${{secrets.ENV}}" >> Frontend/.env
             - name: Cypress run
               uses: cypress-io/github-action@v6
-              timeout-minutes: 10
+              timeout-minutes: 5
               with:
                   working-directory: Frontend
                   build: npm run build
