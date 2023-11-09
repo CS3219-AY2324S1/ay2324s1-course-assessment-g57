@@ -10,9 +10,8 @@ type QuestionProps = {
 };
 
 const Dashboard = ({ user, isLoading }: QuestionProps) => {
-
     const [username, setUsername] = useState<string>();
-    
+
     async function fetchUser() {
         fetch(`/api/users/${user.sub}`)
             .then((response) => response.json())
@@ -31,7 +30,7 @@ const Dashboard = ({ user, isLoading }: QuestionProps) => {
     React.useEffect(() => {
         fetchUser();
     }, []);
-    
+
     return (
         <>
             <Layout user={user} loading={isLoading}>

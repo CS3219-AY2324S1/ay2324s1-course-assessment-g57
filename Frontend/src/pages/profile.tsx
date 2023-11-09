@@ -9,9 +9,8 @@ import {
     ModalFooter,
     ModalBody,
     useDisclosure,
-    Link,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 type AuthUser = {
     user_id: string;
@@ -44,7 +43,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
     } = useDisclosure();
 
     async function fetchUser() {
-        console.log("From fetch user:" + user.sub);
+        console.log('From fetch user:' + user.sub);
         fetch(`/api/users/${user.sub}`)
             .then((response) => response.json())
             .then((fetchedUser) => {
@@ -74,18 +73,13 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
     // OnClick Delete function
     async function deleteUser() {
         try {
-            // const split = user.sub.split('|');
-            // const userId = split[0] + "_" + split[1];
-
-            // console.log("From delete user:" + userId);
-
-            fetch(`/api/users/${user.sub}`, {
+            await fetch(`/api/users/${user.sub}`, {
                 method: 'DELETE',
             })
                 .then((response) => {
-                    if(response.ok){
-                        console.log("User deleted successfully");
-                        // router.push('/api/auth/logout');
+                    if (response.ok) {
+                        console.log('User deleted successfully');
+                        router.push('/api/auth/logout');
                     }
                     return response.json();
                 })
@@ -174,8 +168,11 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                         &nbsp;
                         <button
                             className="button is-danger"
-                            onClick={() => {onDeleteClose(); deleteUser();}
-                        }>
+                            onClick={() => {
+                                onDeleteClose();
+                                deleteUser();
+                            }}
+                        >
                             Delete
                         </button>
                     </ModalFooter>
@@ -217,8 +214,12 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                                 </div>
                                 <div className="column">
                                     <p className="is-size-5">{username}</p>
-                                    <p className="is-size-5">{user.name ?? ""}</p>
-                                    <p className="is-size-5">{user.nickname ?? ""}</p>
+                                    <p className="is-size-5">
+                                        {user.name ?? ''}
+                                    </p>
+                                    <p className="is-size-5">
+                                        {user.nickname ?? ''}
+                                    </p>
                                     <p className="is-size-5">{email}</p>
                                     <p className="is-size-5">
                                         {user.updated_at}

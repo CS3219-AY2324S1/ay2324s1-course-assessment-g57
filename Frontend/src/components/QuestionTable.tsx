@@ -38,13 +38,13 @@ const TableComponent = ({ user }: QuestionTableProp) => {
     } = useDisclosure();
     const {
         isOpen: isEditOpen,
-        onOpen: onEditOpen,
+        // onOpen: onEditOpen,
         onClose: onEditClose,
     } = useDisclosure();
     const {
         isOpen: isAddOpen,
-        onOpen: onAddOpen,
-        onClose: onAddClose,
+        // onOpen: onAddOpen,
+        // onClose: onAddClose,
     } = useDisclosure();
     const {
         isOpen: isDeleteOpen,
@@ -148,9 +148,9 @@ const TableComponent = ({ user }: QuestionTableProp) => {
         }
     }
 
-    function createMarkup(desc: string) {
-        return { __html: desc };
-    }
+    // function createMarkup(desc: string) {
+    //     return { __html: desc };
+    // }
 
     return (
         <>
