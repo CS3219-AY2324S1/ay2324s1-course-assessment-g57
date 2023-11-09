@@ -25,4 +25,12 @@ describe('Video Player Component Test', () => {
         //     (intercept) => expect(intercept?.response).to.exist
         // );
     });
+
+    it('allows a user to use the video call functionality', () => {
+        cy.mount(
+            <ChakraBaseProvider>
+                
+            </ChakraBaseProvider>
+        );
+    });
 });
