@@ -3,14 +3,38 @@ const {
     QuestionModel,
     MetadataModel,
 } = require('../models/question-dynamo-model');
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+const {
+    DynamoDBDocumentClient,
+    ScanCommand,
+    GetCommand,
+    PutCommand,
+    UpdateCommand,
+    DeleteCommand,
+} = require('@aws-sdk/lib-dynamodb');
+
+const client = new DynamoDBClient();
+const docClient = DynamoDBDocumentClient.from(client);
 
 // Get all questions
 const getQuestions = async (req, res) => {
+    // try {
+    //     const questions = await QuestionModel.scan()
+    //         .attributes(['id', 'title', 'categories', 'complexity'])
+    //         .exec();
+    //     res.status(200).json(questions);
+    // } catch (err) {
+    //     console.error('Unable to scan the table', err);
+    //     res.status(500).json({ error: 'Unable to get questions' });
+    // }
+    const params = {
+        TableName: 'questions',
+        ProjectionExpression: 'id, title, categories, complexity',
+    };
+
     try {
-        const questions = await QuestionModel.scan()
-            .attributes(['id', 'title', 'categories', 'complexity'])
-            .exec();
-        res.status(200).json(questions);
+        const data = await docClient.send(new ScanCommand(params));
+        res.status(200).json(data.Items);
     } catch (err) {
         console.error('Unable to scan the table', err);
         res.status(500).json({ error: 'Unable to get questions' });
