@@ -1,10 +1,10 @@
 import React from 'react';
 
 import UIKitVideo from '@/components/video/UIKitVideoPlayer';
-
+import CodeEditor from '@/components/editor/Editor';
 describe('Video Player Component Test', () => {
     it('mounts', () => {
-        cy.mount(<UIKitVideo channel="TestVideoChat" />);
+        cy.mount(<CodeEditor roomId='test'/>);
 
         // // Check button to start the video call and start the call
         cy.get("button[class='button is-link'", { timeout: 10000 }).should("be.visible");
