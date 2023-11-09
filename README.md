@@ -23,5 +23,5 @@ Provides the user management for the application, which will handle user authent
 ### video-service
 Provides the video conferencing for the application, which will handle the video conferencing between users.
 
-### signaling-server
+### collab-service
 Provides the signaling server for the application, which will handle the signaling between users.
