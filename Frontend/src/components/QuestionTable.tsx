@@ -38,13 +38,13 @@ const TableComponent = ({ user }: QuestionTableProp) => {
     } = useDisclosure();
     const {
         isOpen: isEditOpen,
-        // onOpen: onEditOpen,
+        onOpen: onEditOpen,
         onClose: onEditClose,
     } = useDisclosure();
     const {
         isOpen: isAddOpen,
-        // onOpen: onAddOpen,
-        // onClose: onAddClose,
+        onOpen: onAddOpen,
+        onClose: onAddClose,
     } = useDisclosure();
     const {
         isOpen: isDeleteOpen,
@@ -112,7 +112,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                     setQuestionAddJson(
                         JSON.stringify(defaultAddQuestionForm(), null, 4)
                     );
-                    alert(`Added question!`);
+                    console.log(`Added question!`);
                     return response.json();
                 })
                 .catch((error) => {
@@ -122,7 +122,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             setQuestionAddJson(
                 JSON.stringify(defaultAddQuestionForm(), null, 4)
             );
-            alert(`Added question!`);
+            console.log(`Added question!`);
         } catch (err: any) {
             // alert(err);
             console.log(err);

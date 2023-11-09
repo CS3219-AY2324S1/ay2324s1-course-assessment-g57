@@ -200,16 +200,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                                         Name:
                                     </p>
                                     <p className="is-size-5 has-text-weight-bold">
-                                        Nickname:
-                                    </p>
-                                    <p className="is-size-5 has-text-weight-bold">
                                         Email:
-                                    </p>
-                                    <p className="is-size-5 has-text-weight-bold">
-                                        Last updated:
-                                    </p>
-                                    <p className="is-size-5 has-text-weight-bold">
-                                        Auth0 ID:
                                     </p>
                                 </div>
                                 <div className="column">
@@ -217,14 +208,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                                     <p className="is-size-5">
                                         {user.name ?? ''}
                                     </p>
-                                    <p className="is-size-5">
-                                        {user.nickname ?? ''}
-                                    </p>
                                     <p className="is-size-5">{email}</p>
-                                    <p className="is-size-5">
-                                        {user.updated_at}
-                                    </p>
-                                    <p className="is-size-5">{user.sub}</p>
                                 </div>
                             </div>
                             <div>
