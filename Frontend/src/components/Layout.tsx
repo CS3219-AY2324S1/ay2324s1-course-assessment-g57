@@ -26,10 +26,10 @@ const Layout = ({ title, user, loading = false, children }: LayoutProps) => {
 
             {/* <Header user={user} loading={loading} /> */}
 
-            <div className="has-navbar-fixed-top">
+            <div>
                 <Nav user={user} loading={loading} />
 
-                <main className="container has-navbar-fixed-top">
+                <main className="container">
                     <div className="container">{children}</div>
                 </main>
             </div>

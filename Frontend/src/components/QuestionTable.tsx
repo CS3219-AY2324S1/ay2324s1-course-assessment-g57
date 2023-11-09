@@ -6,7 +6,15 @@ import {
     defaultQuestion,
 } from '../models/types';
 import { isValidJsonString, hasEmptyValues } from '@/lib/utils';
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
+import {
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    useDisclosure,
+} from '@chakra-ui/react';
 
 type QuestionTableProp = {
     // questions: Question[],
@@ -144,7 +152,6 @@ const TableComponent = ({ user }: QuestionTableProp) => {
 
     return (
         <>
-
             {/* View Question Details Modal */}
             <Modal
                 isOpen={isViewOpen}
@@ -156,7 +163,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 <ModalContent>
                     <ModalHeader>Question Details</ModalHeader>
                     <ModalBody>
-                        asdfgh
+                        {/* dangerouslySetInnerHTML={{ __html: questions.description }} */}
                     </ModalBody>
                     <ModalFooter>
                         <button
@@ -250,9 +257,11 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 </ModalContent>
             </Modal>
 
-
             <div className="table-container">
-                <button className="button is-link is-pulled-right" onClick={onAddOpen}>
+                <button
+                    className="button is-link is-pulled-right"
+                    onClick={onAddOpen}
+                >
                     Add question
                 </button>
                 <table className="table is-bordered is-striped is-hoverable is-fullwidth">
@@ -283,7 +292,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                     <td>{val.title}</td>
                                     <td>{val.categories}</td>
                                     <td>{val.complexity}</td>
-                                     {/* <td>
+                                    {/* <td>
                                         <div
                                             dangerouslySetInnerHTML={createMarkup(
                                                 val.description

@@ -124,22 +124,22 @@ const TableComponent = ({}: UserTableProp) => {
         <>
             <section>
                 <div className="table-container">
-                <table className="table is-bordered is-striped is-hoverable is-fullwidth">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((val) => {
-                            return (
-                                <tr key={val.userid}>
-                                    <td>{val.userid}</td>
-                                    <td>{val.username}</td>
-                                    <td>{val.email}</td>
-                                    {/* {authUser?.peerprepRoles?.[0] ===
+                    <table className="table is-bordered is-striped is-hoverable is-fullwidth">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {users.map((val) => {
+                                return (
+                                    <tr key={val.userid}>
+                                        <td>{val.userid}</td>
+                                        <td>{val.username}</td>
+                                        <td>{val.email}</td>
+                                        {/* {authUser?.peerprepRoles?.[0] ===
                                     'Admin' ? (
                                         <>
                                             <td>
@@ -157,11 +157,11 @@ const TableComponent = ({}: UserTableProp) => {
                                     ) : (
                                         <></>
                                     )} */}
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
                 </div>
 
                 {/* {authUser?.peerprepRoles?.[0] === 'Admin' ? (

@@ -44,7 +44,6 @@ const QuestionDisplay = ({ qnTitle, getNewQnFn }: QuestionDisplayProp) => {
                 <div
                     dangerouslySetInnerHTML={{ __html: question.description }}
                 ></div>
-                {/* <p>{question.description}</p> */}
             </div>
         </div>
     );
