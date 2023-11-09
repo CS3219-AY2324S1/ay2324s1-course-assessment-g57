@@ -216,7 +216,7 @@ function CodeEditor({ roomId }: { roomId: string }) {
                         options={{ fontSize: 12, automaticLayout: true }}
                     />
                 </Box>
-                <br/>
+                <br />
                 {/* Console Output */}
                 <div>
                     <textarea

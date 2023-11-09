@@ -2,6 +2,11 @@ import React from 'react';
 import socket from '@/lib/socket';
 import { Button } from '@chakra-ui/react';
 
+/*
+ * File has been refactored to MatchControls.tsx
+ * Can be deleted when not needed anymore
+ */
+
 const ConnectionManager = () => {
     const [disconnectDisabled, setDisconnectDisabled] = React.useState(true);
     const [connectDisabled, setConnectDisabled] = React.useState(false);

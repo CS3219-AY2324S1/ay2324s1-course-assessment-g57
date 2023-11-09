@@ -7,18 +7,23 @@ import {
 } from '../models/types';
 import { isValidJsonString, hasEmptyValues } from '@/lib/utils';
 import {
+    Button,
+    FormControl,
+    FormLabel,
+    Input,
     Modal,
     ModalBody,
     ModalContent,
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    Select,
+    Tag,
+    Textarea,
     useDisclosure,
 } from '@chakra-ui/react';
 
 type QuestionTableProp = {
-    // questions: Question[],
-    // fetchQnFn: () => void
     user?: any;
 };
 
@@ -46,11 +51,6 @@ const TableComponent = ({ user }: QuestionTableProp) => {
         onOpen: onAddOpen,
         onClose: onAddClose,
     } = useDisclosure();
-    // const {
-    //     isOpen: isDeleteOpen,
-    //     onOpen: onDeleteOpen,
-    //     onClose: onDeleteClose,
-    // } = useDisclosure();
 
     function fetchQuestions() {
         fetch(`/api/questions`)
@@ -61,7 +61,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 return response.json();
             })
             .then((fetchedQuestions) => {
-                console.log('Fetched questions', fetchedQuestions);
+                // console.log('Fetched questions', fetchedQuestions);
                 setQuestions(fetchedQuestions);
             })
             .catch((error) => {
@@ -74,7 +74,15 @@ const TableComponent = ({ user }: QuestionTableProp) => {
         fetchQuestions();
     }, []);
 
-    // console.log('Questions', questions);
+    // TODO: fetch question details
+    async function fetchQnDetails(title: string) {
+        fetch(`/api/questions/${title}`).then((response) => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json();
+        });
+    }
 
     function sendToEditBox(question: Question) {
         // send json to textbox
@@ -86,47 +94,31 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             // try to parse the string in currentQuestionEditJson
             const question: Question = JSON.parse(currentQuestionEditJson);
             // const _ = await client.updateQuestion(question);
-            fetch(`/api/questions/${question.title}`, {
+            const res = await fetch(`/api/questions/${question.title}`, {
                 method: 'PUT',
                 body: currentQuestionEditJson,
-            })
-                .then((response) => {
-                    setCurrentQuestionEditJson('');
-                    alert(`Updated question: ${question.title}!`);
-                    return response.json();
-                })
-                .catch((error) => {
-                    console.error('Error updating question', error);
-                });
+            });
+            const jsonRes = await res.json();
+            setCurrentQuestionEditJson(jsonRes);
+            console.log(`Updated question: ${question.title}!`);
+            return jsonRes;
         } catch (err: any) {
-            console.log(err);
+            console.log(`Error updating questions: ${err}`);
         }
     }
 
     async function handleAddSubmit() {
         try {
-            // const question: AddQuestionForm = JSON.parse(currentQuestionAddJson);
-            fetch(`/api/questions`, {
+            const res = await fetch(`/api/questions`, {
                 method: 'POST',
                 body: currentQuestionAddJson,
-            })
-                .then((response) => {
-                    setQuestionAddJson(
-                        JSON.stringify(defaultAddQuestionForm(), null, 4)
-                    );
-                    alert(`Added question!`);
-                    return response.json();
-                })
-                .catch((error) => {
-                    console.error('Error adding question', error);
-                });
-            // fetchQnFn();
+            });
             setQuestionAddJson(
                 JSON.stringify(defaultAddQuestionForm(), null, 4)
             );
-            alert(`Added question!`);
+            console.log(`Added question!`);
+            return await res.json();
         } catch (err: any) {
-            alert(err);
             console.log(err);
         }
     }
@@ -134,17 +126,12 @@ const TableComponent = ({ user }: QuestionTableProp) => {
     // OnClick Delete function
     async function sendDelete(title: string) {
         try {
-            fetch(`/api/questions/${title}`, {
+            const res = await fetch(`/api/questions/${title}`, {
                 method: 'DELETE',
-            })
-                .then((response) => {
-                    return response.json();
-                })
-                .catch((error) => {
-                    console.error('Error deleting question', error);
-                });
-            // fetchQnFn();
-            alert(`Deleted question: ${title}`);
+            });
+
+            console.log(`Deleted question: ${title}`);
+            return await res.json();
         } catch (e: any) {
             console.log(e);
         }
@@ -158,12 +145,13 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 onClose={onViewClose}
                 scrollBehavior={'inside'}
                 isCentered
+                closeOnOverlayClick={true}
             >
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Question Details</ModalHeader>
                     <ModalBody>
-                        {/* dangerouslySetInnerHTML={{ __html: questions.description }} */}
+                        {/* <div dangerouslySetInnerHTML={{ __html: questions.description }}></div> */}
                     </ModalBody>
                     <ModalFooter>
                         <button
@@ -187,44 +175,63 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 <ModalContent>
                     <ModalHeader>Edit question</ModalHeader>
                     <ModalBody>
-                        <form
-                            method="post"
-                            onSubmit={async () => {
-                                await handleEditSubmit();
-                            }}
-                        >
-                            <section>
-                                <textarea
-                                    id="textareaedit"
-                                    className="textarea is-normal"
-                                    placeholder="json here"
+                        {/* 
                                     value={currentQuestionEditJson}
                                     onChange={(e) => {
                                         setCurrentQuestionEditJson(
                                             e.target.value
                                         );
-                                    }}
-                                ></textarea>
-                            </section>
-                        </form>
+                                    }}*/}
+                        <FormControl isRequired>
+                            <FormLabel>Title</FormLabel>
+                            <Input placeholder="Question Title" />
+                        </FormControl>
+                        <FormControl isRequired>
+                            <FormLabel>Difficulty</FormLabel>
+                            <Select defaultValue={'easy'}>
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
+                            </Select>
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>Categories</FormLabel>
+                            <Input placeholder="Include categories seperated by commas" />
+                        </FormControl>
+                        <FormControl isRequired>
+                            <FormLabel>Description</FormLabel>
+                            <Textarea
+                                placeholder="Question Description"
+                                size={'lg'}
+                            ></Textarea>
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>Link</FormLabel>
+                            <Input placeholder="https://leetcode.com/problems/example" />
+                        </FormControl>
                     </ModalBody>
                     <ModalFooter>
-                        <button
+                        <Button
                             className="button is-outlined"
                             onClick={onEditClose}
+                            mr={3}
                         >
                             Close
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             className="button is-outlined"
                             type="submit"
+                            colorScheme="blue"
                             disabled={
                                 !isValidJsonString(currentQuestionEditJson)
                             }
-                            onClick={handleEditSubmit}
+                            onClick={async () => {
+                                await handleEditSubmit();
+                                onEditClose();
+                            }}
                         >
                             Submit
-                        </button>
+                        </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
@@ -232,30 +239,65 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             {/* Add Question Modal */}
             <Modal
                 isOpen={isAddOpen}
-                onClose={onEditClose}
+                onClose={onAddClose}
                 scrollBehavior={'inside'}
+                size={'xl'}
                 isCentered
             >
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Add a new question</ModalHeader>
-                    <ModalBody>{/* TODO */}</ModalBody>
+                    <ModalBody>
+                        <FormControl isRequired>
+                            <FormLabel>Title</FormLabel>
+                            <Input placeholder="Question Title" />
+                        </FormControl>
+                        <FormControl isRequired>
+                            <FormLabel>Difficulty</FormLabel>
+                            <Select defaultValue={'easy'}>
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
+                            </Select>
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>Categories</FormLabel>
+                            <Input placeholder="Include categories seperated by commas" />
+                        </FormControl>
+                        <FormControl isRequired>
+                            <FormLabel>Description</FormLabel>
+                            <Textarea
+                                placeholder="Question Description"
+                                size={'lg'}
+                            ></Textarea>
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>Link</FormLabel>
+                            <Input placeholder="https://leetcode.com/problems/example" />
+                        </FormControl>
+                    </ModalBody>
                     <ModalFooter>
-                        <button
+                        <Button
                             className="button is-outlined"
                             onClick={onAddClose}
+                            mr={3}
                         >
                             Close
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             className="button is-outlined"
-                            onClick={handleAddSubmit}
+                            onClick={() => {
+                                handleAddSubmit();
+                                onAddClose();
+                            }}
+                            colorScheme="blue"
                         >
                             Submit
-                        </button>
+                        </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+            {/* End of Add new question modal */}
 
             <div className="table-container">
                 <button
@@ -288,16 +330,15 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                         {questions.map((val) => {
                             return (
                                 <tr key={val.title}>
-                                    {/* <td>{val._id}</td> */}
                                     <td>{val.title}</td>
-                                    <td>{val.categories}</td>
+                                    <td>
+                                        {val.categories.map((s) => (
+                                            <Tag key={s}>{s}</Tag>
+                                        ))}
+                                    </td>
                                     <td>{val.complexity}</td>
                                     {/* <td>
-                                        <div
-                                            dangerouslySetInnerHTML={createMarkup(
-                                                val.description
-                                            )}
-                                        ></div>
+                                        <div dangerouslySetInnerHTML={{ __html: val.description }}></div>
                                     </td> */}
                                     {/* <td>{val.link}</td> */}
                                     <td>
@@ -315,6 +356,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                                     src="/assets/edit.svg"
                                                     onClick={() => {
                                                         sendToEditBox(val);
+                                                        onEditOpen();
                                                     }}
                                                     style={{ width: 25 }}
                                                 />
@@ -372,9 +414,6 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                         </section>
                     </form>
 
-                    <br />
-                    <br />
-                    <br />
                     <section>
                         <h1 className="is-size-2">Add Question</h1>
                         <form
