@@ -1,7 +1,10 @@
 export type User = {
     userid: string;
-    username: string;
+    username: string; //display name
     email: string;
+    nickname?: string;
+    name?: string;
+    picture?: string;
 };
 
 export type CreateUserForm = Pick<User, 'username' | 'email'> & {
@@ -18,7 +21,7 @@ export function defaultCreateUserForm(): CreateUserForm {
 
 export function defaultQuestion(): Question {
     return {
-        id: 0,
+        _id: 0,
         title: '',
         categories: [],
         description: '',
@@ -36,7 +39,7 @@ export function defaultUser(): User {
 }
 
 export type Question = {
-    id: number;
+    _id: number;
     title: string;
     categories: string[];
     complexity: 'easy' | 'medium' | 'hard';
@@ -44,7 +47,7 @@ export type Question = {
     link: string;
 };
 
-export type AddQuestionForm = Omit<Question, 'id'>;
+export type AddQuestionForm = Omit<Question, '_id'>;
 
 export function defaultAddQuestionForm(): AddQuestionForm {
     return {

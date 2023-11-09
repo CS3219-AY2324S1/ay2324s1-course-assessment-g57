@@ -1,6 +1,11 @@
 import Link from 'next/link';
+import socket from '@/lib/socket';
 
-const navComponent = () => {
+const TopBar = () => {
+    function disconnect() {
+        socket.disconnect();
+    }
+
     return (
         <>
             <nav className="navbar">
@@ -9,7 +14,8 @@ const navComponent = () => {
                         <div className="navbar-item">
                             <Link
                                 className="button is-danger is-small"
-                                href="/"
+                                href="/dashboard"
+                                onClick={disconnect}
                             >
                                 Leave Room
                             </Link>
@@ -21,4 +27,4 @@ const navComponent = () => {
     );
 };
 
-export default navComponent;
+export default TopBar;

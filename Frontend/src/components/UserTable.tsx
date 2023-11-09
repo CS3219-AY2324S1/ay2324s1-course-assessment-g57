@@ -1,11 +1,5 @@
-import {
-    User,
-    defaultUser,
-    // CreateUserForm,
-    // defaultCreateUserForm,
-} from '../models/types';
+import { User, defaultUser } from '../models/types';
 import React from 'react';
-import { isValidJsonString } from '@/lib/utils';
 
 type UserTableProp = {
     // users: User[];
@@ -14,9 +8,8 @@ type UserTableProp = {
     authUser?: any;
 };
 
-const TableComponent = ({ authUser }: UserTableProp) => {
-    const [currentUserEditJson, setCurrentUserEditJson] =
-        React.useState<string>('');
+const TableComponent = ({}: UserTableProp) => {
+    // const [currentUserEditJson, setCurrentUserEditJson] = React.useState<string>('');
     // const [currentAddUser, setCurrentAddUser] = React.useState<string>(
     //     JSON.stringify(defaultCreateUserForm(), null, 4)
     // );
@@ -31,7 +24,7 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                 return response.json();
             })
             .then((fetchedUsers) => {
-                console.log('Fetched users', fetchedUsers);
+                console.log('Fetched users');
                 setUsers(fetchedUsers);
             })
             .catch((error) => {
@@ -44,58 +37,58 @@ const TableComponent = ({ authUser }: UserTableProp) => {
         fetchUsers();
     }, []);
 
-    function sendToEditBox(user: User) {
-        // send json to textbox
-        setCurrentUserEditJson(JSON.stringify(user, null, 4));
-    }
+    // function sendToEditBox(user: User) {
+    //     // send json to textbox
+    //     setCurrentUserEditJson(JSON.stringify(user, null, 4));
+    // }
 
-    async function handleEditSubmit() {
-        try {
-            // try to parse the string in currentUserEditJson
-            const user: User = JSON.parse(currentUserEditJson);
-            // does not return json
-            // await client.updateUser(user);
-            // we make parent fetch users
-            // fetchUsersFn();
-            // then we clear the currentUserEditJson
-            fetch(`/api/users/${user.userid}`, {
-                method: 'PUT',
-                body: currentUserEditJson,
-            })
-                .then((response) => {
-                    console.log(response);
-                    setCurrentUserEditJson('');
-                    alert(`Updated user: ${user.userid}!`);
-                    return response.json();
-                })
-                .catch((error) => {
-                    console.error('Error updating user', error);
-                });
-        } catch (err: any) {
-            console.log(err);
-        }
-    }
+    // async function handleEditSubmit() {
+    //     try {
+    //         // try to parse the string in currentUserEditJson
+    //         const user: User = JSON.parse(currentUserEditJson);
+    //         // does not return json
+    //         // await client.updateUser(user);
+    //         // we make parent fetch users
+    //         // fetchUsersFn();
+    //         // then we clear the currentUserEditJson
+    //         fetch(`/api/users/${user.userid}`, {
+    //             method: 'PUT',
+    //             body: currentUserEditJson,
+    //         })
+    //             .then((response) => {
+    //                 console.log(response);
+    //                 setCurrentUserEditJson('');
+    //                 alert(`Updated user: ${user.userid}!`);
+    //                 return response.json();
+    //             })
+    //             .catch((error) => {
+    //                 console.error('Error updating user', error);
+    //             });
+    //     } catch (err: any) {
+    //         console.log(err);
+    //     }
+    // }
 
     // OnClick Delete function
-    async function sendDelete(id: string) {
-        try {
-            // await client.deleteUser(id);
-            // fetchUsersFn();
-            fetch(`/api/users/${id}`, {
-                method: 'DELETE',
-            })
-                .then((response) => {
-                    return response.json();
-                })
-                .catch((error) => {
-                    console.error('Error deleting user', error);
-                });
-            // fetchQnFn();
-            alert(`Deleted user: ${id}`);
-        } catch (e: any) {
-            console.log(e);
-        }
-    }
+    // async function sendDelete(id: string) {
+    //     try {
+    //         // await client.deleteUser(id);
+    //         // fetchUsersFn();
+    //         fetch(`/api/users/${id}`, {
+    //             method: 'DELETE',
+    //         })
+    //             .then((response) => {
+    //                 return response.json();
+    //             })
+    //             .catch((error) => {
+    //                 console.error('Error deleting user', error);
+    //             });
+    //         // fetchQnFn();
+    //         alert(`Deleted user: ${id}`);
+    //     } catch (e: any) {
+    //         console.log(e);
+    //     }
+    // }
 
     // async function handleAddSubmit() {
     //     try {
@@ -130,14 +123,13 @@ const TableComponent = ({ authUser }: UserTableProp) => {
     return (
         <>
             <section>
-                <table className="table">
+                <div className="table-container">
+                <table className="table is-bordered is-striped is-hoverable is-fullwidth">
                     <thead>
                         <tr>
                             <th>Id</th>
                             <th>Username</th>
                             <th>Email</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -147,38 +139,32 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                                     <td>{val.userid}</td>
                                     <td>{val.username}</td>
                                     <td>{val.email}</td>
-                                    {authUser?.peerprepRoles?.[0] ===
+                                    {/* {authUser?.peerprepRoles?.[0] ===
                                     'Admin' ? (
                                         <>
                                             <td>
-                                                <img
+                                                <Image
                                                     src="/assets/edit.svg"
                                                     onClick={() => {
                                                         sendToEditBox(val);
                                                     }}
-                                                    style={{ width: 25 }}
-                                                />
-                                            </td>
-                                            <td>
-                                                <img
-                                                    src="/assets/trash.svg"
-                                                    onClick={() =>
-                                                        sendDelete(val.userid)
-                                                    }
-                                                    style={{ width: 25 }}
+                                                    width="25"
+                                                    height="25"
+                                                    alt="edit"
                                                 />
                                             </td>
                                         </>
                                     ) : (
                                         <></>
-                                    )}
+                                    )} */}
                                 </tr>
                             );
                         })}
                     </tbody>
                 </table>
+                </div>
 
-                {authUser?.peerprepRoles?.[0] === 'Admin' ? (
+                {/* {authUser?.peerprepRoles?.[0] === 'Admin' ? (
                     <>
                         <form
                             method="post"
@@ -212,55 +198,10 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                                 </button>
                             </section>
                         </form>
-                        <br />
-                        <br />
-                        <br />
-                        {/* <section>
-                            <h1 className="is-size-2">Add User</h1>
-                            <form
-                                method="post"
-                                onSubmit={async () => {
-                                    handleAddSubmit();
-                                }}
-                            >
-                                <section>
-                                    <textarea
-                                        id="textareaedit"
-                                        className="textarea is-normal"
-                                        rows={10}
-                                        placeholder="json here"
-                                        value={currentAddUser}
-                                        onChange={(e) => {
-                                            setCurrentAddUser(e.target.value);
-                                        }}
-                                    ></textarea>
-                                </section>
-
-                                <section>
-                                    <button
-                                        className="button is-primary"
-                                        type="submit"
-                                        disabled={
-                                            !isValidJsonString(
-                                                currentAddUser
-                                            ) ||
-                                            (isValidJsonString(
-                                                currentAddUser
-                                            ) &&
-                                                hasEmptyValues(
-                                                    JSON.parse(currentAddUser)
-                                                ))
-                                        }
-                                    >
-                                        Submit
-                                    </button>
-                                </section>
-                            </form>
-                        </section> */}
                     </>
                 ) : (
                     <></>
-                )}
+                )} */}
             </section>
         </>
     );

@@ -1,7 +1,5 @@
 import Layout from '@/components/Layout';
-// import { User, defaultUser } from '../models/types';
 import React from 'react';
-// import { PeerPrepClient } from '@/lib/PeerPrepClient';
 import UserTable from '../components/UserTable';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
@@ -23,7 +21,7 @@ const UserPage = ({ user, isLoading }: UserPageProps) => {
 
     return (
         <Layout title={'Users'} user={user} loading={isLoading}>
-            <h1 className="is-size-1">Users</h1>
+            <br/><h1 className="is-size-2">Users</h1><br/>
             <UserTable authUser={user} />
         </Layout>
     );

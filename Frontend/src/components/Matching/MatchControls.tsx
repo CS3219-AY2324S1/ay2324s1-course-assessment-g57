@@ -2,23 +2,17 @@ import React, { useState, useEffect, useContext } from 'react';
 import socket from '../../lib/socket';
 import ConnectionManager from './ConnectionManager';
 import { useRouter } from 'next/navigation';
-
 import { RoomContext } from '@/contexts/RoomContext';
 
 const MatchControls = () => {
     const [isConnected, setIsConnected] = useState(socket.connected);
-    const [difficulty, setDifficulty] = useState('');
+    const [difficulty, setDifficulty] = useState('easy');
     const [status, setStatus] = useState(
         'Select difficulty and click Start Match'
     );
     const [timeElapsed, setTimeElapsed] = useState('30');
     const { roomId, setRoomId } = useContext(RoomContext);
     const { push } = useRouter();
-
-    console.log('ENV', process.env.ENV);
-    console.log('NEXT_PUBLIC_ENV', process.env.NEXT_PUBLIC_ENV);
-    console.log('DEV_URL', process.env.NEXT_PUBLIC_MATCHING_SERVER_URL_DEV);
-    console.log('PROD_URL', process.env.NEXT_PUBLIC_MATCHING_SERVER_URL_PROD);
 
     useEffect(() => {
         const onConnect = () => {
@@ -36,12 +30,17 @@ const MatchControls = () => {
         socket.on('connect', onConnect);
         socket.on('disconnect', onDisconnect);
 
-        socket.on('matchFound', (msg: string, room: string) => {
-            setTimeElapsed('30');
-            setRoomId(room);
-            setStatus(msg);
-            push(`/code`);
-        });
+        socket.on(
+            'matchFound',
+            (msg: string, room: string, qnTitle: string) => {
+                setTimeElapsed('30');
+                setRoomId(room);
+                setStatus(msg);
+                push(
+                    `/code?room=${room}&qnTitle=${qnTitle}&difficulty=${difficulty}`
+                );
+            }
+        );
 
         socket.on('matchTimerCountdown', (timerCountdown: string) => {
             setTimeElapsed(timerCountdown);
@@ -58,7 +57,7 @@ const MatchControls = () => {
     }, []);
 
     return (
-        <div style={{ backgroundColor: 'green' }}>
+        <div className="container">
             <h1>Client ID: {socket.id} </h1>
             <h1>{status + `Room ID: ${roomId}`}</h1>
             <h2>Select difficulty level:</h2>
@@ -66,6 +65,7 @@ const MatchControls = () => {
                 <div>
                     <select
                         id="difficulty"
+                        className="select is-link is-normal"
                         onChange={(event) => setDifficulty(event.target.value)}
                     >
                         <option value="easy">Easy</option>

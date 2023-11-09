@@ -76,7 +76,7 @@ export class PeerPrepClient {
 
     public async updateQuestion(question: Question): Promise<Question> {
         const response = await fetch(
-            `${this.baseURLQuestion}/api/v1/questions/${question.id}`,
+            `${this.baseURLQuestion}/api/v1/questions/${question._id}`,
             {
                 method: 'PATCH',
                 headers: {
