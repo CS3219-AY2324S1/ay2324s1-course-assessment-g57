@@ -29,7 +29,7 @@ const getQuestions = async (req, res) => {
     // }
     const params = {
         TableName: 'questions',
-        ProjectionExpression: 'id, title, categories, complexity',
+        // ProjectionExpression: 'id, title, categories, complexity',
     };
 
     try {
