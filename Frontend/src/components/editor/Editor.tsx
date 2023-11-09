@@ -104,7 +104,7 @@ function CodeEditor({ roomId }: { roomId: string }) {
     /*Save the code as a binary file*/
     async function submitCode() {
         const data = editorRef.current?.getValue();
-        alert(data);
+        // alert(data);
         setLoading(true);
         const enc = new TextEncoder();
         const documentState = enc.encode(data);
@@ -168,7 +168,8 @@ function CodeEditor({ roomId }: { roomId: string }) {
         setLang(inputLang);
     }
 
-    /*will have to modify this function to identify what
+    /*
+    will have to modify this function to identify what
     is the default language specified by the user and
     add selected property to the other options
     */
@@ -236,7 +237,7 @@ function CodeEditor({ roomId }: { roomId: string }) {
                     <Link
                         onClick={destoryConn}
                         className="button is-danger is-small"
-                        href="/"
+                        href="/dashboard"
                     >
                         Leave Room
                     </Link>

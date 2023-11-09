@@ -38,7 +38,7 @@ const CodeEditorPage = () => {
         setCurrentQnTitle(qnTitle || '');
         setDifficulty(difficulty);
 
-        socket.emit('questionUpdate', { roomId, difficulty });
+        // socket.emit('questionUpdate', { roomId, difficulty });
     }, []);
 
     function getNewQn() {

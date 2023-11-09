@@ -1,20 +1,12 @@
 import React from 'react';
-import Image from 'next/image';
 import {
     Question,
+    // AddQuestionForm,
     defaultAddQuestionForm,
     defaultQuestion,
 } from '../models/types';
 import { isValidJsonString, hasEmptyValues } from '@/lib/utils';
-import {
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    useDisclosure,
-} from '@chakra-ui/react';
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 
 type QuestionTableProp = {
     // questions: Question[],
@@ -46,11 +38,11 @@ const TableComponent = ({ user }: QuestionTableProp) => {
         onOpen: onAddOpen,
         onClose: onAddClose,
     } = useDisclosure();
-    const {
-        isOpen: isDeleteOpen,
-        onOpen: onDeleteOpen,
-        onClose: onDeleteClose,
-    } = useDisclosure();
+    // const {
+    //     isOpen: isDeleteOpen,
+    //     onOpen: onDeleteOpen,
+    //     onClose: onDeleteClose,
+    // } = useDisclosure();
 
     function fetchQuestions() {
         fetch(`/api/questions`)
@@ -61,7 +53,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 return response.json();
             })
             .then((fetchedQuestions) => {
-                console.log('Fetched questions');
+                console.log('Fetched questions', fetchedQuestions);
                 setQuestions(fetchedQuestions);
             })
             .catch((error) => {
@@ -73,6 +65,8 @@ const TableComponent = ({ user }: QuestionTableProp) => {
     React.useEffect(() => {
         fetchQuestions();
     }, []);
+
+    // console.log('Questions', questions);
 
     function sendToEditBox(question: Question) {
         // send json to textbox
@@ -90,7 +84,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             })
                 .then((response) => {
                     setCurrentQuestionEditJson('');
-                    alert(`Updated question: ${question._id}!`);
+                    alert(`Updated question: ${question.title}!`);
                     return response.json();
                 })
                 .catch((error) => {
@@ -112,7 +106,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                     setQuestionAddJson(
                         JSON.stringify(defaultAddQuestionForm(), null, 4)
                     );
-                    console.log(`Added question!`);
+                    alert(`Added question!`);
                     return response.json();
                 })
                 .catch((error) => {
@@ -122,9 +116,9 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             setQuestionAddJson(
                 JSON.stringify(defaultAddQuestionForm(), null, 4)
             );
-            console.log(`Added question!`);
+            alert(`Added question!`);
         } catch (err: any) {
-            // alert(err);
+            alert(err);
             console.log(err);
         }
     }
@@ -148,12 +142,9 @@ const TableComponent = ({ user }: QuestionTableProp) => {
         }
     }
 
-    // function createMarkup(desc: string) {
-    //     return { __html: desc };
-    // }
-
     return (
         <>
+
             {/* View Question Details Modal */}
             <Modal
                 isOpen={isViewOpen}
@@ -164,8 +155,9 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Question Details</ModalHeader>
-                    <ModalBody>{/* TODO */}</ModalBody>
-
+                    <ModalBody>
+                        asdfgh
+                    </ModalBody>
                     <ModalFooter>
                         <button
                             className="button is-outlined"
@@ -258,11 +250,11 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 </ModalContent>
             </Modal>
 
-            {/* Main content body */}
+
             <div className="table-container">
-            <button className="button is-link is-pulled-right" onClick={onAddOpen}>
-                Add question
-            </button>
+                <button className="button is-link is-pulled-right" onClick={onAddOpen}>
+                    Add question
+                </button>
                 <table className="table is-bordered is-striped is-hoverable is-fullwidth">
                     <thead>
                         <tr>
@@ -271,6 +263,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                             <th>Category</th>
                             <th>Complexity</th>
                             {/* <th>Description</th> */}
+                            {/* <th>Link</th> */}
                             <th>View Details</th>
                             {user?.peerprepRoles?.[0] === 'Admin' ? (
                                 <>
@@ -285,18 +278,19 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                     <tbody>
                         {questions.map((val) => {
                             return (
-                                <tr key={val._id}>
+                                <tr key={val.title}>
                                     {/* <td>{val._id}</td> */}
                                     <td>{val.title}</td>
                                     <td>{val.categories}</td>
                                     <td>{val.complexity}</td>
-                                    {/* <td>
+                                     {/* <td>
                                         <div
                                             dangerouslySetInnerHTML={createMarkup(
                                                 val.description
                                             )}
                                         ></div>
                                     </td> */}
+                                    {/* <td>{val.link}</td> */}
                                     <td>
                                         <button
                                             className="button"
@@ -305,30 +299,24 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                             View Details
                                         </button>
                                     </td>
-
                                     {user?.peerprepRoles?.[0] === 'Admin' ? (
                                         <>
                                             <td>
-                                                <Image
+                                                <img
                                                     src="/assets/edit.svg"
                                                     onClick={() => {
-                                                        // sendToEditBox(val);
-                                                        onEditOpen();
+                                                        sendToEditBox(val);
                                                     }}
-                                                    width="25"
-                                                    height="25"
-                                                    alt="edit"
+                                                    style={{ width: 25 }}
                                                 />
                                             </td>
                                             <td>
-                                                <Image
+                                                <img
                                                     src="/assets/trash.svg"
-                                                    onClick={() => {
-                                                        onDeleteOpen();
-                                                    }}
-                                                    width="25"
-                                                    height="25"
-                                                    alt="delete"
+                                                    onClick={() =>
+                                                        sendDelete(val.title)
+                                                    }
+                                                    style={{ width: 25 }}
                                                 />
                                             </td>
                                         </>
@@ -343,6 +331,41 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             </div>
             {user?.peerprepRoles?.[0] === 'Admin' ? (
                 <>
+                    <form
+                        method="post"
+                        onSubmit={async () => {
+                            await handleEditSubmit();
+                        }}
+                    >
+                        <section>
+                            <textarea
+                                id="textareaedit"
+                                className="textarea is-normal"
+                                rows={10}
+                                placeholder="json here"
+                                value={currentQuestionEditJson}
+                                onChange={(e) => {
+                                    setCurrentQuestionEditJson(e.target.value);
+                                }}
+                            ></textarea>
+                        </section>
+
+                        <section>
+                            <button
+                                className="button is-primary"
+                                type="submit"
+                                disabled={
+                                    !isValidJsonString(currentQuestionEditJson)
+                                }
+                            >
+                                Submit
+                            </button>
+                        </section>
+                    </form>
+
+                    <br />
+                    <br />
+                    <br />
                     <section>
                         <h1 className="is-size-2">Add Question</h1>
                         <form
