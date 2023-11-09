@@ -6,7 +6,7 @@ describe('The Error Handling for the Register Process', () => {
             'getAuth'
         );
 
-        cy.get("a[href*='auth']").click();
+        cy.get("a[href*='auth'][class='button is-light']").click();
 
         cy.wait('@getAuth');
 
@@ -108,7 +108,7 @@ describe('The Error Handling for the Register Process', () => {
             'getAuth'
         );
 
-        cy.get("a[href*='auth']").click();
+        cy.get("a[href*='auth'][class='button is-light']").click();
 
         cy.wait('@getAuth');
 

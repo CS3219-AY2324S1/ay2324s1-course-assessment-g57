@@ -6,7 +6,7 @@ describe('Login Process Error Handling', () => {
             'getAuth'
         );
 
-        cy.get("a[href*='auth']").click();
+        cy.get("a[href*='auth'][class='button is-light']").click();
 
         cy.wait('@getAuth');
 
@@ -55,7 +55,11 @@ describe('Login Process Error Handling', () => {
             cy.get('input[name=password]').type(`${testPassword}{enter}`);
         });
 
-        cy.url().should('include', 'http://localhost:3000');
+        cy.url().should('include', 'dashboard');
+
+        cy.get("p[class='is-size-3']").should("be.visible").should("contain", "danieltestuser");
+
+        cy.get("table").should("be.visible");
 
         cy.getCookie('appSession').should('exist');
 

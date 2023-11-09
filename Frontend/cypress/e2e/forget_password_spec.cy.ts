@@ -6,7 +6,7 @@ describe('User Forgets their Password', () => {
             'getAuth'
         );
 
-        cy.get("a[href*='auth']").click();
+        cy.get("a[href*='auth'][class='button is-light']").click();
 
         cy.wait('@getAuth');
 
@@ -22,7 +22,7 @@ describe('User Forgets their Password', () => {
 
             // Check that the user has had an email sent to them and that they can request to resent the email if desired.
             cy.get('h1').should('contain', 'Check Your Email');
-            cy.get('button[type=submit]')
+            cy.get('button[type=submit][value="resend-email-action"]')
                 .should('exist')
                 .should('contain', 'Resend email')
                 .click();
