@@ -47,9 +47,9 @@ const Nav = ({ user }: NavProps) => {
 
                                 <p className="control">
                                     <Link href="/profile">
-                                        <p className="has-text-weight-medium">
+                                        <div className="has-text-weight-medium">
                                             Profile
-                                        </p>
+                                        </div>
                                     </Link>
                                 </p>
                             </div>

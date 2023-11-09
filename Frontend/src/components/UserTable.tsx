@@ -123,14 +123,13 @@ const TableComponent = ({ authUser }: UserTableProp) => {
     return (
         <>
             <section>
-                <table className="table">
+                <div className="table-container">
+                <table className="table is-bordered is-striped is-hoverable is-fullwidth">
                     <thead>
                         <tr>
                             <th>Id</th>
                             <th>Username</th>
                             <th>Email</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -163,6 +162,7 @@ const TableComponent = ({ authUser }: UserTableProp) => {
                         })}
                     </tbody>
                 </table>
+                </div>
 
                 {/* {authUser?.peerprepRoles?.[0] === 'Admin' ? (
                     <>

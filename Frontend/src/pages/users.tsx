@@ -21,7 +21,7 @@ const UserPage = ({ user, isLoading }: UserPageProps) => {
 
     return (
         <Layout title={'Users'} user={user} loading={isLoading}>
-            <h1 className="is-size-1">Users</h1>
+            <br/><h1 className="is-size-2">Users</h1><br/>
             <UserTable authUser={user} />
         </Layout>
     );

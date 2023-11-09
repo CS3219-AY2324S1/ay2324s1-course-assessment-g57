@@ -229,10 +229,11 @@ function CodeEditor({ roomId }: { roomId: string }) {
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                             changeLang(e.target.value);
                         }}
+                        defaultValue={'python'}
                     >
                         <option value="csharp">C#</option>
                         <option value="cpp">C++</option>
-                        <option value="python" selected={isSelected()}>
+                        <option value="python">
                             Python
                         </option>
                         <option value="go">Go</option>

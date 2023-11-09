@@ -46,6 +46,11 @@ const TableComponent = ({ user }: QuestionTableProp) => {
         onOpen: onAddOpen,
         onClose: onAddClose,
     } = useDisclosure();
+    const {
+        isOpen: isDeleteOpen,
+        onOpen: onDeleteOpen,
+        onClose: onDeleteClose,
+    } = useDisclosure();
 
     function fetchQuestions() {
         fetch(`/api/questions`)
@@ -181,7 +186,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Question Details</ModalHeader>
+                    <ModalHeader>Edit question</ModalHeader>
                     <ModalBody>
                         <form
                             method="post"
@@ -234,18 +239,18 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Question Details</ModalHeader>
+                    <ModalHeader>Add a new question</ModalHeader>
                     <ModalBody>{/* TODO */}</ModalBody>
                     <ModalFooter>
                         <button
                             className="button is-outlined"
-                            onClick={onEditClose}
+                            onClick={onAddClose}
                         >
                             Close
                         </button>
                         <button
                             className="button is-outlined"
-                            onClick={handleEditSubmit}
+                            onClick={handleAddSubmit}
                         >
                             Submit
                         </button>
@@ -255,6 +260,9 @@ const TableComponent = ({ user }: QuestionTableProp) => {
 
             {/* Main content body */}
             <div className="table-container">
+            <button className="button is-link is-pulled-right" onClick={onAddOpen}>
+                Add question
+            </button>
                 <table className="table is-bordered is-striped is-hoverable is-fullwidth">
                     <thead>
                         <tr>
@@ -304,7 +312,8 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                                 <Image
                                                     src="/assets/edit.svg"
                                                     onClick={() => {
-                                                        sendToEditBox(val);
+                                                        // sendToEditBox(val);
+                                                        onEditOpen();
                                                     }}
                                                     width="25"
                                                     height="25"
@@ -314,9 +323,9 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                             <td>
                                                 <Image
                                                     src="/assets/trash.svg"
-                                                    onClick={() =>
-                                                        sendDelete(val.title)
-                                                    }
+                                                    onClick={() => {
+                                                        onDeleteOpen();
+                                                    }}
                                                     width="25"
                                                     height="25"
                                                     alt="delete"
