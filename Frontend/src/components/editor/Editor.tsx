@@ -136,10 +136,8 @@ function CodeEditor({ roomId }: { roomId: string }) {
 
         try {
             const response = await axios.request(options);
-            console.log('POST: ' + response.data.token);
             const testUrl =
                 'http://34.70.59.59/submissions/' + response.data.token;
-            console.log(testUrl);
 
             const options2 = {
                 method: 'GET',
@@ -151,13 +149,10 @@ function CodeEditor({ roomId }: { roomId: string }) {
 
             try {
                 const response2 = await axios.request(options2);
-                console.log('GET:' + response2.data.stdout);
                 if (response2.data.stderr == null) {
-                    console.log('A');
                     setLoading(false);
                     setEditorOutput(response2.data.stdout);
                 } else {
-                    console.log('B');
                     setLoading(false);
                     setEditorOutput(response2.data.stderr);
                 }
@@ -256,10 +251,11 @@ function CodeEditor({ roomId }: { roomId: string }) {
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                             changeLang(e.target.value);
                         }}
+                        defaultValue={'python'}
                     >
                         <option value="csharp">C#</option>
                         <option value="cpp">C++</option>
-                        <option value="python" selected={isSelected()}>
+                        <option value="python">
                             Python
                         </option>
                         <option value="go">Go</option>

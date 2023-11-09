@@ -1,5 +1,6 @@
 const dynamoose = require('dynamoose');
 const { UserModel } = require('../models/user-dynamo-model');
+const axios = require('axios');
 
 // Get all users
 const getUsers = async (req, res) => {
@@ -95,15 +96,59 @@ const updateUser = async (req, res) => {
 
 // Delete a user by ID
 const deleteUser = async (req, res) => {
-    await UserModel.delete(req.params.id)
-        .then(() => {
-            res.status(200).json({ message: 'User deleted successfully' });
-        })
-        .catch((err) => {
-            console.error('Unable to delete user', err);
-            console.error('Request:', req);
-            res.status(500).json({ error: 'Unable to delete user' });
+    console.log('Deleting User');
+    try {
+        const userInfoResponse = axios.request({
+            method: 'GET',
+            url: 'https://dev-r67hrnstb5x4ekjv.us.auth0.com/userinfo',
+            headers: {
+                Authorization: req.headers.authorization,
+            },
         });
+        var tokenOptions = {
+            method: 'POST',
+            url: `https://${process.env.DOMAIN}/oauth/token`,
+            headers: { 'content-type': 'application/x-www-form-urlencoded' },
+            data: new URLSearchParams({
+                grant_type: 'client_credentials',
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.CLIENT_SECRET,
+                audience: `https://${process.env.DOMAIN}/api/v2/`,
+            }),
+        };
+
+        const tokenResponse = axios.request(tokenOptions);
+
+        const userInfo = (await userInfoResponse).data;
+        const MGMT_API_ACCESS_TOKEN = (await tokenResponse).data?.access_token;
+
+        console.log('User Info:', userInfo);
+        console.log('MGMT_TOKEN', MGMT_API_ACCESS_TOKEN);
+        const options = {
+            method: 'DELETE',
+            url: `https://dev-r67hrnstb5x4ekjv.us.auth0.com/api/v2/users/${encodeURIComponent(
+                userInfo.sub
+            )}`,
+            headers: { authorization: `Bearer ${MGMT_API_ACCESS_TOKEN}` },
+        };
+
+        const response = await axios.request(options);
+        await UserModel.delete(req.params.id)
+            .then(() => {
+                console.log(
+                    `User ${userInfo.sub} deleted on Auth0 and DynamoDB`
+                );
+                res.status(200).json({ message: 'User deleted successfully' });
+            })
+            .catch((err) => {
+                console.error('Unable to delete user', err);
+                console.error('Request:', req);
+                res.status(500).json({ error: 'Unable to delete user' });
+            });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: 'Unable to delete user' });
+    }
 };
 
 module.exports = {

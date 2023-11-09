@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { Question } from '../../models/types';
 import { cleanTitle, restoreTitle } from '@/lib/utils';
 
-const baseURL = process.env.PROD_SERVER_BASE_URL || 'http://localhost:3002';
+const baseURL = process.env.PROD_SERVER_BASE_URL;
 
 export default withApiAuthRequired(async function handler(
     req: NextApiRequest,
@@ -53,6 +53,7 @@ export default withApiAuthRequired(async function handler(
                 (question: Question) =>
                     (question.title = restoreTitle(question.title))
             );
+
             res.status(200).json(questions);
         } else {
             console.log('Failed to fetch questions', response.status);
