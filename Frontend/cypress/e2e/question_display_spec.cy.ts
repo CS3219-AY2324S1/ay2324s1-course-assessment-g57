@@ -53,29 +53,37 @@ describe('The Question Display', () => {
         cy.get(
             "footer[class='chakra-modal__footer css-k0waxj'] > button[class='button is-outlined']"
         )
-            .contains("Close")
+            .contains('Close')
             .should('contain', 'Close')
             .click();
-        
-        cy.get("div[class='chakra-modal__content-container css-1xisyp4']").should("not.exist");
+
+        cy.get(
+            "div[class='chakra-modal__content-container css-1xisyp4']"
+        ).should('not.exist');
 
         // Check that the first question has title, category, complexity as required.
         // And check that it has a view details button and open the modal to view details.
-        cy.get("table > tbody > tr").eq(0).within(() => {
-            cy.get("td").eq(0).should("contain", questionTitle);
-            cy.get("td").eq(1).should("contain", questionCategory);
-            cy.get("td").eq(2).should("contain", questionComplexity);
-            cy.get("button[class='button']").should("contain", "View Detail").click();
-        });
+        cy.get('table > tbody > tr')
+            .eq(0)
+            .within(() => {
+                cy.get('td').eq(0).should('contain', questionTitle);
+                cy.get('td').eq(1).should('contain', questionCategory);
+                cy.get('td').eq(2).should('contain', questionComplexity);
+                cy.get("button[class='button']")
+                    .should('contain', 'View Detail')
+                    .click();
+            });
 
         cy.get(
             "footer[class='chakra-modal__footer css-k0waxj'] > button[class='button is-outlined']"
         )
-            .contains("Close")
+            .contains('Close')
             .should('contain', 'Close')
             .click();
-        
-        cy.get("div[class='chakra-modal__content-container css-1xisyp4']").should("not.exist");
+
+        cy.get(
+            "div[class='chakra-modal__content-container css-1xisyp4']"
+        ).should('not.exist');
 
         // Log the user out.
         cy.get('a[href*=logout]').click();

@@ -77,7 +77,7 @@ describe('Code Editor Component Test', () => {
         cy.get('div[class=view-line]')
             .should('be.visible')
             .should('contain', 'print');
-        
+
         // Check that the user can submit the code and that the result is printed to the terminal.
         cy.intercept('http://34.70.59.59/submissions/*').as('runCode');
         cy.get("button[class='chakra-button css-1ahd3gj'").click();

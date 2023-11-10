@@ -57,9 +57,11 @@ describe('Login Process Error Handling', () => {
 
         cy.url().should('include', 'dashboard');
 
-        cy.get("p[class='is-size-3']").should("be.visible").should("contain", "danieltestuser");
+        cy.get("p[class='is-size-3']")
+            .should('be.visible')
+            .should('contain', 'danieltestuser');
 
-        cy.get("table").should("be.visible");
+        cy.get('table').should('be.visible');
 
         cy.getCookie('appSession').should('exist');
 
