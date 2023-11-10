@@ -28,7 +28,7 @@ describe('The Profile Page', () => {
 
         cy.get("p[class='is-size-3']")
             .should('be.visible')
-            .contains("danieltestuser", { matchCase: false });
+            .contains('danieltestuser', { matchCase: false });
 
         cy.get('table').should('be.visible');
 
@@ -54,9 +54,9 @@ describe('The Profile Page', () => {
                     'be.visible'
                 );
             });
-        
+
         // Navigate back to the dashboard and then log the user out.
-        cy.get("a[href*='dashboard']").should("be.visible").click();
+        cy.get("a[href*='dashboard']").should('be.visible').click();
 
         cy.url().should('include', 'dashboard');
 
@@ -68,7 +68,7 @@ describe('The Profile Page', () => {
     it('allows the current user to edit their display name and delete their account', () => {
         // Get necessary environment variables.
         const testUsername = Cypress.env('testUsername');
-        const testUsername2 = testUsername + "2";
+        const testUsername2 = testUsername + '2';
 
         // Log the user in.
         cy.visit('');
@@ -94,7 +94,7 @@ describe('The Profile Page', () => {
 
         cy.get("p[class='is-size-3']")
             .should('be.visible')
-            .contains("danieltestuser", { matchCase: false });
+            .contains('danieltestuser', { matchCase: false });
 
         cy.get('table').should('be.visible');
 
@@ -117,15 +117,21 @@ describe('The Profile Page', () => {
                     'be.visible'
                 );
             });
-        
+
         // Edit the current user's display name.
-        cy.get("button[class='button is-primary']").should("be.visible").click();
+        cy.get("button[class='button is-primary']")
+            .should('be.visible')
+            .click();
 
-        cy.get("input[id=displayName]").clear().type(`${testUsername2}`);
+        cy.get('input[id=displayName]').clear().type(`${testUsername2}`);
 
-        cy.get("footer[class='chakra-modal__footer css-k0waxj'] > button[class='button is-primary']").click();
+        cy.get(
+            "footer[class='chakra-modal__footer css-k0waxj'] > button[class='button is-primary']"
+        ).click();
 
-        cy.get("div[class='chakra-modal__content-container css-1xisyp4']").should('not.exist');
+        cy.get(
+            "div[class='chakra-modal__content-container css-1xisyp4']"
+        ).should('not.exist');
 
         // Check that the display name is updated.
         cy.get('div[class=columns] > div[class=column]')
@@ -135,21 +141,29 @@ describe('The Profile Page', () => {
                     'be.visible'
                 );
             });
-        
+
         // Change the display name back.
-        cy.get("button[class='button is-primary']").should("be.visible").click();
+        cy.get("button[class='button is-primary']")
+            .should('be.visible')
+            .click();
 
-        cy.get("input[id=displayName]").clear().type(`${testUsername}`);
-    
-        cy.get("footer[class='chakra-modal__footer css-k0waxj'] > button[class='button is-primary']").click();
+        cy.get('input[id=displayName]').clear().type(`${testUsername}`);
 
-        cy.get("div[class='chakra-modal__content-container css-1xisyp4']").should('not.exist');
+        cy.get(
+            "footer[class='chakra-modal__footer css-k0waxj'] > button[class='button is-primary']"
+        ).click();
+
+        cy.get(
+            "div[class='chakra-modal__content-container css-1xisyp4']"
+        ).should('not.exist');
 
         // Check that there is an option for users to delete their account.
-        cy.get("button[class='button is-pulled-right is-danger']").should("be.visible");
+        cy.get("button[class='button is-pulled-right is-danger']").should(
+            'be.visible'
+        );
 
         // Navigate back to the dashboard and then log the user out.
-        cy.get("a[href*='dashboard']").should("be.visible").click();
+        cy.get("a[href*='dashboard']").should('be.visible').click();
 
         cy.url().should('include', 'dashboard');
 
