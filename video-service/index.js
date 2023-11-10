@@ -10,7 +10,11 @@ const app = express();
 app.use(
     cors({
         // Update when deploy
-        origin: process.env.CLIENT_URL || 'http://localhost:3000',
+        origin: [
+            process.env.CLIENT_URL,
+            'http://localhost:3000',
+            'http://localhost:8080',
+        ],
     })
 );
 app.options('*', cors());
