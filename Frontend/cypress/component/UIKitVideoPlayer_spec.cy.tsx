@@ -27,6 +27,6 @@ describe('Video Player Component Test', () => {
     });
 
     it('allows a user to use the video call functionality', () => {
-        cy.mount(<ChakraBaseProvider></ChakraBaseProvider>);
+        cy.mount(<ChakraBaseProvider theme={theme}></ChakraBaseProvider>);
     });
 });
