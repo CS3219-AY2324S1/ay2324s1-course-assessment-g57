@@ -18,6 +18,7 @@ export default withApiAuthRequired(async function handler(
 
     if (req.method == 'POST') {
         const request = JSON.parse(req.body);
+        console.log('POST req body: ', request);
         reqHeaders['Content-Type'] = 'application/json';
         const response = await fetch(url, {
             method: 'POST',

@@ -23,6 +23,7 @@ import {
     Textarea,
     useDisclosure,
 } from '@chakra-ui/react';
+import AddQuestionModal from './questions/AddQuestionModal';
 
 type QuestionTableProp = {
     user?: any;
@@ -112,7 +113,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
     }
 
     async function handleAddSubmit() {
-        fetch(`/api/questions/${title}`, {
+        fetch(`/api/questions/`, {
             method: 'POST',
             body: JSON.stringify({
                 title: title,
@@ -270,7 +271,8 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             </Modal>
 
             {/* Add Question Modal */}
-            <Modal
+            <AddQuestionModal isOpen={isAddOpen} onClose={onAddClose} />
+            {/* <Modal
                 isOpen={isAddOpen}
                 onClose={onAddClose}
                 scrollBehavior={'inside'}
@@ -333,7 +335,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                         </Button>
                     </ModalFooter>
                 </ModalContent>
-            </Modal>
+            </Modal> */}
             {/* End of Add new question modal */}
 
             <div className="table-container">
@@ -345,7 +347,8 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                         >
                             Add question
                         </button>
-                    </>) : (
+                    </>
+                ) : (
                     <></>
                 )}
 

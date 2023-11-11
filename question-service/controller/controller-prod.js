@@ -153,8 +153,9 @@ const updateQuestion = async (req, res) => {
 const deleteQuestion = async (req, res) => {
     try {
         const question = await QuestionModel.get(req.params.id);
-
+        console.log(question);
         if (question) {
+            console.log(req.params.id);
             await question.delete();
             res.status(200).json({ message: 'Question deleted successfully' });
         } else {
