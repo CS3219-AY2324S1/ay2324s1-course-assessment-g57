@@ -8,7 +8,6 @@ npm install
 
 This project uses NodeJS version v18.16.1.
 
-
 ### Setup RabbitMQ
 
 To install RabbitMQ on Windows, follow [these](https://www.rabbitmq.com/install-windows.html) installation instructions. For other OSes, follow the relevant instructions [here](https://www.rabbitmq.com/download.html).
@@ -23,14 +22,27 @@ rabbitmq-diagnostics status
 
 For this project, we will assume RabbitMQ has been installed using Chocolatey and configured with the **default settings**.
 
-
 Points to note:
-- RabbitMQ servers (also called nodes) can be managed by [CLI tools](https://www.rabbitmq.com/cli.html) or using a [Management Plugin](https://www.rabbitmq.com/management.html).
 
-- The CLI tools use a shared secret file, called the Erlang cookie, to authenticate with a RabbitMQ node. For Windows users, if your CLI tools cannot authenticate with the RabbitMQ node after installation, you may need to manually copy the Erlang cookie from `C:\Windows\system32\config\systemprofile\.erlang.cookie` to `C:\Users\%USERNAME%\.erlang.cookie`. More information about the Erlang cookie can be found [here](https://www.rabbitmq.com/install-windows.html#cli-cookie-file-location).
+-   RabbitMQ servers (also called nodes) can be managed by [CLI tools](https://www.rabbitmq.com/cli.html) or using a [Management Plugin](https://www.rabbitmq.com/management.html).
 
+-   The CLI tools use a shared secret file, called the Erlang cookie, to authenticate with a RabbitMQ node. For Windows users, if your CLI tools cannot authenticate with the RabbitMQ node after installation, you may need to manually copy the Erlang cookie from `C:\Windows\system32\config\systemprofile\.erlang.cookie` to `C:\Users\%USERNAME%\.erlang.cookie`. More information about the Erlang cookie can be found [here](https://www.rabbitmq.com/install-windows.html#cli-cookie-file-location).
 
-## Run Matching Service
+## Run Matching Service with Docker (No need to install RabbitMQ)
+
+Ensure your current working directory is the `matching-service` folder.
+
+```
+docker build -t matching-service .
+docker-compose build
+```
+
+```
+docker run -p 4000:4000 -p 5672:5672 -d matching-service
+docker-compose up
+```
+
+## Run Matching Service locally
 
 Ensure your current working directory is the `matching-service` folder.
 
@@ -43,7 +55,6 @@ node ./controllerServer.js
 ```
 node ./matchingServer.js
 ```
-
 
 ## Test Matching Service
 

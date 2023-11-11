@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+    rabbitmq:
+        image: rabbitmq:latest
+        container_name: rabbitmq
+        ports:
+            - '5672:5672' # RabbitMQ port
+        networks:
+            - rabbitmq_nodejs
+    matching-service:
+        build:
+            context: .
+            dockerfile: Dockerfile # Path to your Node.js Dockerfile
+        container_name: matching-service
+        ports:
+            - '4000:4000' # Your Node.js app port
+        depends_on:
+            - rabbitmq # Ensure RabbitMQ is started before your app
+        networks:
+            - rabbitmq_nodejs
+
+networks:
+    rabbitmq_nodejs:
+        driver: bridge
