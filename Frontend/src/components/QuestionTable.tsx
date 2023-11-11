@@ -11,6 +11,7 @@ import {
     FormControl,
     FormLabel,
     Input,
+    Link,
     Modal,
     ModalBody,
     ModalContent,
@@ -28,11 +29,11 @@ type QuestionTableProp = {
 };
 
 const TableComponent = ({ user }: QuestionTableProp) => {
-    const [currentQuestionEditJson, setCurrentQuestionEditJson] =
-        React.useState<string>('');
-    const [currentQuestionAddJson, setQuestionAddJson] = React.useState<string>(
-        JSON.stringify(defaultAddQuestionForm(), null, 4)
-    );
+    const [title, setTitle] = React.useState<string>('');
+    const [difficulty, setDifficulty] = React.useState<string>('easy');
+    const [categories, setCategories] = React.useState<string[]>([]);
+    const [description, setDescription] = React.useState<string>('');
+    const [link, setLink] = React.useState<string>('');
     const [questions, setQuestions] = React.useState<Question[]>([
         defaultQuestion(),
     ]);
@@ -51,6 +52,25 @@ const TableComponent = ({ user }: QuestionTableProp) => {
         onOpen: onAddOpen,
         onClose: onAddClose,
     } = useDisclosure();
+    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.target.value);
+    };
+    const handleDifficultyChange = (
+        e: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        setDifficulty(e.target.value);
+    };
+    const handleCategoriesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCategories(e.target.value.split(','));
+    };
+    const handleDescriptionChange = (
+        e: React.ChangeEvent<HTMLTextAreaElement>
+    ) => {
+        setDescription(e.target.value);
+    };
+    const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLink(e.target.value);
+    };
 
     function fetchQuestions() {
         fetch(`/api/questions`)
@@ -74,53 +94,38 @@ const TableComponent = ({ user }: QuestionTableProp) => {
         fetchQuestions();
     }, []);
 
-    // TODO: fetch question details
-    async function fetchQnDetails(title: string) {
-        fetch(`/api/questions/${title}`).then((response) => {
-            if (!response.ok) {
-                throw new Error(response.statusText);
-            }
-            return response.json();
-        });
-    }
-
-    function sendToEditBox(question: Question) {
-        // send json to textbox
-        setCurrentQuestionEditJson(JSON.stringify(question, null, 4));
-    }
-
     async function handleEditSubmit() {
-        try {
-            // try to parse the string in currentQuestionEditJson
-            const question: Question = JSON.parse(currentQuestionEditJson);
-            // const _ = await client.updateQuestion(question);
-            const res = await fetch(`/api/questions/${question.title}`, {
-                method: 'PUT',
-                body: currentQuestionEditJson,
+        fetch(`/api/questions/${title}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                title: title,
+                difficulty: difficulty,
+                categories: categories,
+                description: description,
+                link: link,
+            }),
+        })
+            .then((response) => response.json())
+            .catch((error) => {
+                console.error('Error updating question data:', error);
             });
-            const jsonRes = await res.json();
-            setCurrentQuestionEditJson(jsonRes);
-            console.log(`Updated question: ${question.title}!`);
-            return jsonRes;
-        } catch (err: any) {
-            console.log(`Error updating questions: ${err}`);
-        }
     }
 
     async function handleAddSubmit() {
-        try {
-            const res = await fetch(`/api/questions`, {
-                method: 'POST',
-                body: currentQuestionAddJson,
+        fetch(`/api/questions/${title}`, {
+            method: 'POST',
+            body: JSON.stringify({
+                title: title,
+                difficulty: difficulty,
+                categories: categories,
+                description: description,
+                link: link,
+            }),
+        })
+            .then((response) => response.json())
+            .catch((error) => {
+                console.error('Error adding question:', error);
             });
-            setQuestionAddJson(
-                JSON.stringify(defaultAddQuestionForm(), null, 4)
-            );
-            console.log(`Added question!`);
-            return await res.json();
-        } catch (err: any) {
-            console.log(err);
-        }
     }
 
     // OnClick Delete function
@@ -144,14 +149,25 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 isOpen={isViewOpen}
                 onClose={onViewClose}
                 scrollBehavior={'inside'}
+                size={'xl'}
                 isCentered
                 closeOnOverlayClick={true}
             >
-                <ModalOverlay />
+                <ModalOverlay bg="blackAlpha.700" backdropFilter="blur(3px)" />
                 <ModalContent>
-                    <ModalHeader>Question Details</ModalHeader>
+                    <ModalHeader>{title}</ModalHeader>
                     <ModalBody>
-                        {/* <div dangerouslySetInnerHTML={{ __html: questions.description }}></div> */}
+                        <p>
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: description,
+                                }}
+                            ></div>
+                        </p>
+                        <br />
+                        <p className="has-text-weight-bold">
+                            <Link href={link}>{link}</Link>
+                        </p>
                     </ModalBody>
                     <ModalFooter>
                         <button
@@ -169,26 +185,29 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 isOpen={isEditOpen}
                 onClose={onEditClose}
                 scrollBehavior={'inside'}
+                size={'xl'}
                 isCentered
+                closeOnOverlayClick={true}
             >
-                <ModalOverlay />
+                <ModalOverlay bg="blackAlpha.700" backdropFilter="blur(3px)" />
                 <ModalContent>
                     <ModalHeader>Edit question</ModalHeader>
                     <ModalBody>
-                        {/* 
-                                    value={currentQuestionEditJson}
-                                    onChange={(e) => {
-                                        setCurrentQuestionEditJson(
-                                            e.target.value
-                                        );
-                                    }}*/}
                         <FormControl isRequired>
                             <FormLabel>Title</FormLabel>
-                            <Input placeholder="Question Title" />
+                            <Input
+                                placeholder="Question Title"
+                                value={title}
+                                onChange={handleTitleChange}
+                            />
                         </FormControl>
                         <FormControl isRequired>
                             <FormLabel>Difficulty</FormLabel>
-                            <Select defaultValue={'easy'}>
+                            <Select
+                                defaultValue={'easy'}
+                                value={difficulty}
+                                onChange={handleDifficultyChange}
+                            >
                                 <option value="easy">Easy</option>
                                 <option value="medium">Medium</option>
                                 <option value="hard">Hard</option>
@@ -196,18 +215,30 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                         </FormControl>
                         <FormControl>
                             <FormLabel>Categories</FormLabel>
-                            <Input placeholder="Include categories seperated by commas" />
+                            <Input
+                                placeholder="Include categories seperated by commas"
+                                value={categories}
+                                onChange={handleCategoriesChange}
+                            />
                         </FormControl>
                         <FormControl isRequired>
                             <FormLabel>Description</FormLabel>
                             <Textarea
                                 placeholder="Question Description"
                                 size={'lg'}
+                                value={description}
+                                rows={20}
+                                height={'auto'}
+                                onChange={handleDescriptionChange}
                             ></Textarea>
                         </FormControl>
                         <FormControl>
                             <FormLabel>Link</FormLabel>
-                            <Input placeholder="https://leetcode.com/problems/example" />
+                            <Input
+                                placeholder="https://leetcode.com/problems/example"
+                                value={link}
+                                onChange={handleLinkChange}
+                            />
                         </FormControl>
                     </ModalBody>
                     <ModalFooter>
@@ -223,10 +254,12 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                             type="submit"
                             colorScheme="blue"
                             disabled={
-                                !isValidJsonString(currentQuestionEditJson)
+                                title === '' ||
+                                difficulty === '' ||
+                                description === ''
                             }
                             onClick={async () => {
-                                await handleEditSubmit();
+                                handleEditSubmit();
                                 onEditClose();
                             }}
                         >
@@ -243,18 +276,19 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 scrollBehavior={'inside'}
                 size={'xl'}
                 isCentered
+                closeOnOverlayClick={true}
             >
-                <ModalOverlay />
+                <ModalOverlay bg="blackAlpha.700" backdropFilter="blur(3px)" />
                 <ModalContent>
                     <ModalHeader>Add a new question</ModalHeader>
                     <ModalBody>
                         <FormControl isRequired>
                             <FormLabel>Title</FormLabel>
-                            <Input placeholder="Question Title" />
+                            <Input placeholder="Question Title" onChange={handleTitleChange} />
                         </FormControl>
                         <FormControl isRequired>
                             <FormLabel>Difficulty</FormLabel>
-                            <Select defaultValue={'easy'}>
+                            <Select defaultValue={'easy'} onChange={handleDifficultyChange}>
                                 <option value="easy">Easy</option>
                                 <option value="medium">Medium</option>
                                 <option value="hard">Hard</option>
@@ -262,18 +296,21 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                         </FormControl>
                         <FormControl>
                             <FormLabel>Categories</FormLabel>
-                            <Input placeholder="Include categories seperated by commas" />
+                            <Input placeholder="Include categories seperated by commas" onChange={handleCategoriesChange} />
                         </FormControl>
                         <FormControl isRequired>
                             <FormLabel>Description</FormLabel>
                             <Textarea
                                 placeholder="Question Description"
                                 size={'lg'}
+                                rows={20}
+                                height={'auto'}
+                                onChange={handleDescriptionChange}
                             ></Textarea>
                         </FormControl>
                         <FormControl>
                             <FormLabel>Link</FormLabel>
-                            <Input placeholder="https://leetcode.com/problems/example" />
+                            <Input placeholder="https://leetcode.com/problems/example" onChange={handleLinkChange} />
                         </FormControl>
                     </ModalBody>
                     <ModalFooter>
@@ -300,21 +337,24 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             {/* End of Add new question modal */}
 
             <div className="table-container">
-                <button
-                    className="button is-link is-pulled-right"
-                    onClick={onAddOpen}
-                >
-                    Add question
-                </button>
+                {user?.peerprepRoles?.[0] === 'Admin' ? (
+                    <>
+                        <button
+                            className="button is-link is-pulled-right"
+                            onClick={onAddOpen}
+                        >
+                            Add question
+                        </button>
+                    </>) : (
+                    <></>
+                )}
+
                 <table className="table is-bordered is-striped is-hoverable is-fullwidth">
                     <thead>
                         <tr>
-                            {/* <th>id</th> */}
                             <th>Title</th>
                             <th>Category</th>
                             <th>Complexity</th>
-                            {/* <th>Description</th> */}
-                            {/* <th>Link</th> */}
                             <th>View Details</th>
                             {user?.peerprepRoles?.[0] === 'Admin' ? (
                                 <>
@@ -329,7 +369,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                     <tbody>
                         {questions.map((val) => {
                             return (
-                                <tr key={val.title}>
+                                <tr key={val._id}>
                                     <td>{val.title}</td>
                                     <td>
                                         {val.categories.map((s) => (
@@ -337,14 +377,15 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                         ))}
                                     </td>
                                     <td>{val.complexity}</td>
-                                    {/* <td>
-                                        <div dangerouslySetInnerHTML={{ __html: val.description }}></div>
-                                    </td> */}
-                                    {/* <td>{val.link}</td> */}
                                     <td>
                                         <button
-                                            className="button"
-                                            onClick={onViewOpen}
+                                            className="button is-outlined is-info"
+                                            onClick={() => {
+                                                onViewOpen();
+                                                setDescription(val.description);
+                                                setLink(val.link);
+                                                setTitle(val.title);
+                                            }}
                                         >
                                             View Details
                                         </button>
@@ -355,8 +396,18 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                                 <img
                                                     src="/assets/edit.svg"
                                                     onClick={() => {
-                                                        sendToEditBox(val);
                                                         onEditOpen();
+                                                        setDescription(
+                                                            val.description
+                                                        );
+                                                        setLink(val.link);
+                                                        setTitle(val.title);
+                                                        setDifficulty(
+                                                            val.complexity
+                                                        );
+                                                        setCategories(
+                                                            val.categories
+                                                        );
                                                     }}
                                                     style={{ width: 25 }}
                                                 />
@@ -380,88 +431,6 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                     </tbody>
                 </table>
             </div>
-            {user?.peerprepRoles?.[0] === 'Admin' ? (
-                <>
-                    <form
-                        method="post"
-                        onSubmit={async () => {
-                            await handleEditSubmit();
-                        }}
-                    >
-                        <section>
-                            <textarea
-                                id="textareaedit"
-                                className="textarea is-normal"
-                                rows={10}
-                                placeholder="json here"
-                                value={currentQuestionEditJson}
-                                onChange={(e) => {
-                                    setCurrentQuestionEditJson(e.target.value);
-                                }}
-                            ></textarea>
-                        </section>
-
-                        <section>
-                            <button
-                                className="button is-primary"
-                                type="submit"
-                                disabled={
-                                    !isValidJsonString(currentQuestionEditJson)
-                                }
-                            >
-                                Submit
-                            </button>
-                        </section>
-                    </form>
-
-                    <section>
-                        <h1 className="is-size-2">Add Question</h1>
-                        <form
-                            method="post"
-                            onSubmit={async () => {
-                                await handleAddSubmit();
-                            }}
-                        >
-                            <section>
-                                <textarea
-                                    id="textareaedit"
-                                    className="textarea is-normal"
-                                    rows={10}
-                                    placeholder="json here"
-                                    value={currentQuestionAddJson}
-                                    onChange={(e) => {
-                                        setQuestionAddJson(e.target.value);
-                                    }}
-                                ></textarea>
-                            </section>
-
-                            <section>
-                                <button
-                                    className="button is-primary"
-                                    type="submit"
-                                    disabled={
-                                        !isValidJsonString(
-                                            currentQuestionAddJson
-                                        ) ||
-                                        (isValidJsonString(
-                                            currentQuestionAddJson
-                                        ) &&
-                                            hasEmptyValues(
-                                                JSON.parse(
-                                                    currentQuestionAddJson
-                                                )
-                                            ))
-                                    }
-                                >
-                                    Submit
-                                </button>
-                            </section>
-                        </form>
-                    </section>
-                </>
-            ) : (
-                <></>
-            )}
         </>
     );
 };

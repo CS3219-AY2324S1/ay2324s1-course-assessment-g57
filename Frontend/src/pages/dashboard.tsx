@@ -40,11 +40,11 @@ const Dashboard = ({ user, isLoading }: QuestionProps) => {
                         </section>
 
                         <section className="section">
-                            <h2 className="is-size-4">Match with a Peer!</h2>
+                            <h1 className="is-size-4">Match with a Peer!</h1>
                             <MatchControls />
                         </section>
 
-                        <Divider />
+                        {/* <Divider /> */}
 
                         <section className="section">
                             <h1 className="is-size-3">Questions Database</h1>
