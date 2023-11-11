@@ -2,10 +2,10 @@ import React from 'react';
 import {
     Question,
     // AddQuestionForm,
-    defaultAddQuestionForm,
+    // defaultAddQuestionForm,
     defaultQuestion,
 } from '../models/types';
-import { isValidJsonString, hasEmptyValues } from '@/lib/utils';
+// import { isValidJsonString, hasEmptyValues } from '@/lib/utils';
 import {
     Button,
     FormControl,
@@ -31,7 +31,7 @@ type QuestionTableProp = {
 
 const TableComponent = ({ user }: QuestionTableProp) => {
     const [title, setTitle] = React.useState<string>('');
-    const [difficulty, setDifficulty] = React.useState<string>('easy');
+    const [complexity, setComplexity] = React.useState<string>('easy');
     const [categories, setCategories] = React.useState<string[]>([]);
     const [description, setDescription] = React.useState<string>('');
     const [link, setLink] = React.useState<string>('');
@@ -59,7 +59,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
     const handleDifficultyChange = (
         e: React.ChangeEvent<HTMLSelectElement>
     ) => {
-        setDifficulty(e.target.value);
+        setComplexity(e.target.value);
     };
     const handleCategoriesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCategories(e.target.value.split(','));
@@ -100,7 +100,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             method: 'PUT',
             body: JSON.stringify({
                 title: title,
-                difficulty: difficulty,
+                complexity: complexity,
                 categories: categories,
                 description: description,
                 link: link,
@@ -112,31 +112,31 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             });
     }
 
-    async function handleAddSubmit() {
-        fetch(`/api/questions/`, {
-            method: 'POST',
-            body: JSON.stringify({
-                title: title,
-                difficulty: difficulty,
-                categories: categories,
-                description: description,
-                link: link,
-            }),
-        })
-            .then((response) => response.json())
-            .catch((error) => {
-                console.error('Error adding question:', error);
-            });
-    }
+    // async function handleAddSubmit() {
+    //     fetch(`/api/questions/`, {
+    //         method: 'POST',
+    //         body: JSON.stringify({
+    //             title: title,
+    //             complexity: complexity,
+    //             categories: categories,
+    //             description: description,
+    //             link: link,
+    //         }),
+    //     })
+    //         .then((response) => response.json())
+    //         .catch((error) => {
+    //             console.error('Error adding question:', error);
+    //         });
+    // }
 
     // OnClick Delete function
-    async function sendDelete(title: string) {
+    async function sendDelete(deleteTitle: string) {
         try {
-            const res = await fetch(`/api/questions/${title}`, {
+            const res = await fetch(`/api/questions/${deleteTitle}`, {
                 method: 'DELETE',
             });
 
-            console.log(`Deleted question: ${title}`);
+            console.log(`Deleted question: ${deleteTitle}`);
             return await res.json();
         } catch (e: any) {
             console.log(e);
@@ -203,10 +203,10 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                             />
                         </FormControl>
                         <FormControl isRequired>
-                            <FormLabel>Difficulty</FormLabel>
+                            <FormLabel>Complexity</FormLabel>
                             <Select
                                 defaultValue={'easy'}
-                                value={difficulty}
+                                value={complexity}
                                 onChange={handleDifficultyChange}
                             >
                                 <option value="easy">Easy</option>
@@ -256,7 +256,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                             colorScheme="blue"
                             disabled={
                                 title === '' ||
-                                difficulty === '' ||
+                                complexity === '' ||
                                 description === ''
                             }
                             onClick={async () => {
@@ -289,7 +289,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                             <Input placeholder="Question Title" onChange={handleTitleChange} />
                         </FormControl>
                         <FormControl isRequired>
-                            <FormLabel>Difficulty</FormLabel>
+                            <FormLabel>Complexity</FormLabel>
                             <Select defaultValue={'easy'} onChange={handleDifficultyChange}>
                                 <option value="easy">Easy</option>
                                 <option value="medium">Medium</option>
@@ -405,7 +405,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                                         );
                                                         setLink(val.link);
                                                         setTitle(val.title);
-                                                        setDifficulty(
+                                                        setComplexity(
                                                             val.complexity
                                                         );
                                                         setCategories(
