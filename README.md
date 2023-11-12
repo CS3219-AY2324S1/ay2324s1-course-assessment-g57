@@ -4,7 +4,7 @@ Project: ay2324s1-course-assessment-g57 created by GitHub Classroom
 
 Peerprep is a collaborative platform for students to practice interview questions and receive feedback from their peers. It is a platform for students to learn from each other and improve their coding skills for potential interview questions.
 
-Quick Links:
+<b>Quick Links:</b>
 
 -   [Services](#services)
 -   [Setup](#setup)
