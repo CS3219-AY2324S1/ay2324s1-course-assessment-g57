@@ -154,7 +154,6 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                         <p>Are you sure you want to delete your account?</p>
                         <p>
                             This action is <strong>IRREVERSIBLE!</strong>
-                            {user.sub}
                         </p>
                     </ModalBody>
 

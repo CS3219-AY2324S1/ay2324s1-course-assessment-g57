@@ -3,7 +3,6 @@ import Layout from '../components/Layout';
 import MatchControls from '@/components/Matching/MatchControls';
 import QuestionTable from '../components/QuestionTable';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
-import { Divider } from '@chakra-ui/react';
 
 type QuestionProps = {
     user?: any;

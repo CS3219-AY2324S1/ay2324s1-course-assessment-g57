@@ -1,11 +1,8 @@
 import React from 'react';
 import {
     Question,
-    // AddQuestionForm,
-    // defaultAddQuestionForm,
     defaultQuestion,
 } from '../models/types';
-// import { isValidJsonString, hasEmptyValues } from '@/lib/utils';
 import {
     Button,
     FormControl,
@@ -111,23 +108,6 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 console.error('Error updating question data:', error);
             });
     }
-
-    // async function handleAddSubmit() {
-    //     fetch(`/api/questions/`, {
-    //         method: 'POST',
-    //         body: JSON.stringify({
-    //             title: title,
-    //             complexity: complexity,
-    //             categories: categories,
-    //             description: description,
-    //             link: link,
-    //         }),
-    //     })
-    //         .then((response) => response.json())
-    //         .catch((error) => {
-    //             console.error('Error adding question:', error);
-    //         });
-    // }
 
     // OnClick Delete function
     async function sendDelete(deleteTitle: string) {
@@ -272,71 +252,6 @@ const TableComponent = ({ user }: QuestionTableProp) => {
 
             {/* Add Question Modal */}
             <AddQuestionModal isOpen={isAddOpen} onClose={onAddClose} />
-            {/* <Modal
-                isOpen={isAddOpen}
-                onClose={onAddClose}
-                scrollBehavior={'inside'}
-                size={'xl'}
-                isCentered
-                closeOnOverlayClick={true}
-            >
-                <ModalOverlay bg="blackAlpha.700" backdropFilter="blur(3px)" />
-                <ModalContent>
-                    <ModalHeader>Add a new question</ModalHeader>
-                    <ModalBody>
-                        <FormControl isRequired>
-                            <FormLabel>Title</FormLabel>
-                            <Input placeholder="Question Title" onChange={handleTitleChange} />
-                        </FormControl>
-                        <FormControl isRequired>
-                            <FormLabel>Complexity</FormLabel>
-                            <Select defaultValue={'easy'} onChange={handleDifficultyChange}>
-                                <option value="easy">Easy</option>
-                                <option value="medium">Medium</option>
-                                <option value="hard">Hard</option>
-                            </Select>
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Categories</FormLabel>
-                            <Input placeholder="Include categories seperated by commas" onChange={handleCategoriesChange} />
-                        </FormControl>
-                        <FormControl isRequired>
-                            <FormLabel>Description</FormLabel>
-                            <Textarea
-                                placeholder="Question Description"
-                                size={'lg'}
-                                rows={20}
-                                height={'auto'}
-                                onChange={handleDescriptionChange}
-                            ></Textarea>
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Link</FormLabel>
-                            <Input placeholder="https://leetcode.com/problems/example" onChange={handleLinkChange} />
-                        </FormControl>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button
-                            className="button is-outlined"
-                            onClick={onAddClose}
-                            mr={3}
-                        >
-                            Close
-                        </Button>
-                        <Button
-                            className="button is-outlined"
-                            onClick={() => {
-                                handleAddSubmit();
-                                onAddClose();
-                            }}
-                            colorScheme="blue"
-                        >
-                            Submit
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal> */}
-            {/* End of Add new question modal */}
 
             <div className="table-container">
                 {user?.peerprepRoles?.[0] === 'Admin' ? (
