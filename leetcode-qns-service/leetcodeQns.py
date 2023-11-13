@@ -128,4 +128,3 @@ fetch_and_process_questions(easy_questions, "Easy", google_logger)
 fetch_and_process_questions(medium_questions, "Medium", google_logger),
 
 fetch_and_process_questions(hard_questions, "Hard", google_logger)
-

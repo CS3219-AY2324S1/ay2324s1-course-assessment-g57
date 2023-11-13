@@ -8,4 +8,3 @@ services:
       - ./Hard.pkl:/app/Hard.pkl
     ports:
       - "8080:80"
-      
