@@ -43,22 +43,62 @@ const getQuestions = async (req, res) => {
 
 // Get a question by ID
 const getQuestionById = async (req, res) => {
+    const params = {
+        TableName: 'questions',
+        Key: {
+            title: req.params.title,
+        },
+    };
     try {
-        const question = await QuestionModel.get(req.params.id);
+        // const question = await QuestionModel.get(req.params.id);
+        // res.status(200).json(question);
+        const { Item: question } = await docClient.send(new GetCommand(params));
+        if (!question) {
+            res.status(404).json({ error: 'Question not found' });
+            return;
+        }
+
         res.status(200).json(question);
     } catch (err) {
-        console.error('Unable to read item', err);
+        console.error('Unable to get question', err);
         res.status(500).json({ error: 'Unable to get question' });
     }
 };
 
 const getQuestionByComplexity = async (req, res) => {
+    // try {
+    //     const questions = await QuestionModel.scan('complexity')
+    //         .eq(req.params.complexity)
+    //         .exec();
+    //     if (questions.length === 0) {
+    //         // Handle the case when there are no questions with the requested complexity.
+    //         res.status(404).json({
+    //             error: 'No questions found for the requested complexity',
+    //         });
+    //         return;
+    //     }
+
+    //     const randomIndex = Math.floor(Math.random() * questions.length);
+    //     const randomQuestion = questions[randomIndex];
+
+    //     res.status(200).json(randomQuestion);
+    // } catch (err) {
+    //     console.error('Unable to read item', err);
+    //     res.status(500).json({ error: 'Unable to get question' });
+    // }
+    const params = {
+        TableName: 'questions',
+        FilterExpression: 'complexity = :complexity',
+        ExpressionAttributeValues: {
+            ':complexity': req.params.complexity,
+        },
+    };
+
     try {
-        const questions = await QuestionModel.scan('complexity')
-            .eq(req.params.complexity)
-            .exec();
+        const command = new ScanCommand(params);
+        const { Items: questions } = await client.send(command);
+
         if (questions.length === 0) {
-            // Handle the case when there are no questions with the requested complexity.
             res.status(404).json({
                 error: 'No questions found for the requested complexity',
             });
@@ -70,7 +110,7 @@ const getQuestionByComplexity = async (req, res) => {
 
         res.status(200).json(randomQuestion);
     } catch (err) {
-        console.error('Unable to read item', err);
+        console.error('Unable to scan items', err);
         res.status(500).json({ error: 'Unable to get question' });
     }
 };
@@ -149,11 +189,10 @@ const createQuestion = async (req, res) => {
 
 // Update an existing question
 const updateQuestion = async (req, res) => {
-    const { id } = req.params;
     const { title, categories, complexity, description, link } = req.body;
 
     try {
-        const question = await QuestionModel.get(id);
+        const question = await QuestionModel.get(req.params.title);
 
         if (question) {
             question.title = title;
@@ -176,7 +215,7 @@ const updateQuestion = async (req, res) => {
 // Delete a question by ID
 const deleteQuestion = async (req, res) => {
     try {
-        const question = await QuestionModel.get(req.params.id);
+        const question = await QuestionModel.get(req.params.title);
 
         if (question) {
             await question.delete();
