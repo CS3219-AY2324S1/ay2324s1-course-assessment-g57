@@ -15,15 +15,12 @@ describe('Video Player Component Test', () => {
 
         // Check that the video service can be accessed from the collaboration page and that users
         // can get a token for the video chat.
-        // cy.intercept(
-        //     'https://34k0nfj43f.execute-api.ap-southeast-1.amazonaws.com/dev/*'
-        // ).as('getToken');
+        cy.intercept(
+            'https://34k0nfj43f.execute-api.ap-southeast-1.amazonaws.com/dev/*'
+        ).as("getToken");
         cy.get("button[class='button is-link']", { timeout: 10000 }).should(
             'be.visible'
         );
-        // cy.wait('@getToken').then(
-        //     (intercept) => expect(intercept?.response).to.exist
-        // );
     });
 
     it('allows a user to use the video call functionality', () => {
