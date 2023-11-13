@@ -1,20 +1,20 @@
 # PeerPrep
 
-Project: ay2324s1-course-assessment-g57 created by GitHub Classroom
+> Project: ay2324s1-course-assessment-g57 created by GitHub Classroom
 
+<p align="center">
+    <img src="Frontend/public/logo.png" alt="peerprep logo" width="500px" />
+</p>
+<p>
 Peerprep is a collaborative platform for students to practice interview questions and receive feedback from their peers. It is a platform for students to learn from each other and improve their coding skills for potential interview questions.
+</p>
 
+<p>
 <b>Quick Links:</b>
 
 -   [Services](#services)
--   [Setup](#setup)
-    -   [PeerPrep](#peerprep-setup)
-    -   [Assignment 1](#assignment-1)
-    -   [Assignment 2](#assignment-2)
-    -   [Assignment 3](#assignment-3)
-    -   [Assignment 4](#assignment-4)
-    -   [Assignment 5](#assignment-5)
-    -   [Assignment 6](#assignment-6)
+-   [Setup](#setup) - [PeerPrep](#peerprep-setup) - [Assignment 1](#assignment-1) - [Assignment 2](#assignment-2) - [Assignment 3](#assignment-3) - [Assignment 4](#assignment-4) - [Assignment 5](#assignment-5) - [Assignment 6](#assignment-6)
+</p>
 
 ## Services
 
