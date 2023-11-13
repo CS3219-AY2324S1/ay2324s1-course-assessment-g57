@@ -55,6 +55,3 @@ print(medium_questions.qsize())
 print("\nDifficulty Hard:")
 print(hard_questions.qsize())
 
-        
-
-
