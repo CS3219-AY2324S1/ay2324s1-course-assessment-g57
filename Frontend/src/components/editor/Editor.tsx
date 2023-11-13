@@ -7,15 +7,14 @@ import { Editor } from '@monaco-editor/react';
 import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
 import { MonacoBinding } from '../../lib/y-monaco';
-import { Box, Button, Select, Switch, IconButton } from '@chakra-ui/react';
+import { Box, Button, Select } from '@chakra-ui/react';
 import { fromUint8Array } from 'js-base64';
 import Link from 'next/link';
 
 import * as random from 'lib0/random';
 
-import { MdOutlineDarkMode, MdPlayArrow } from 'react-icons/md';
+import { MdPlayArrow } from 'react-icons/md';
 import socket from '@/lib/socket';
-// import { MonacoDiffEditor } from 'react-monaco-editor';
 
 // Setup Monaco Editor
 // Attach YJS Text to Monaco Editor
@@ -24,7 +23,7 @@ function CodeEditor({ roomId }: { roomId: string }) {
     const editorRef = useRef<any>(null);
     const [lang, setLang] = useState('python');
     const [loading, setLoading] = useState(false);
-    const [editorTheme, setEditorTheme] = useState('light');
+    const [editorTheme] = useState('light');
     const [editorOutput, setEditorOutput] = useState('');
     const [provider, setProvider] = useState(null);
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import MatchControls from '@/components/Matching/MatchControls';
-import QuestionTable from '../components/QuestionTable';
+import QuestionTable from '../components/questions/QuestionTable';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
 type QuestionProps = {
@@ -25,7 +25,7 @@ const Dashboard = ({ user, isLoading }: QuestionProps) => {
 
     React.useEffect(() => {
         fetchUser();
-    }, []);
+    }, [username]);
 
     return (
         <>
@@ -42,8 +42,6 @@ const Dashboard = ({ user, isLoading }: QuestionProps) => {
                             <h1 className="is-size-4">Match with a Peer!</h1>
                             <MatchControls />
                         </section>
-
-                        {/* <Divider /> */}
 
                         <section className="section">
                             <h1 className="is-size-3">Questions Database</h1>

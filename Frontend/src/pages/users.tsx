@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout';
 import React from 'react';
-import UserTable from '../components/UserTable';
+import UserTable from '../components/users/UserTable';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
 type UserPageProps = {

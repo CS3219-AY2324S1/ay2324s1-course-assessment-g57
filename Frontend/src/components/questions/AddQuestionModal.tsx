@@ -43,9 +43,11 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
                 },
                 body: JSON.stringify({
                     title: values.title,
-                    categories: values.categories
-                        .split(',')
-                        .map((s) => s.trimStart()),
+                    categories: values.categories.split(',').map((s) => {
+                        s.trimStart();
+                        s.trimEnd();
+                        return s;
+                    }),
                     complexity: values.complexity,
                     description: values.description,
                     link: values.link,
@@ -57,8 +59,6 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
             }
 
             await response.json();
-
-            // Additional logic after successful submission
         } catch (error) {
             console.error('Error adding question:', error);
         } finally {
@@ -124,7 +124,7 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
                                     <Field
                                         name="description"
                                         as={Textarea}
-                                        placeholder="Question Description"
+                                        placeholder="Description accepts HTML formatting"
                                         size={'lg'}
                                         rows={20}
                                         height={'auto'}
