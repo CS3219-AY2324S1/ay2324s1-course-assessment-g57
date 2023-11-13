@@ -60,6 +60,8 @@ describe('Video Player Component Test', () => {
         // End Call.
         cy.get(
             "div[style='width: 60px; height: 40px; border-radius: 25px; border-width: 1px; border-style: solid; border-color: rgb(255, 255, 255); background-color: rgb(255, 102, 102); align-items: center; justify-content: center; display: flex; cursor: pointer; margin: 4px;']"
-        ).should('be.visible').click();
+        )
+            .should('be.visible')
+            .click();
     });
 });
