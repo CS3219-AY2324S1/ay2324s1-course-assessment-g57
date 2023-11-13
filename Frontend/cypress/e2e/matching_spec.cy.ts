@@ -60,7 +60,11 @@ describe('The Matching Process', () => {
             .should('exist');
 
         // On stop matching, check tha the switch difficulty exists.
-        cy.get("button[class='chakra-button button is-danger is-light css-paae2l']").contains('Disconnect').click();
+        cy.get(
+            "button[class='chakra-button button is-danger is-light css-paae2l']"
+        )
+            .contains('Disconnect')
+            .click();
 
         cy.get("select[id='difficulty']").should('exist');
 

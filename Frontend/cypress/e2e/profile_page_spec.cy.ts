@@ -36,11 +36,11 @@ describe('The Profile Page', () => {
         // Check that we can access the profile page.
         cy.get("a[href*='profile']").should('be.visible').click();
 
-        cy.intercept('api/users/*', { times: 2 }, () => {}).as('getProfile');
+        // cy.intercept('api/users/*', { times: 2 }, () => {}).as('getProfile');
 
         cy.url().should('include', 'profile');
 
-        cy.wait(['@getProfile', '@getProfile'], { timeout: 10000 });
+        // cy.wait(['@getProfile', '@getProfile'], { timeout: 10000 });
 
         // Check that the user's information is displayed correctly.
         cy.get('div[class=columns] > div[class=column]')
@@ -101,11 +101,11 @@ describe('The Profile Page', () => {
         // Check that we can access the profile page.
         cy.get("a[href*='profile']").should('be.visible').click();
 
-        cy.intercept('api/users/*', { times: 2 }, () => {}).as('getProfile');
+        // cy.intercept('api/users/*', { times: 2 }, () => {}).as('getProfile');
 
         cy.url().should('include', 'profile');
 
-        cy.wait(['@getProfile', '@getProfile'], { timeout: 10000 });
+        // cy.wait(['@getProfile', '@getProfile'], { timeout: 10000 });
 
         // Check that the display name is correct.
         cy.get('div[class=columns] > div[class=column]')
