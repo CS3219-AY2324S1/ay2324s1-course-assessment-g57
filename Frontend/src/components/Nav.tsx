@@ -34,23 +34,15 @@ const Nav = ({ user }: NavProps) => {
                         <div className="navbar-item">
                             <div className="field is-grouped">
                                 {user?.peerprepRoles?.[0] === 'Admin' ? (
-                                    <p className="control">
-                                        <Link href="/users">
-                                            <div className="has-text-weight-medium">
-                                                Users
-                                            </div>
-                                        </Link>
+                                    <p className="control has-text-weight-medium">
+                                        <Link href="/users">Users</Link>
                                     </p>
                                 ) : (
                                     <></>
                                 )}
 
-                                <p className="control">
-                                    <Link href="/profile">
-                                        <div className="has-text-weight-medium">
-                                            Profile
-                                        </div>
-                                    </Link>
+                                <p className="control has-text-weight-medium">
+                                    <Link href="/profile">Profile</Link>
                                 </p>
                             </div>
                         </div>
