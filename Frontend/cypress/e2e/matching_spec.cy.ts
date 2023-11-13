@@ -31,11 +31,13 @@ describe('The Matching Process', () => {
         cy.getCookie('appSession').should('exist');
 
         // Check that the connect and disconnect buttons are visible.
-        cy.get("button[class='button']")
+        cy.get("button[class='chakra-button button is-primary css-paae2l']")
             .contains('Connect')
             .should('contain', 'Connect')
             .should('be.visible');
-        cy.get("button[class='button']")
+        cy.get(
+            "button[class='chakra-button button is-danger is-light css-paae2l']"
+        )
             .contains('Disconnect')
             .should('contain', 'Disconnect')
             .should('be.visible');
@@ -46,27 +48,20 @@ describe('The Matching Process', () => {
         cy.get("select[id='difficulty'] > option").should('contain', 'Medium');
         cy.get("select[id='difficulty']").select('Easy');
 
-        // Check that a user has no client ID.
-        cy.get("div[class='container'] > h1")
-            .contains('Client ID')
-            .should('have.text', 'Client ID:  ');
-
-        // On start matching, check that a user has a client ID and that the difficulty switch no longer exists.
+        // On start matching, check that the difficulty switch no longer exists.
         // And check that the there is a countdown timer.
-        cy.get("button[class='button']").contains('Connect').click();
+        cy.get("button[class='chakra-button button is-primary css-paae2l']")
+            .contains('Connect')
+            .click();
 
-        cy.get("div[class='container'] > h1")
-            .contains('Client ID')
-            .should('not.have.text', 'Client ID:  ');
         cy.get("select[id='difficulty']").should('not.exist');
-        cy.get("div[class='container'] > div > h2").should('exist');
+        cy.get('h2')
+            .contains('Time Left:', { matchCase: false })
+            .should('exist');
 
-        // On stop matching, check that a user no longer has a client ID and the switch difficult exists.
-        cy.get("button[class='button']").contains('Disconnect').click();
+        // On stop matching, check tha the switch difficulty exists.
+        cy.get("button[class='chakra-button button is-danger is-light css-paae2l']").contains('Disconnect').click();
 
-        cy.get("div[class='container'] > h1")
-            .contains('Client ID')
-            .should('have.text', 'Client ID:  ');
         cy.get("select[id='difficulty']").should('exist');
 
         // Log the user out.
