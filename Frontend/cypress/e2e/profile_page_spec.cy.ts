@@ -16,11 +16,10 @@ describe('The Profile Page', () => {
         cy.wait('@getAuth');
 
         cy.origin('https://dev-r67hrnstb5x4ekjv.us.auth0.com/*', () => {
-            const testUsername = Cypress.env('testUsername');
             const testPassword = Cypress.env('testPassword');
 
             // Valid Username and Password.
-            cy.get('input[name=username]').type(testUsername);
+            cy.get('input[name=username]').type('danielTestUser');
             cy.get('input[name=password]').type(`${testPassword}{enter}`);
         });
 
@@ -82,11 +81,10 @@ describe('The Profile Page', () => {
         cy.wait('@getAuth');
 
         cy.origin('https://dev-r67hrnstb5x4ekjv.us.auth0.com/*', () => {
-            const testUsername = Cypress.env('testUsername');
             const testPassword = Cypress.env('testPassword');
 
             // Valid Username and Password.
-            cy.get('input[name=username]').type(testUsername);
+            cy.get('input[name=username]').type('danielTestUser');
             cy.get('input[name=password]').type(`${testPassword}{enter}`);
         });
 
