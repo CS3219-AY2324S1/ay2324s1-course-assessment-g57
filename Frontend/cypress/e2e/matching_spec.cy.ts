@@ -31,12 +31,14 @@ describe('The Matching Process', () => {
         cy.getCookie('appSession').should('exist');
 
         // Check that the connect and disconnect buttons are visible.
-        cy.get("button[class='chakra-button button is-primary css-paae2l']")
+        cy.get(
+            "button[class='chakra-button button is-primary mt-5 css-1h4vfyy']"
+        )
             .contains('Connect')
             .should('contain', 'Connect')
             .should('be.visible');
         cy.get(
-            "button[class='chakra-button button is-danger is-light css-paae2l']"
+            "button[class='chakra-button button is-danger is-light mt-5 css-1h4vfyy']"
         )
             .contains('Disconnect')
             .should('contain', 'Disconnect')
@@ -50,7 +52,9 @@ describe('The Matching Process', () => {
 
         // On start matching, check that the difficulty switch no longer exists.
         // And check that the there is a countdown timer.
-        cy.get("button[class='chakra-button button is-primary css-paae2l']")
+        cy.get(
+            "button[class='chakra-button button is-primary mt-5 css-1h4vfyy']"
+        )
             .contains('Connect')
             .click();
 
@@ -61,7 +65,7 @@ describe('The Matching Process', () => {
 
         // On stop matching, check tha the switch difficulty exists.
         cy.get(
-            "button[class='chakra-button button is-danger is-light css-paae2l']"
+            "button[class='chakra-button button is-danger is-light mt-5 css-1h4vfyy']"
         )
             .contains('Disconnect')
             .click();

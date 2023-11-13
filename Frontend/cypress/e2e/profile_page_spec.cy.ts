@@ -135,7 +135,7 @@ describe('The Profile Page', () => {
         cy.get('div[class=columns] > div[class=column]')
             .eq(1)
             .within(() => {
-                cy.contains(testUsername2, { matchCase: false }).should(
+                cy.contains(testUsername, { matchCase: false }).should(
                     'be.visible'
                 );
             });
