@@ -76,6 +76,7 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
             // setDisconnectDisabled(true);
             setTimeElapsed('30');
             setStatus('No Match Found!');
+            alert('No match found!');
         });
 
         return () => {
