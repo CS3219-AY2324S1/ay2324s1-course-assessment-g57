@@ -175,7 +175,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                                 {/* Edit */}
                                                 <img
                                                     src="/assets/edit.svg"
-                                                    alt='edit'
+                                                    alt="edit"
                                                     onClick={() => {
                                                         getQuestionDetails(
                                                             val.title
@@ -189,7 +189,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                                 {/* Delete */}
                                                 <img
                                                     src="/assets/trash.svg"
-                                                    alt='delete'
+                                                    alt="delete"
                                                     onClick={() =>
                                                         sendDelete(val.title)
                                                     }

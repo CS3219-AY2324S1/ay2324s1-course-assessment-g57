@@ -6,7 +6,6 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
-
 } from '@chakra-ui/react';
 
 interface EditUserModalProps {
@@ -63,14 +62,17 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Edit profile</ModalHeader>
-                    <Formik onSubmit={handleEditSubmit} initialValues={
-                        {
+                    <Formik
+                        onSubmit={handleEditSubmit}
+                        initialValues={{
                             username: user.username,
-                        }
-                    }>
+                        }}
+                    >
                         <ModalBody>
                             <div>
-                                <label htmlFor="displayName">Display Name:</label>
+                                <label htmlFor="displayName">
+                                    Display Name:
+                                </label>
                                 <input
                                     className="input"
                                     type="text"
