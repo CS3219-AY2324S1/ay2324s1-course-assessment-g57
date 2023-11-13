@@ -58,11 +58,11 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
             (msg: string, room: string, qnTitle: string) => {
                 setTimeElapsed('30');
                 setRoomId(room);
-                // toast.dismiss();
+                toast.dismiss();
                 // toast.success(`🎉 Found a match.`, {
-                //     toastId: 'startMatch',
+                //     toastId: 'foundMatch',
                 //     position: 'top-right',
-                //     autoClose: 5000,
+                //     autoClose: 2000,
                 //     hideProgressBar: false,
                 //     closeOnClick: true,
                 //     pauseOnHover: false,
@@ -75,7 +75,7 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
                 //     push(
                 //         `/code?room=${room}&qnTitle=${qnTitle}&difficulty=${difficulty}`
                 //     );
-                // }, 1000);
+                // }, 3000);
                 push(
                     `/code?room=${room}&qnTitle=${qnTitle}&difficulty=${difficulty}`
                 );

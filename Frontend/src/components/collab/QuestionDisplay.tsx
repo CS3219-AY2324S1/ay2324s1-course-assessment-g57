@@ -51,7 +51,7 @@ const QuestionDisplay = ({ qnTitle, getNewQnFn }: QuestionDisplayProp) => {
                         ))}
                     </p>
                     <Tag
-                        className="h-6 w-12"
+                        className="h-6 w-15"
                         size={'md'}
                         variant={'solid'}
                         colorScheme={getComplexityColor(question.complexity)}
