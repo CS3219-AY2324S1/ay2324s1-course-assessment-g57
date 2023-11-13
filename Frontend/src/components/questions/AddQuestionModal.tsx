@@ -13,6 +13,7 @@ import {
     Textarea,
     Button,
 } from '@chakra-ui/react';
+import { mutate } from 'swr';
 
 interface AddQuestionModalProps {
     isOpen: boolean;
@@ -57,7 +58,7 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
             if (!response.ok) {
                 throw new Error('Failed to add question');
             }
-
+            mutate('/api/questions');
             await response.json();
         } catch (error) {
             console.error('Error adding question:', error);

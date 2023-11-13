@@ -17,7 +17,6 @@ const DIFFICULTY = Object.freeze({
     HARD: 'HARD',
 });
 
-
 // Maps the client's difficulty input to the corresponding enum DIFFICULTY object
 function mapClientDifficultyToEnum(difficulty) {
     switch (difficulty) {
@@ -46,36 +45,32 @@ function User(userId, socket, difficulty, timer) {
     this.timer = timer;
 }
 
-
 // Helper function
 function printQueue(queue) {
     let result = 'Queue:';
 
     for (const user of queue.values()) {
-      result += `\n${user.userId}: ${user.difficulty}`;
+        result += `\n${user.userId}: ${user.difficulty}`;
     }
 
     result += '\n';
     console.log(result);
 }
 
-
 function getUserBySocket(socket) {
     for (const user of queue.values()) {
         if (user.socket.id == socket.id) {
-            return user
+            return user;
         }
     }
 
     // User not found
-    return null
+    return null;
 }
-
 
 function canMatchUser(u1, u2) {
     return u1.difficulty == u2.difficulty;
 }
-
 
 function findMatch(newUser) {
     let result = null;
@@ -90,30 +85,32 @@ function findMatch(newUser) {
     return result;
 }
 
-
 async function onStartMatch(io, socket, userId, difficulty) {
-
     // If user is already in the queue
     if (queue.has(userId)) {
-        console.log(`User ${userId} already in queue`)
+        console.log(`User ${userId} already in queue`);
 
         // Inform client that he is already in the queue
-        socket.emit('userAlreadyInQueue')
+        socket.emit('userAlreadyInQueue');
 
         // Close socket connection with this duplicate client
-        socket.disconnect(true)
-        return
+        socket.disconnect(true);
+        return;
     }
 
-
-    const newUser = new User(userId, socket, mapClientDifficultyToEnum(difficulty), null);
-    console.log(`New match request from user ${newUser.userId} with difficulty ${newUser.difficulty}`);
-
+    const newUser = new User(
+        userId,
+        socket,
+        mapClientDifficultyToEnum(difficulty),
+        null
+    );
+    console.log(
+        `New match request from user ${newUser.userId} with difficulty ${newUser.difficulty}`
+    );
 
     // Set up match timer
     let timerCountdown = INITIAL_TIMER_COUNTDOWN;
     const newTimer = setInterval(() => {
-
         // Update client with countdown timer value
         newUser.socket.emit('matchTimerCountdown', timerCountdown);
 
@@ -164,7 +161,6 @@ async function onStartMatch(io, socket, userId, difficulty) {
         console.log('Room Found:' + qn.title);
         io.to(roomId).emit('matchFound', message, roomId, qn.title);
 
-
         // Clear timers
         clearInterval(newUser.timer);
         clearInterval(partner.timer);
@@ -182,24 +178,22 @@ async function onStartMatch(io, socket, userId, difficulty) {
     printQueue(queue);
 }
 
-
 function onDisconnect(socket) {
     console.log(`Socket ${socket.id} disconnected`);
 
-    const user = getUserBySocket(socket)
+    const user = getUserBySocket(socket);
 
     // If user is present in queue
     if (user) {
-      // Delete user from queue
-      queue.delete(user.userId)
+        // Delete user from queue
+        queue.delete(user.userId);
 
-      console.log(`Deleted user ${user.userId} from queue`)
-      printQueue(queue)
+        console.log(`Deleted user ${user.userId} from queue`);
+        printQueue(queue);
 
-      // Clear timer
-      clearInterval(user.timer)
+        // Clear timer
+        clearInterval(user.timer);
     }
 }
 
-
-module.exports = {onStartMatch, onDisconnect};
+module.exports = { onStartMatch, onDisconnect };

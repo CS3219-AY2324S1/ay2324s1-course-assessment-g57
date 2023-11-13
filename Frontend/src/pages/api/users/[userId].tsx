@@ -43,7 +43,7 @@ export default withApiAuthRequired(async function handler(
             const response = await fetch(url, {
                 method: 'PUT',
                 headers: reqHeaders,
-                body: req.body,
+                body: JSON.stringify(req.body),
             });
             if (response.ok) {
                 console.log('User updated successfully');
