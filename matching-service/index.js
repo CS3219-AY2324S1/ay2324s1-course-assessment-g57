@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const { Server } = require('socket.io');
 const cors = require('cors');
-const onStartMatch = require('./matchHandler');
+const { onStartMatch, onDisconnect } = require('./matchHandler');
 const axios = require('axios');
 
 const hostname = '127.0.0.1';
@@ -25,12 +25,11 @@ function onConnection(io, socket) {
 
     socket.on(
         'startMatch',
-        async (difficulty) => await onStartMatch(io, socket, difficulty)
+        async (userId, difficulty) =>
+            await onStartMatch(io, socket, userId, difficulty)
     );
 
-    socket.on('disconnect', () => {
-        console.log(`User ${socket.id} disconnected`);
-    });
+    socket.on('disconnect', () => onDisconnect(socket));
 
     socket.on('questionUpdate', async (data) => {
         const response = await axios.get(

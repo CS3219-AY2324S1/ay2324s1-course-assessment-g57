@@ -1,11 +1,8 @@
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
 
-// Stores the user socket ID as the key and the User object as the value
+// Stores the user ID as the key and the User object as the value
 const queue = new Map();
-
-// Store the room IDs in a set
-const roomIds = new Set();
 
 // 1000 milliseconds
 const ONE_SECOND = 1000;
@@ -19,18 +16,6 @@ const DIFFICULTY = Object.freeze({
     MEDIUM: 'MEDIUM',
     HARD: 'HARD',
 });
-
-// Helper function for debugging
-function printQueue(queue) {
-    let result = 'Queue:';
-
-    for (const user of queue.values()) {
-        result += `\n${user.socket.id}: ${user.difficulty}`;
-    }
-
-    result += '\n';
-    console.log(result);
-}
 
 // Maps the client's difficulty input to the corresponding enum DIFFICULTY object
 function mapClientDifficultyToEnum(difficulty) {
@@ -53,10 +38,34 @@ function mapClientDifficultyToEnum(difficulty) {
 // User object used by NodeJS server
 // difficulty is expected to be of type enum DIFFICULTY
 // timer is expected to be a NodeJS Timeout object
-function User(difficulty, socket, timer) {
-    this.difficulty = difficulty;
+function User(userId, socket, difficulty, timer) {
+    this.userId = userId;
     this.socket = socket;
+    this.difficulty = difficulty;
     this.timer = timer;
+}
+
+// Helper function
+function printQueue(queue) {
+    let result = 'Queue:';
+
+    for (const user of queue.values()) {
+        result += `\n${user.userId}: ${user.difficulty}`;
+    }
+
+    result += '\n';
+    console.log(result);
+}
+
+function getUserBySocket(socket) {
+    for (const user of queue.values()) {
+        if (user.socket.id == socket.id) {
+            return user;
+        }
+    }
+
+    // User not found
+    return null;
 }
 
 function canMatchUser(u1, u2) {
@@ -69,18 +78,34 @@ function findMatch(newUser) {
     for (const user of queue.values()) {
         if (canMatchUser(newUser, user)) {
             result = user;
+            break;
         }
-        break;
     }
 
     return result;
 }
 
-async function onStartMatch(io, socket, difficulty) {
+async function onStartMatch(io, socket, userId, difficulty) {
+    // If user is already in the queue
+    if (queue.has(userId)) {
+        console.log(`User ${userId} already in queue`);
+
+        // Inform client that he is already in the queue
+        socket.emit('userAlreadyInQueue');
+
+        // Close socket connection with this duplicate client
+        socket.disconnect(true);
+        return;
+    }
+
     const newUser = new User(
-        mapClientDifficultyToEnum(difficulty),
+        userId,
         socket,
+        mapClientDifficultyToEnum(difficulty),
         null
+    );
+    console.log(
+        `New match request from user ${newUser.userId} with difficulty ${newUser.difficulty}`
     );
 
     // Set up match timer
@@ -91,20 +116,20 @@ async function onStartMatch(io, socket, difficulty) {
 
         // No match found within time limit
         if (timerCountdown == 0) {
+            console.log(`No match found for user ${newUser.userId}`);
+
             // Inform client no match found within time limit
             newUser.socket.emit('noMatchTimerExpired');
 
-            // Close socket connection with client
-            newUser.socket.disconnect(true);
-
             // Remove user from queue
-            queue.delete(newUser.socket.id);
+            queue.delete(newUser.userId);
+            printQueue(queue);
 
             // Clear timer for this user
             clearInterval(newTimer);
 
-            console.log(`No match found for user ${newUser.socket.id}`);
-            printQueue(queue);
+            // Close socket connection with client
+            newUser.socket.disconnect(true);
         }
 
         timerCountdown--;
@@ -116,18 +141,17 @@ async function onStartMatch(io, socket, difficulty) {
     const partner = findMatch(newUser);
 
     if (partner) {
-        console.log(`Partner found: ${partner.socket.id}`);
-
-        queue.delete(partner.socket.id);
+        // Delete partner from queue
+        queue.delete(partner.userId);
 
         // Create new room
         const roomId = uuidv4();
-        roomIds.add(roomId);
 
         newUser.socket.join(roomId);
         partner.socket.join(roomId);
 
-        message = `Paired ${newUser.socket.id} and ${partner.socket.id}`;
+        message = `Paired ${newUser.userId} and ${partner.userId} in room ${roomId}`;
+        console.log(message);
 
         const response = await axios.get(
             'https://34k0nfj43f.execute-api.ap-southeast-1.amazonaws.com/dev/questions/complexity/' +
@@ -137,8 +161,6 @@ async function onStartMatch(io, socket, difficulty) {
         console.log('Room Found:' + qn.title);
         io.to(roomId).emit('matchFound', message, roomId, qn.title);
 
-        console.log(message);
-
         // Clear timers
         clearInterval(newUser.timer);
         clearInterval(partner.timer);
@@ -146,14 +168,32 @@ async function onStartMatch(io, socket, difficulty) {
         // Else no match found yet
     } else {
         console.log(
-            `Partner not found! Adding new user ${newUser.socket.id} to queue`
+            `Partner not found! Adding new user ${newUser.userId} to queue`
         );
 
-        // Add new user object to queue
-        queue.set(newUser.socket.id, newUser);
+        // Add new User object to queue
+        queue.set(newUser.userId, newUser);
     }
 
     printQueue(queue);
 }
 
-module.exports = onStartMatch;
+function onDisconnect(socket) {
+    console.log(`Socket ${socket.id} disconnected`);
+
+    const user = getUserBySocket(socket);
+
+    // If user is present in queue
+    if (user) {
+        // Delete user from queue
+        queue.delete(user.userId);
+
+        console.log(`Deleted user ${user.userId} from queue`);
+        printQueue(queue);
+
+        // Clear timer
+        clearInterval(user.timer);
+    }
+}
+
+module.exports = { onStartMatch, onDisconnect };

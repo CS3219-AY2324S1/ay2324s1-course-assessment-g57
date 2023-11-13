@@ -1,7 +1,18 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { useRouter } from 'next/navigation';
 
 const MainApp = () => {
+    const { user } = useUser();
+    const { push } = useRouter();
+
+    console.log(user);
+
+    if (user) {
+        push('/dashboard');
+    }
+
     return (
         <>
             {/* Navbar Section */}
@@ -387,7 +398,7 @@ const MainApp = () => {
                             AY2324S1
                         </p>
                         <p>
-                            View source code on
+                            View source code on&nbsp;
                             <Link href="https://github.com/CS3219-AY2324S1/ay2324s1-course-assessment-g57">
                                 Github
                             </Link>

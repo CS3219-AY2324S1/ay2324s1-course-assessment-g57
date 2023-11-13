@@ -15,6 +15,7 @@
     },
     "dependencies": {
         "@auth0/nextjs-auth0": "^3.2.0",
+        "@chakra-ui/icons": "^2.1.1",
         "@chakra-ui/react": "^2.8.1",
         "@chakra-ui/theme": "^3.3.0",
         "@emotion/react": "^11.11.1",
@@ -30,6 +31,7 @@
         "bulma": "^0.9.4",
         "dotenv": "^16.3.1",
         "envalid": "^8.0.0",
+        "formik": "^2.4.5",
         "framer-motion": "^10.16.4",
         "js-base64": "^3.7.5",
         "lib0": "^0.2.87",
