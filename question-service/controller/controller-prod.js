@@ -27,9 +27,16 @@ const getQuestions = async (req, res) => {
     //     console.error('Unable to scan the table', err);
     //     res.status(500).json({ error: 'Unable to get questions' });
     // }
+    const withDescription = req.query.withDescription;
+    let projectExpr;
+    if (withDescription === 'true') {
+        projectExpr = 'id, title, categories, complexity, description';
+    } else {
+        projectExpr = 'id, title, categories, complexity';
+    }
     const params = {
         TableName: 'questions',
-        // ProjectionExpression: 'id, title, categories, complexity',
+        ProjectionExpression: projectExpr,
     };
 
     try {
@@ -66,26 +73,6 @@ const getQuestionById = async (req, res) => {
 };
 
 const getQuestionByComplexity = async (req, res) => {
-    // try {
-    //     const questions = await QuestionModel.scan('complexity')
-    //         .eq(req.params.complexity)
-    //         .exec();
-    //     if (questions.length === 0) {
-    //         // Handle the case when there are no questions with the requested complexity.
-    //         res.status(404).json({
-    //             error: 'No questions found for the requested complexity',
-    //         });
-    //         return;
-    //     }
-
-    //     const randomIndex = Math.floor(Math.random() * questions.length);
-    //     const randomQuestion = questions[randomIndex];
-
-    //     res.status(200).json(randomQuestion);
-    // } catch (err) {
-    //     console.error('Unable to read item', err);
-    //     res.status(500).json({ error: 'Unable to get question' });
-    // }
     const params = {
         TableName: 'questions',
         FilterExpression: 'complexity = :complexity',
@@ -191,40 +178,123 @@ const createQuestion = async (req, res) => {
 const updateQuestion = async (req, res) => {
     const { title, categories, complexity, description, link } = req.body;
 
-    try {
-        const question = await QuestionModel.get(req.params.title);
+    if (title != req.params.title) {
+        // Delete the existing item with the old key
+        try {
+            const deleteParams = {
+                TableName: 'questions',
+                Key: {
+                    title: req.params.title,
+                },
+                ReturnValues: 'ALL_OLD',
+            };
 
-        if (question) {
-            question.title = title;
-            question.categories = categories;
-            question.complexity = complexity;
-            question.description = description;
-            question.link = link;
-            await question.save();
+            const { Attributes: deletedQuestion } = await docClient.send(
+                new DeleteCommand(deleteParams)
+            );
 
-            res.status(200).json(question);
-        } else {
-            res.status(404).json({ error: 'Question not found' });
+            if (!deletedQuestion) {
+                res.status(404).json({ error: 'Question not found' });
+                return;
+            }
+
+            // Insert a new item with the updated key
+            const putParams = {
+                TableName: 'questions',
+                Item: {
+                    title: title,
+                    categories: categories,
+                    complexity: complexity,
+                    description: description,
+                    link: link,
+                    id: deletedQuestion.id,
+                },
+                ReturnValues: 'NONE',
+            };
+
+            const updatedQuestion = await docClient.send(
+                new PutCommand(putParams)
+            );
+            if (!updatedQuestion) {
+                res.status(404).json({ error: 'Question not found' });
+                return;
+            }
+            res.status(200).json({ message: 'Question updated successfully' });
+            return;
+        } catch (err) {
+            console.error('Unable to update item', err);
+            console.error('Request:', req);
+            res.status(500).json({ error: 'Unable to update question' });
         }
+    }
+
+    try {
+        const params = {
+            TableName: 'questions',
+            Key: {
+                title: req.params.title,
+            },
+            UpdateExpression:
+                'set categories = :categories, complexity = :complexity, description = :description, link = :link',
+            ExpressionAttributeValues: {
+                ':categories': categories,
+                ':complexity': complexity,
+                ':description': description,
+                ':link': link,
+            },
+            ReturnValues: 'UPDATED_NEW',
+        };
+
+        const { Attributes: updatedQuestion } = await docClient.send(
+            new UpdateCommand(params)
+        );
+        if (!updatedQuestion) {
+            res.status(404).json({ error: 'Question not found' });
+            return;
+        }
+        res.status(200).json(updatedQuestion);
     } catch (err) {
         console.error('Unable to update item', err);
+        console.error('Request:', req);
         res.status(500).json({ error: 'Unable to update question' });
     }
 };
 
 // Delete a question by ID
 const deleteQuestion = async (req, res) => {
-    try {
-        const question = await QuestionModel.get(req.params.title);
+    // try {
+    //     const question = await QuestionModel.get(req.params.title);
 
-        if (question) {
-            await question.delete();
-            res.status(200).json({ message: 'Question deleted successfully' });
-        } else {
+    //     if (question) {
+    //         await question.delete();
+    //         res.status(200).json({ message: 'Question deleted successfully' });
+    //     } else {
+    //         res.status(404).json({ error: 'Question not found' });
+    //     }
+    // } catch (err) {
+    //     console.error('Unable to delete item', err);
+    //     res.status(500).json({ error: 'Unable to delete question' });
+    // }
+    try {
+        const deleteParams = {
+            TableName: 'questions',
+            Key: {
+                title: req.params.title,
+            },
+            ReturnValues: 'ALL_OLD',
+        };
+
+        const { Attributes: question } = await docClient.send(
+            new DeleteCommand(deleteParams)
+        );
+        if (!question) {
             res.status(404).json({ error: 'Question not found' });
+            return;
         }
+        res.status(200).json({ message: 'Question deleted successfully' });
     } catch (err) {
         console.error('Unable to delete item', err);
+        console.error('Request:', req);
         res.status(500).json({ error: 'Unable to delete question' });
     }
 };

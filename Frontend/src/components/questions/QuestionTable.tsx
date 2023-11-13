@@ -68,6 +68,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             });
 
             console.log(`Deleted question: ${deleteTitle}`);
+            fetchQuestions();
             return await res.json();
         } catch (e: any) {
             console.log(e);
@@ -99,10 +100,15 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 isOpen={isEditOpen}
                 onClose={onEditClose}
                 question={currQuestion}
+                fetchQuestions={fetchQuestions}
             />
 
             {/* Add Question Modal */}
-            <AddQuestionModal isOpen={isAddOpen} onClose={onAddClose} />
+            <AddQuestionModal
+                isOpen={isAddOpen}
+                onClose={onAddClose}
+                fetchQuestions={fetchQuestions}
+            />
 
             <div className="table-container">
                 {user?.peerprepRoles?.[0] === 'Admin' ? (
@@ -162,8 +168,10 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                     <td>
                                         <button
                                             className="button is-outlined is-info"
-                                            onClick={() => {
-                                                getQuestionDetails(val.title);
+                                            onClick={async () => {
+                                                await getQuestionDetails(
+                                                    val.title
+                                                );
                                                 onViewOpen();
                                             }}
                                         >
@@ -177,8 +185,8 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                                     aria-label="Edit Button"
                                                     colorScheme="teal"
                                                     icon={<EditIcon />}
-                                                    onClick={() => {
-                                                        getQuestionDetails(
+                                                    onClick={async () => {
+                                                        await getQuestionDetails(
                                                             val.title
                                                         );
                                                         onEditOpen();
@@ -188,13 +196,13 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                             <td>
                                                 {/* Delete */}
                                                 {/* <img
-                                                    src="/assets/trash.svg"
-                                                    alt="delete"
-                                                    onClick={() =>
-                                                        sendDelete(val.title)
-                                                    }
-                                                    style={{ width: 25 }}
-                                                /> */}
+                                                        src="/assets/trash.svg"
+                                                        alt="delete"
+                                                        onClick={() =>
+                                                            sendDelete(val.title)
+                                                        }
+                                                        style={{ width: 25 }}
+                                                    /> */}
                                                 <IconButton
                                                     aria-label="Delete Button"
                                                     colorScheme="red"

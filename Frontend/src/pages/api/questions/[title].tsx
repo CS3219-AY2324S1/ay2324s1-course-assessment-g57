@@ -39,19 +39,29 @@ export default withApiAuthRequired(async function handler(
             });
         }
     } else if (req.method === 'PUT') {
+        const request = req.body;
         reqHeaders['Content-Type'] = 'application/json';
         const response = await fetch(url, {
             method: 'PUT',
             headers: reqHeaders,
-            body: req.body,
+            body: JSON.stringify({
+                title: cleanTitle(request.title),
+                categories: request.categories,
+                complexity: request.complexity,
+                description: request.description,
+                link: request.link,
+            }),
         });
         if (response.ok) {
+            console.log('Question updated successfully');
             res.status(200).json({
                 message: `PUT question with title ${restoreTitle(title)}`,
             });
         } else if (response.status === 404) {
+            console.log('Question not found');
             res.status(404).json({ error: 'Question not found' });
         } else {
+            console.log('Failed to update question data');
             res.status(response.status).json({
                 error: 'Failed to update question data',
             });

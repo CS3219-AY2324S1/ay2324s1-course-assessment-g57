@@ -67,6 +67,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                 }),
             });
 
+            fetchUser();
             await response.json();
         } catch (error) {
             console.error('Failed to edit user: ', error);
