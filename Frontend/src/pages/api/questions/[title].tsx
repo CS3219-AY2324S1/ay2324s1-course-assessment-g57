@@ -17,6 +17,7 @@ export default withApiAuthRequired(async function handler(
         Authorization: `Bearer ${accessToken}`,
     };
     const url = `${baseURL}/questions/${title}`;
+    console.log('url', url);
 
     if (req.method === 'GET') {
         const response = await fetch(url, {
@@ -58,10 +59,10 @@ export default withApiAuthRequired(async function handler(
         const response = await fetch(url, {
             method: 'DELETE',
             headers: reqHeaders,
-            body: req.body,
         });
         if (response.ok) {
-            res.status(204).end();
+            console.log(`Question ${title} deleted successfully`);
+            res.status(200).json({ message: 'Question deleted' });
         } else {
             res.status(response.status).json({
                 error: 'Failed to delete question',
