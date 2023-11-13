@@ -5,7 +5,8 @@ import AddQuestionModal from './AddQuestionModal';
 import ViewQuestionModal from './ViewQuestionModal';
 import { useDisclosure, Tag, IconButton } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
+import { getComplexityColor } from '../../lib/utils';
 
 type QuestionTableProp = {
     user?: any;
@@ -14,10 +15,6 @@ type QuestionTableProp = {
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const TableComponent = ({ user, initialData }: QuestionTableProp) => {
-    const [questions, setQuestions] = React.useState<Question[]>([
-        defaultQuestion(),
-    ]);
-    console.log(questions);
     const [currQuestion, setCurrQuestion] = React.useState<Question>(
         defaultQuestion()
     );
@@ -41,18 +38,6 @@ const TableComponent = ({ user, initialData }: QuestionTableProp) => {
         onClose: onAddClose,
     } = useDisclosure();
 
-    async function fetchQuestions() {
-        try {
-            const response = await fetch(`/api/questions`);
-            const fetchedQuestions = await response.json();
-            // console.log('Fetched questions', fetchedQuestions);
-            setQuestions(fetchedQuestions);
-        } catch (error) {
-            console.error('Error fetching all questions', error);
-            setQuestions([]);
-        }
-    }
-
     async function getQuestionDetails(title: string) {
         try {
             const response = await fetch(`/api/questions/${title}`);
@@ -63,10 +48,6 @@ const TableComponent = ({ user, initialData }: QuestionTableProp) => {
         }
     }
 
-    React.useEffect(() => {
-        fetchQuestions();
-    }, []);
-
     // OnClick Delete function
     async function sendDelete(deleteTitle: string) {
         try {
@@ -75,21 +56,10 @@ const TableComponent = ({ user, initialData }: QuestionTableProp) => {
             });
 
             console.log(`Deleted question: ${deleteTitle}`);
-            fetchQuestions();
+            await mutate('/api/questions');
             return await res.json();
         } catch (e: any) {
             console.log(e);
-        }
-    }
-
-    function getComplexityColor(complexity: string) {
-        if (complexity === 'easy') {
-            return 'green';
-        } else if (complexity === 'medium') {
-            return 'yellow';
-        } else if (complexity === 'hard') {
-            return 'red';
-        } else {
         }
     }
 
@@ -107,15 +77,10 @@ const TableComponent = ({ user, initialData }: QuestionTableProp) => {
                 isOpen={isEditOpen}
                 onClose={onEditClose}
                 question={currQuestion}
-                fetchQuestions={fetchQuestions}
             />
 
             {/* Add Question Modal */}
-            <AddQuestionModal
-                isOpen={isAddOpen}
-                onClose={onAddClose}
-                fetchQuestions={fetchQuestions}
-            />
+            <AddQuestionModal isOpen={isAddOpen} onClose={onAddClose} />
 
             <div className="table-container">
                 {user?.peerprepRoles?.[0] === 'Admin' ? (
@@ -156,21 +121,27 @@ const TableComponent = ({ user, initialData }: QuestionTableProp) => {
                                     <td>{val.title}</td>
                                     <td>
                                         {val.categories.map((s) => (
-                                            <Tag key={val.title + s}>
+                                            <Tag
+                                                key={val.title + s}
+                                                className="mr-1 mb-1"
+                                            >
                                                 {s}&nbsp;
                                             </Tag>
                                         ))}
                                     </td>
                                     <td>
-                                        <Tag
-                                            size={'lg'}
-                                            variant={'solid'}
-                                            colorScheme={getComplexityColor(
-                                                val.complexity
-                                            )}
-                                        >
-                                            {val.complexity}
-                                        </Tag>
+                                        <div className="flex justify-center items-center">
+                                            <Tag
+                                                className="mt-1"
+                                                size={'lg'}
+                                                variant={'solid'}
+                                                colorScheme={getComplexityColor(
+                                                    val.complexity
+                                                )}
+                                            >
+                                                {val.complexity}
+                                            </Tag>
+                                        </div>
                                     </td>
                                     <td>
                                         <button
@@ -201,15 +172,6 @@ const TableComponent = ({ user, initialData }: QuestionTableProp) => {
                                                 />
                                             </td>
                                             <td>
-                                                {/* Delete */}
-                                                {/* <img
-                                                        src="/assets/trash.svg"
-                                                        alt="delete"
-                                                        onClick={() =>
-                                                            sendDelete(val.title)
-                                                        }
-                                                        style={{ width: 25 }}
-                                                    /> */}
                                                 <IconButton
                                                     aria-label="Delete Button"
                                                     colorScheme="red"

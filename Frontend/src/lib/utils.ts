@@ -31,3 +31,14 @@ export function restoreTitle(cleanedTitle: string): string {
 
     return restoredTitle;
 }
+
+export function getComplexityColor(complexity: string) {
+    if (complexity === 'easy') {
+        return 'green';
+    } else if (complexity === 'medium') {
+        return 'yellow';
+    } else if (complexity === 'hard') {
+        return 'red';
+    } else {
+    }
+}

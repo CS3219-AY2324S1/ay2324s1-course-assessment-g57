@@ -13,11 +13,11 @@ import {
     Textarea,
     Button,
 } from '@chakra-ui/react';
+import { mutate } from 'swr';
 
 interface AddQuestionModalProps {
     isOpen: boolean;
     onClose: () => void;
-    fetchQuestions: () => void;
 }
 
 interface FormValues {
@@ -31,7 +31,6 @@ interface FormValues {
 const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
     isOpen,
     onClose,
-    fetchQuestions,
 }) => {
     const handleAddSubmit = async (
         values: FormValues,
@@ -59,7 +58,7 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
             if (!response.ok) {
                 throw new Error('Failed to add question');
             }
-            fetchQuestions();
+            mutate('/api/questions');
             await response.json();
         } catch (error) {
             console.error('Error adding question:', error);

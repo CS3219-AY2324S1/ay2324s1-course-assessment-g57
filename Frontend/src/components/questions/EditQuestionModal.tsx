@@ -13,12 +13,12 @@ import {
     Textarea,
     Button,
 } from '@chakra-ui/react';
+import { mutate } from 'swr';
 
 interface EditQuestionModalProps {
     isOpen: boolean;
     onClose: () => void;
     question: any;
-    fetchQuestions: () => void;
 }
 
 interface FormValues {
@@ -29,15 +29,10 @@ interface FormValues {
     link: string;
 }
 
-// function isValid(props: any) {
-//     return props.title.trim() === '' || props.description.trim() === '';
-// }
-
 const EditQuestionModal: React.FC<EditQuestionModalProps> = ({
     isOpen,
     onClose,
     question,
-    fetchQuestions,
 }) => {
     const handleEditSubmit = async (
         values: FormValues,
@@ -61,8 +56,7 @@ const EditQuestionModal: React.FC<EditQuestionModalProps> = ({
             if (!response.ok) {
                 throw new Error('Failed to edit question');
             }
-            fetchQuestions();
-            await response.json();
+            await mutate('/api/questions');
         } catch (error) {
             console.error('Failed to edit question: ', error);
         } finally {

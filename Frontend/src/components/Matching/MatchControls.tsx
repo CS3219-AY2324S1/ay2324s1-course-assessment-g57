@@ -3,6 +3,8 @@ import socket from '../../lib/socket';
 import { useRouter } from 'next/navigation';
 import { RoomContext } from '@/contexts/RoomContext';
 import { Button, Progress, Select } from '@chakra-ui/react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type MatchControlsProps = {
     userId: string;
@@ -11,7 +13,6 @@ type MatchControlsProps = {
 const MatchControls = ({ userId }: MatchControlsProps) => {
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [difficulty, setDifficulty] = useState('easy');
-    const [status, setStatus] = useState('');
     const [timeElapsed, setTimeElapsed] = useState('30');
     const { setRoomId } = useContext(RoomContext);
     const { push } = useRouter();
@@ -24,17 +25,29 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
     const onConnect = useCallback(() => {
         console.log(difficulty);
         setIsConnected(true);
-        setStatus(`Finding match with difficulty level ${difficulty}`);
+        toast.dismiss();
+        toast.success(`🥂 Finding a match for ${difficulty}-level questions.`, {
+            toastId: 'startMatch',
+            position: 'top-right',
+            autoClose: 30000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            pauseOnFocusLoss: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+        });
         socket.emit('startMatch', userId, difficulty);
-    }, [difficulty, setIsConnected, setStatus, userId]);
+    }, [difficulty, setIsConnected, userId]);
 
     const onDisconnect = useCallback(() => {
         setIsConnected(false);
         setRoomId('');
-        setStatus('');
         setTimeElapsed('30');
         console.log('disconnected');
-    }, [setIsConnected, setRoomId, setStatus, setTimeElapsed]);
+        toast.dismiss('startMatch');
+    }, [setIsConnected, setRoomId, setTimeElapsed]);
 
     useEffect(() => {
         socket.on('connect', onConnect);
@@ -45,7 +58,24 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
             (msg: string, room: string, qnTitle: string) => {
                 setTimeElapsed('30');
                 setRoomId(room);
-                setStatus('Found a match!');
+                // toast.dismiss();
+                // toast.success(`🎉 Found a match.`, {
+                //     toastId: 'startMatch',
+                //     position: 'top-right',
+                //     autoClose: 5000,
+                //     hideProgressBar: false,
+                //     closeOnClick: true,
+                //     pauseOnHover: false,
+                //     pauseOnFocusLoss: false,
+                //     draggable: true,
+                //     progress: undefined,
+                //     theme: 'light',
+                // });
+                // setTimeout(() => {
+                //     push(
+                //         `/code?room=${room}&qnTitle=${qnTitle}&difficulty=${difficulty}`
+                //     );
+                // }, 1000);
                 push(
                     `/code?room=${room}&qnTitle=${qnTitle}&difficulty=${difficulty}`
                 );
@@ -56,15 +86,21 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
         };
-    }, [
-        onConnect,
-        onDisconnect,
-        difficulty,
-        push,
-        setRoomId,
-        setTimeElapsed,
-        setStatus,
-    ]);
+    }, [onConnect, onDisconnect, difficulty, push, setRoomId, setTimeElapsed]);
+
+    const alertNoMatch = useCallback(() => {
+        toast.warn("Couldn't find a match. Please try again.", {
+            toastId: 'noMatch',
+            position: 'top-right',
+            autoClose: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+        });
+    }, []);
 
     useEffect(() => {
         socket.on('matchTimerCountdown', (timerCountdown: string) => {
@@ -72,22 +108,23 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
         });
 
         socket.on('noMatchTimerExpired', () => {
-            // setConnectDisabled(false);
-            // setDisconnectDisabled(true);
+            setConnectDisabled(false);
+            setDisconnectDisabled(true);
             setTimeElapsed('30');
-            setStatus('No Match Found!');
+            console.log("Couldn't find a match. Please try again.");
+            alertNoMatch();
         });
 
         return () => {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
         };
-    }, [onConnect, onDisconnect, setTimeElapsed, setStatus]);
+    }, [onConnect, onDisconnect]);
 
     return (
         <>
             <style>{css}</style>
-
+            {/* Same as */}
             <div className="container">
                 <h1>{status}</h1>
                 <br />
@@ -103,7 +140,6 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
                                         className="select is-link"
                                         value={difficulty}
                                         onChange={(event) => {
-                                            console.log(event.target.value);
                                             setDifficulty(event.target.value);
                                         }}
                                     >
@@ -170,12 +206,6 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
                         </div>
                     </div>
                 </div>
-
-                {/* <div className='columns'>
-                    <div className='column is-one-quarter'>
-                        
-                    </div>
-                </div> */}
             </div>
         </>
     );
