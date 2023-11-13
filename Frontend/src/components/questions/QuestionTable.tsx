@@ -5,18 +5,25 @@ import AddQuestionModal from './AddQuestionModal';
 import ViewQuestionModal from './ViewQuestionModal';
 import { useDisclosure, Tag, IconButton } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import useSWR from 'swr';
 
 type QuestionTableProp = {
     user?: any;
+    initialData: Question[];
 };
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const TableComponent = ({ user }: QuestionTableProp) => {
+const TableComponent = ({ user, initialData }: QuestionTableProp) => {
     const [questions, setQuestions] = React.useState<Question[]>([
         defaultQuestion(),
     ]);
+    console.log(questions);
     const [currQuestion, setCurrQuestion] = React.useState<Question>(
         defaultQuestion()
     );
+    const { data } = useSWR('/api/questions', fetcher, {
+        fallbackData: initialData,
+    });
 
     const {
         isOpen: isViewOpen,
@@ -143,7 +150,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {questions.map((val) => {
+                        {data.map((val: Question) => {
                             return (
                                 <tr key={val.title}>
                                     <td>{val.title}</td>

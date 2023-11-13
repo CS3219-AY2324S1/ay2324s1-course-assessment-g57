@@ -3,13 +3,25 @@ import Layout from '../components/Layout';
 import MatchControls from '@/components/Matching/MatchControls';
 import QuestionTable from '../components/questions/QuestionTable';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import { Question } from '../models/types';
 
 type QuestionProps = {
     user?: any;
     isLoading: boolean;
+    initialData: Question[];
 };
 
-const Dashboard = ({ user, isLoading }: QuestionProps) => {
+export async function getServerSideProps() {
+    // Fetch initial data on the server
+    const response = await fetch('/api/questions');
+    console.log(response);
+    const initialData = await response.json();
+    return {
+        props: { initialData },
+    };
+}
+
+const Dashboard = ({ user, initialData, isLoading }: QuestionProps) => {
     const [username, setUsername] = useState<string>();
     const fetchUser = useCallback(() => {
         fetch(`/api/users/${user.sub}`)
@@ -44,7 +56,10 @@ const Dashboard = ({ user, isLoading }: QuestionProps) => {
 
                         <section className="section">
                             <h1 className="is-size-3">Questions</h1>
-                            <QuestionTable user={user} />
+                            <QuestionTable
+                                user={user}
+                                initialData={initialData}
+                            />
                         </section>
                     </>
                 ) : (
