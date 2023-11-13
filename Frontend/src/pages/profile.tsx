@@ -1,6 +1,7 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import Layout from '../components/Layout';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import Image from 'next/image';
 import {
     Modal,
     ModalOverlay,
@@ -42,32 +43,36 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
         onClose: onDeleteClose,
     } = useDisclosure();
 
-    async function fetchUser() {
-        console.log('From fetch user:' + user.sub);
+    const fetchUser = useCallback(() => {
         fetch(`/api/users/${user.sub}`)
             .then((response) => response.json())
             .then((fetchedUser) => {
                 setUsername(fetchedUser.username);
                 setEmail(fetchedUser.email);
-                // You can set the state with fetchedUser.username and fetchedUser.email here
             })
             .catch((error) => {
                 console.error('Error fetching user data:', error);
             });
-    }
+    }, [user.sub]);
 
     async function updateUserDetails() {
-        fetch(`/api/users/${user.sub}`, {
-            method: 'PUT',
-            body: JSON.stringify({
-                username: username,
-                email: email,
-            }),
-        })
-            .then((response) => response.json())
-            .catch((error) => {
-                console.error('Error updating user data:', error);
+        try {
+            const response = await fetch(`/api/users/${user.sub}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                }),
             });
+
+            await response.json();
+        } catch (error) {
+            console.error('Failed to edit user: ', error);
+        } finally {
+            onEditClose();
+        }
     }
 
     // OnClick Delete function
@@ -93,11 +98,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
 
     React.useEffect(() => {
         fetchUser();
-    }, []);
-
-    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUsername(e.target.value);
-    };
+    }, [fetchUser]);
 
     return (
         <>
@@ -108,53 +109,45 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                 scrollBehavior={'inside'}
                 isCentered
             >
-                <ModalOverlay />
+                <ModalOverlay bg="blackAlpha.700" backdropFilter="blur(4px)" />
                 <ModalContent>
                     <ModalHeader>Edit profile</ModalHeader>
-                    <ModalBody>
-                        <div>
+                    <form onSubmit={updateUserDetails}>
+                        <ModalBody>
                             <label htmlFor="displayName">Display Name:</label>
                             <input
                                 className="input"
                                 type="text"
                                 id="displayName"
                                 value={username}
-                                onChange={handleUsernameChange}
+                                onChange={(e) => setUsername(e.target.value)}
                             />
-                        </div>
-                    </ModalBody>
-
-                    <ModalFooter>
-                        <button
-                            className="button is-outlined"
-                            onClick={onEditClose}
-                        >
-                            Close
-                        </button>
-                        &nbsp;
-                        <button
-                            className="button is-primary"
-                            onClick={() => {
-                                updateUserDetails();
-                                onEditClose();
-                            }}
-                        >
-                            Save Changes
-                        </button>
-                    </ModalFooter>
+                        </ModalBody>
+                        <ModalFooter>
+                            <button
+                                className="button is-outlined"
+                                onClick={onEditClose}
+                            >
+                                Close
+                            </button>
+                            &nbsp;
+                            <button className="button is-primary" type="submit">
+                                Save Changes
+                            </button>
+                        </ModalFooter>
+                    </form>
                 </ModalContent>
             </Modal>
 
             {/* Delete Modal */}
             <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} isCentered>
-                <ModalOverlay />
+                <ModalOverlay bg="blackAlpha.700" backdropFilter="blur(3px)" />
                 <ModalContent>
                     <ModalHeader>Delete account</ModalHeader>
                     <ModalBody>
                         <p>Are you sure you want to delete your account?</p>
                         <p>
-                            This action is <strong>IRREVERSIBLE!</strong>
-                            {user.sub}
+                            This action is <b>IRREVERSIBLE!</b>
                         </p>
                     </ModalBody>
 
@@ -169,8 +162,8 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                         <button
                             className="button is-danger"
                             onClick={() => {
-                                onDeleteClose();
                                 deleteUser();
+                                onDeleteClose();
                             }}
                         >
                             Delete
@@ -186,7 +179,13 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                         <div className="column is-half">
                             <h2 className="is-size-1">User Profile</h2>
                             {user.picture != null ? (
-                                <img src={user.picture} alt="profile picture" />
+                                <Image
+                                    src={user?.picture ?? ''}
+                                    alt="profile picture"
+                                    width="120"
+                                    height="120"
+                                    className="rounded-full"
+                                />
                             ) : (
                                 <></>
                             )}

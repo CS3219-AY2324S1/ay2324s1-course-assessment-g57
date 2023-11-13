@@ -7,14 +7,14 @@ import { Editor } from '@monaco-editor/react';
 import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
 import { MonacoBinding } from '../../lib/y-monaco';
-import { Box, Button, Select, Switch, IconButton } from '@chakra-ui/react';
+import { Box, Button, Select } from '@chakra-ui/react';
 import { fromUint8Array } from 'js-base64';
 import Link from 'next/link';
 
 import * as random from 'lib0/random';
 
-import { MdOutlineDarkMode } from 'react-icons/md';
-// import { MonacoDiffEditor } from 'react-monaco-editor';
+import { MdPlayArrow } from 'react-icons/md';
+import socket from '@/lib/socket';
 
 // Setup Monaco Editor
 // Attach YJS Text to Monaco Editor
@@ -23,7 +23,7 @@ function CodeEditor({ roomId }: { roomId: string }) {
     const editorRef = useRef<any>(null);
     const [lang, setLang] = useState('python');
     const [loading, setLoading] = useState(false);
-    const [editorTheme, setEditorTheme] = useState('light');
+    const [editorTheme] = useState('light');
     const [editorOutput, setEditorOutput] = useState('');
     const [provider, setProvider] = useState(null);
 
@@ -104,7 +104,7 @@ function CodeEditor({ roomId }: { roomId: string }) {
     /*Save the code as a binary file*/
     async function submitCode() {
         const data = editorRef.current?.getValue();
-        alert(data);
+        // alert(data);
         setLoading(true);
         const enc = new TextEncoder();
         const documentState = enc.encode(data);
@@ -168,19 +168,24 @@ function CodeEditor({ roomId }: { roomId: string }) {
         setLang(inputLang);
     }
 
-    /*will have to modify this function to identify what
+    function disconnect() {
+        socket.disconnect();
+    }
+
+    /*
+    will have to modify this function to identify what
     is the default language specified by the user and
     add selected property to the other options
     */
-    function isSelected() {
-        return true;
-    }
+    // function isSelected() {
+    //     return true;
+    // }
 
-    function setDarkMode() {
-        editorTheme == 'light'
-            ? setEditorTheme('vs-dark')
-            : setEditorTheme('light');
-    }
+    // function setDarkMode() {
+    //     editorTheme == 'light'
+    //         ? setEditorTheme('vs-dark')
+    //         : setEditorTheme('light');
+    // }
 
     function destoryConn() {
         //@ts-ignore
@@ -189,21 +194,38 @@ function CodeEditor({ roomId }: { roomId: string }) {
 
     return (
         <div>
-            <Box style={{ height: '500px', width: '100%' }}>
-                <Editor
-                    className="editor"
-                    theme={editorTheme}
-                    language={lang}
-                    onMount={handleEditorDidMount}
-                    options={{ fontSize: 12, automaticLayout: true }}
-                />
-            </Box>
-            <div>
-                <textarea
-                    readOnly={true}
-                    value={editorOutput}
-                    style={{ width: '100%', height: '100px' }}
-                ></textarea>
+            <Link
+                onClick={() => {
+                    destoryConn();
+                    disconnect();
+                }}
+                className="button is-danger mb-2"
+                href="/dashboard"
+            >
+                Leave Room
+            </Link>
+            {/* Code Editor */}
+            <div className="box">
+                <Box style={{ height: '500px', width: '100%' }}>
+                    <Editor
+                        className="editor"
+                        theme={editorTheme}
+                        language={lang}
+                        onMount={handleEditorDidMount}
+                        options={{ fontSize: 12, automaticLayout: true }}
+                    />
+                </Box>
+                <br />
+                {/* Console Output */}
+                <div>
+                    <textarea
+                        className="textarea has-fixed-size"
+                        placeholder="Console Output"
+                        readOnly={true}
+                        value={editorOutput}
+                        style={{ width: '100%', height: '100px' }}
+                    ></textarea>
+                </div>
             </div>
             <div
                 style={{
@@ -220,7 +242,7 @@ function CodeEditor({ roomId }: { roomId: string }) {
                         paddingLeft: 2,
                     }}
                 >
-                    <IconButton
+                    {/* <IconButton
                         aria-label="Dark Mode"
                         variant="outline"
                         colorScheme="white"
@@ -232,18 +254,12 @@ function CodeEditor({ roomId }: { roomId: string }) {
                         onChange={setDarkMode}
                         paddingLeft={2}
                         paddingRight={5}
-                    />
-                    <Link
-                        onClick={destoryConn}
-                        className="button is-danger is-small"
-                        href="/"
-                    >
-                        Leave Room
-                    </Link>
+                    /> */}
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Select
+                        className="select is-link is-normal"
                         minWidth={100}
                         maxWidth={100}
                         placeholder="Select Language"
@@ -255,9 +271,7 @@ function CodeEditor({ roomId }: { roomId: string }) {
                     >
                         <option value="csharp">C#</option>
                         <option value="cpp">C++</option>
-                        <option value="python">
-                            Python
-                        </option>
+                        <option value="python">Python</option>
                         <option value="go">Go</option>
                         <option value="java">Java</option>
                         <option value="kotlin">Kotlin</option>
@@ -272,8 +286,9 @@ function CodeEditor({ roomId }: { roomId: string }) {
                         variant="outline"
                         ml={4}
                         mr={2}
+                        rightIcon={<MdPlayArrow />}
                     >
-                        Submit Code
+                        Run
                     </Button>
                 </div>
             </div>

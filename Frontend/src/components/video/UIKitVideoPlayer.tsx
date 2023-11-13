@@ -33,7 +33,7 @@ const UIKitVideo = ({ channel }: { channel: string }) => {
         };
 
         init();
-    }, []);
+    }, [channel, setToken]);
 
     const rtcProps = {
         appId: process.env.AGORA_APP_ID || 'ead9549ed5af43d5a769644e3136da85',

@@ -5,7 +5,7 @@ import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 import { ChakraBaseProvider, extendTheme } from '@chakra-ui/react';
 
-import RoomContextProvider from '@/contexts/RoomContext';
+import { RoomContextProvider } from '@/contexts/RoomContext';
 
 const theme = extendTheme({});
 
