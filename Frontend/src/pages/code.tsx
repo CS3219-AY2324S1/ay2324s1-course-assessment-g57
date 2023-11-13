@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
-import TopBar from '../components/collab/TopBar';
 import QuestionDisplay from '../components/collab/QuestionDisplay';
 import socket from '../lib/socket';
 
@@ -38,7 +37,7 @@ const CodeEditorPage = () => {
         setCurrentQnTitle(qnTitle || '');
         setDifficulty(difficulty);
 
-        socket.emit('questionUpdate', { roomId, difficulty });
+        // socket.emit('questionUpdate', { roomId, difficulty });
     }, []);
 
     function getNewQn() {
@@ -47,17 +46,17 @@ const CodeEditorPage = () => {
 
     return (
         <>
-            <TopBar />
+            {/* <TopBar /> */}
             <div className="columns">
-                <div className="column">
+                <div className="column is-two-fifths">
                     <QuestionDisplay
                         qnTitle={currentQnTitle}
                         getNewQnFn={getNewQn}
                     />
-                    <AgoraUIKit channel={roomId || ''} />
                 </div>
                 <div className="column is-three-fifths">
                     <MonacoEditorComponentWithNoSSR roomId={roomId || ''} />
+                    <AgoraUIKit channel={roomId || ''} />
                 </div>
             </div>
         </>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import MatchControls from '@/components/Matching/MatchControls';
-import QuestionTable from '../components/QuestionTable';
+import QuestionTable from '../components/questions/QuestionTable';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
 type QuestionProps = {
@@ -17,19 +17,15 @@ const Dashboard = ({ user, isLoading }: QuestionProps) => {
             .then((response) => response.json())
             .then((fetchedUser) => {
                 setUsername(fetchedUser.username);
-                // You can set the state with fetchedUser.username and fetchedUser.email here
             })
             .catch((error) => {
                 console.error('Error fetching user data:', error);
             });
     }
 
-    // const { user, isLoading } = useUser();
-    // console.log(user);
-
     React.useEffect(() => {
         fetchUser();
-    }, []);
+    }, [username]);
 
     return (
         <>
@@ -45,7 +41,6 @@ const Dashboard = ({ user, isLoading }: QuestionProps) => {
                         <section className="section">
                             <h2 className="is-size-4">Match with a Peer!</h2>
                             <MatchControls userId={user.sub} />
-                        </section>
 
                         <section className="section">
                             <h1 className="is-size-3">Questions Database</h1>
