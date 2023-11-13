@@ -387,7 +387,7 @@ const MainApp = () => {
                             AY2324S1
                         </p>
                         <p>
-                            View source code on
+                            View source code on&nbsp;
                             <Link href="https://github.com/CS3219-AY2324S1/ay2324s1-course-assessment-g57">
                                 Github
                             </Link>

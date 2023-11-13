@@ -1,6 +1,7 @@
 import { Question, defaultQuestion } from '../../models/types';
 import React from 'react';
 import Image from 'next/image';
+import { Tag } from '@chakra-ui/react';
 
 type QuestionDisplayProp = {
     qnTitle: string;
@@ -40,11 +41,14 @@ const QuestionDisplay = ({ qnTitle, getNewQnFn }: QuestionDisplayProp) => {
                     </button>
                 </div>
                 <h1 className="is-size-3">{question.title}</h1>
-                <p className="is-size-5">{question.categories}</p>
+                <p className="is-size-5">
+                    {question.categories.map((s) => (
+                        <Tag key={s}>{s}</Tag>
+                    ))}
+                </p>
                 <div
                     dangerouslySetInnerHTML={{ __html: question.description }}
                 ></div>
-                {/* <p>{question.description}</p> */}
             </div>
         </div>
     );
