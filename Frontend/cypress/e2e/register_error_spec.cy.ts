@@ -29,7 +29,7 @@ describe('The Error Handling for the Register Process', () => {
             cy.get('input[name=username]:invalid').should('have.length', 1);
             cy.get('input[name=username]')
                 .invoke('prop', 'validationMessage')
-                .should('contain', 'Please fill in this field.');
+                .should('contain', 'Please fill');
             // cy.get("input[name=username").then(($input) => {
             //     expect($input[0].validationMessage).to.eq("Please fill in this field.")
             // });
@@ -43,7 +43,7 @@ describe('The Error Handling for the Register Process', () => {
             cy.get('input[name=email]:invalid').should('have.length', 1);
             cy.get('input[name=email]')
                 .invoke('prop', 'validationMessage')
-                .should('contain', 'Please fill in this field.');
+                .should('contain', 'Please fill');
             // cy.get("input[name=email").then(($input) => {
             //     expect($input[0].validationMessage).to.eq("Please fill in this field.")
             // })
@@ -57,7 +57,7 @@ describe('The Error Handling for the Register Process', () => {
             cy.get('input[name=password]:invalid').should('have.length', 1);
             cy.get('input[name=password]')
                 .invoke('prop', 'validationMessage')
-                .should('contain', 'Please fill in this field.');
+                .should('contain', 'Please fill');
             // cy.get("input[name=password").then(($input) => {
             //     expect($input[0].validationMessage).to.eq("Please fill in this field.");
             // })

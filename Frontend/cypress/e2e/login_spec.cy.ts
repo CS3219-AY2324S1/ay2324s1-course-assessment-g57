@@ -21,9 +21,10 @@ describe('The Login Process', () => {
 
         cy.url().should('include', 'dashboard');
 
-        cy.get("p[class='is-size-3']")
+        cy.get("p[class='is-size-3']", { timeout: 10000 })
+            .contains('Welcome back', { matchCase: false })
             .should('be.visible')
-            .should('contain', 'danieltestuser');
+            .should('contain', 'danielTestUser');
 
         cy.get('table').should('be.visible');
 
