@@ -18,7 +18,7 @@ const Nav = ({ user }: NavProps) => {
                     <Link className="navbar-item" href="/dashboard">
                         <Image
                             src="/logo.png"
-                            className="h-8 w-auto sm:h-10"
+                            className="h-8 w-auto sm:h-10 mr-2"
                             width="400"
                             height="400"
                             alt="peerprep logo"
@@ -40,7 +40,10 @@ const Nav = ({ user }: NavProps) => {
                                 ) : (
                                     <></>
                                 )}
-
+                            </div>
+                        </div>
+                        <div className="navbar-item">
+                            <div className="field is-grouped">
                                 <p className="control has-text-weight-medium">
                                     <Link href="/profile">Profile</Link>
                                 </p>

@@ -1,6 +1,7 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import Layout from '../components/Layout';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import Image from 'next/image';
 import {
     Modal,
     ModalOverlay,
@@ -42,8 +43,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
         onClose: onDeleteClose,
     } = useDisclosure();
 
-    async function fetchUser() {
-        console.log('From fetch user:' + user.sub);
+    const fetchUser = useCallback(() => {
         fetch(`/api/users/${user.sub}`)
             .then((response) => response.json())
             .then((fetchedUser) => {
@@ -53,7 +53,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
             .catch((error) => {
                 console.error('Error fetching user data:', error);
             });
-    }
+    }, [user.sub]);
 
     async function updateUserDetails() {
         try {
@@ -98,7 +98,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
 
     React.useEffect(() => {
         fetchUser();
-    }, []);
+    }, [fetchUser]);
 
     return (
         <>
@@ -179,7 +179,13 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                         <div className="column is-half">
                             <h2 className="is-size-1">User Profile</h2>
                             {user.picture != null ? (
-                                <img src={user.picture} alt="profile picture" />
+                                <Image
+                                    src={user?.picture ?? ''}
+                                    alt="profile picture"
+                                    width="120"
+                                    height="120"
+                                    className="rounded-full"
+                                />
                             ) : (
                                 <></>
                             )}

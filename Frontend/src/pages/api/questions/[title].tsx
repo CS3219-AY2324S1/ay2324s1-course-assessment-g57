@@ -24,9 +24,10 @@ export default withApiAuthRequired(async function handler(
             headers: reqHeaders,
         });
         if (response.ok) {
-            const questionData = await response.json();
+            const question = await response.json();
+            question.title = restoreTitle(question.title);
             console.log('Question fetched successfully');
-            res.status(200).json(questionData);
+            res.status(200).json(question);
         } else if (response.status === 404) {
             // If the user is not found, return a 404 Not Found response
             console.log('Question not found');
