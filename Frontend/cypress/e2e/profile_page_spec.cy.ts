@@ -1,7 +1,7 @@
 describe('The Profile Page', () => {
     it("displays the current user's information", () => {
         // Get necessary environment variables.
-        const testUsername = Cypress.env('testUsername');
+        const testUsername = 'danielTestUser';
         const testEmail = Cypress.env('testEmail');
 
         // Log the user in.
@@ -67,7 +67,7 @@ describe('The Profile Page', () => {
 
     it('allows the current user to edit their display name and delete their account', () => {
         // Get necessary environment variables.
-        const testUsername = Cypress.env('testUsername');
+        const testUsername = 'danielTestUser';
         const testUsername2 = testUsername + '2';
 
         // Log the user in.
