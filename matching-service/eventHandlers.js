@@ -96,7 +96,10 @@ async function processMatchResult(io, message) {
 
     // In the event either u1 and u2 have already been removed from the queue
     // Abort the match success process and remove the other user from the queue
-    if (u1 == null) {
+    if (u1 == null && u2 == null) {
+        return
+
+    } else if (u1 == null) {
         queue.delete(u2.userId)
         return
 
@@ -121,12 +124,12 @@ async function processMatchResult(io, message) {
 
 
     // Get question for the new room
-    // const response = await axios.get(QUESTIONS_DB_URL + u1.difficulty);
-    // const qn = await response.data;
-    // console.log('Room Found:' + qn.title);
-    // io.to(roomId).emit('matchFound', matchSuccessMessage, roomId, qn.title);
+    const response = await axios.get(QUESTIONS_DB_URL + u1.difficulty.toLowerCase());
+    const qn = await response.data;
+    console.log('Room Found:' + qn.title);
+    io.to(roomId).emit('matchFound', matchSuccessMessage, roomId, qn.title);
 
-    io.to(roomId).emit('matchFound', matchSuccessMessage)
+    // io.to(roomId).emit('matchFound', matchSuccessMessage)
 
 
     queue.delete(u1.userId)
