@@ -199,7 +199,7 @@ function CodeEditor({ roomId }: { roomId: string }) {
                     destoryConn();
                     disconnect();
                 }}
-                className="button is-danger"
+                className="button is-danger mb-2"
                 href="/dashboard"
             >
                 Leave Room

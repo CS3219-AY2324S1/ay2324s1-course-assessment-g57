@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Layout from '../components/Layout';
 import MatchControls from '@/components/Matching/MatchControls';
 import QuestionTable from '../components/questions/QuestionTable';
@@ -11,8 +11,7 @@ type QuestionProps = {
 
 const Dashboard = ({ user, isLoading }: QuestionProps) => {
     const [username, setUsername] = useState<string>();
-
-    async function fetchUser() {
+    const fetchUser = useCallback(() => {
         fetch(`/api/users/${user.sub}`)
             .then((response) => response.json())
             .then((fetchedUser) => {
@@ -21,11 +20,11 @@ const Dashboard = ({ user, isLoading }: QuestionProps) => {
             .catch((error) => {
                 console.error('Error fetching user data:', error);
             });
-    }
+    }, [user.sub]);
 
     React.useEffect(() => {
         fetchUser();
-    }, [username]);
+    }, [username, fetchUser]);
 
     return (
         <>
@@ -44,7 +43,7 @@ const Dashboard = ({ user, isLoading }: QuestionProps) => {
                         </section>
 
                         <section className="section">
-                            <h1 className="is-size-3">Questions Database</h1>
+                            <h1 className="is-size-3">Questions</h1>
                             <QuestionTable user={user} />
                         </section>
                     </>
