@@ -13,7 +13,14 @@ Peerprep is a collaborative platform for students to practice interview question
 <b>Quick Links:</b>
 
 -   [Services](#services)
--   [Setup](#setup) - [PeerPrep](#peerprep-setup) - [Assignment 1](#assignment-1) - [Assignment 2](#assignment-2) - [Assignment 3](#assignment-3) - [Assignment 4](#assignment-4) - [Assignment 5](#assignment-5) - [Assignment 6](#assignment-6)
+-   [Setup](#setup)
+-   [PeerPrep](#peerprep-setup)
+-   [Assignment 1](#assignment-1)
+-   [Assignment 2](#assignment-2)
+-   [Assignment 3](#assignment-3)
+-   [Assignment 4](#assignment-4)
+-   [Assignment 5](#assignment-5)
+-   [Assignment 6](#assignment-6)
 </p>
 
 ## Services
