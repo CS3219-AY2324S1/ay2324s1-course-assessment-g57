@@ -17,7 +17,7 @@ describe('Video Player Component Test', () => {
         // can get a token for the video chat.
         cy.intercept(
             'https://34k0nfj43f.execute-api.ap-southeast-1.amazonaws.com/dev/*'
-        ).as("getToken");
+        ).as('getToken');
         cy.get("button[class='button is-link']", { timeout: 10000 }).should(
             'be.visible'
         );

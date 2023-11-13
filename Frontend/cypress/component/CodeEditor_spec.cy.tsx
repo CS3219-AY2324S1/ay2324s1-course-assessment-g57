@@ -57,11 +57,9 @@ describe('Code Editor Component Test', () => {
 
         // Check that a user is able to switch between languages.
         cy.get('option').should('contain', 'Python');
-        cy.get("select")
-            .should('be.visible')
-            .select('Kotlin');
+        cy.get('select').should('be.visible').select('Kotlin');
         cy.get('option').should('contain', 'Kotlin');
-        cy.get("select").select('Python');
+        cy.get('select').select('Python');
 
         // Check that there is a Submit Code button for users to submit code written.
         cy.get("button[class='chakra-button css-1ahd3gj'").should('be.visible');
