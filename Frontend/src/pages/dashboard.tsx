@@ -44,7 +44,7 @@ const Dashboard = ({ user, isLoading }: QuestionProps) => {
 
                         <section className="section">
                             <h2 className="is-size-4">Match with a Peer!</h2>
-                            <MatchControls />
+                            <MatchControls userId={user.sub} />
                         </section>
 
                         <section className="section">

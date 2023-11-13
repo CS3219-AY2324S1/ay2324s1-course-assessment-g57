@@ -4,7 +4,11 @@ import ConnectionManager from './ConnectionManager';
 import { useRouter } from 'next/navigation';
 import { RoomContext } from '@/contexts/RoomContext';
 
-const MatchControls = () => {
+type MatchControlsProps = {
+    userId: string;
+};
+
+const MatchControls = ({ userId }: MatchControlsProps) => {
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [difficulty, setDifficulty] = useState('easy');
     const [status, setStatus] = useState(
@@ -18,7 +22,7 @@ const MatchControls = () => {
         const onConnect = () => {
             setIsConnected(true);
             setStatus(`Finding match with difficulty level ${difficulty}`);
-            socket.emit('startMatch', difficulty);
+            socket.emit('startMatch', userId, difficulty);
         };
 
         const onDisconnect = () => {
