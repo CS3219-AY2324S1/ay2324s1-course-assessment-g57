@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import QuestionDisplay from '../components/collab/QuestionDisplay';
 import socket from '../lib/socket';
 
@@ -14,6 +14,7 @@ const AgoraUIKit = dynamic(
 );
 
 const CodeEditorPage = () => {
+    const { push } = useRouter();
     const searchParams = useSearchParams();
     const [roomId, setRoomId] = useState(searchParams.get('room'));
     const [currentQnTitle, setCurrentQnTitle] = useState<string>(
@@ -33,12 +34,20 @@ const CodeEditorPage = () => {
         const qnTitle = searchParams.get('qnTitle');
         const difficulty = searchParams.get('difficulty');
 
+        const requiredSearchParams = [id, qnTitle, difficulty];
+
+        const missingParams = requiredSearchParams.some((param) => !param);
+
+        if (missingParams) {
+            push('/dashboard');
+        }
+
         setRoomId(id);
         setCurrentQnTitle(qnTitle || '');
         setDifficulty(difficulty);
 
         // socket.emit('questionUpdate', { roomId, difficulty });
-    }, []);
+    }, [setRoomId, setCurrentQnTitle, setDifficulty, searchParams, push]);
 
     function getNewQn() {
         socket.emit('questionUpdate', { roomId, difficulty: currDifficulty });
@@ -47,7 +56,7 @@ const CodeEditorPage = () => {
     return (
         <>
             {/* <TopBar /> */}
-            <div className="columns">
+            <div className="columns ml-4 mr-4">
                 <div className="column is-two-fifths">
                     <QuestionDisplay
                         qnTitle={currentQnTitle}

@@ -3,7 +3,8 @@ import { Question, defaultQuestion } from '../../models/types';
 import EditQuestionModal from './EditQuestionModal';
 import AddQuestionModal from './AddQuestionModal';
 import ViewQuestionModal from './ViewQuestionModal';
-import { useDisclosure, Tag } from '@chakra-ui/react';
+import { useDisclosure, Tag, IconButton } from '@chakra-ui/react';
+import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 
 type QuestionTableProp = {
     user?: any;
@@ -107,7 +108,7 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                 {user?.peerprepRoles?.[0] === 'Admin' ? (
                     <>
                         <button
-                            className="button is-link is-pulled-right"
+                            className="button is-link is-pulled-right mb-4"
                             onClick={onAddOpen}
                         >
                             Add question
@@ -172,28 +173,35 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                     {user?.peerprepRoles?.[0] === 'Admin' ? (
                                         <>
                                             <td>
-                                                {/* Edit */}
-                                                <img
-                                                    src="/assets/edit.svg"
-                                                    alt="edit"
+                                                <IconButton
+                                                    aria-label="Edit Button"
+                                                    colorScheme="teal"
+                                                    icon={<EditIcon />}
                                                     onClick={() => {
                                                         getQuestionDetails(
                                                             val.title
                                                         );
                                                         onEditOpen();
                                                     }}
-                                                    style={{ width: 25 }}
                                                 />
                                             </td>
                                             <td>
                                                 {/* Delete */}
-                                                <img
+                                                {/* <img
                                                     src="/assets/trash.svg"
                                                     alt="delete"
                                                     onClick={() =>
                                                         sendDelete(val.title)
                                                     }
                                                     style={{ width: 25 }}
+                                                /> */}
+                                                <IconButton
+                                                    aria-label="Delete Button"
+                                                    colorScheme="red"
+                                                    icon={<DeleteIcon />}
+                                                    onClick={() =>
+                                                        sendDelete(val.title)
+                                                    }
                                                 />
                                             </td>
                                         </>

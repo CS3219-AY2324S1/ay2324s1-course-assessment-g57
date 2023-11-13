@@ -1,10 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import socket from '../../lib/socket';
 import { useRouter } from 'next/navigation';
 import { RoomContext } from '@/contexts/RoomContext';
 import { Button, Progress, Select } from '@chakra-ui/react';
 
-const MatchControls = () => {
+type MatchControlsProps = {
+    userId: string;
+};
+
+const MatchControls = ({ userId }: MatchControlsProps) => {
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [difficulty, setDifficulty] = useState('easy');
     const [status, setStatus] = useState('');
@@ -17,19 +21,22 @@ const MatchControls = () => {
     .column {
         display: flex;
     }`;
+    const onConnect = useCallback(() => {
+        console.log(difficulty);
+        setIsConnected(true);
+        setStatus(`Finding match with difficulty level ${difficulty}`);
+        socket.emit('startMatch', userId, difficulty);
+    }, [difficulty, setIsConnected, setStatus, userId]);
+
+    const onDisconnect = useCallback(() => {
+        setIsConnected(false);
+        setRoomId('');
+        setStatus('');
+        setTimeElapsed('30');
+        console.log('disconnected');
+    }, [setIsConnected, setRoomId, setStatus, setTimeElapsed]);
+
     useEffect(() => {
-        const onConnect = () => {
-            setIsConnected(true);
-            setStatus(`Finding match with difficulty level ${difficulty}`);
-            socket.emit('startMatch', difficulty);
-        };
-
-        const onDisconnect = () => {
-            setIsConnected(false);
-            setRoomId('');
-            console.log('disconnected');
-        };
-
         socket.on('connect', onConnect);
         socket.on('disconnect', onDisconnect);
 
@@ -38,13 +45,28 @@ const MatchControls = () => {
             (msg: string, room: string, qnTitle: string) => {
                 setTimeElapsed('30');
                 setRoomId(room);
-                setStatus(msg);
+                setStatus('Found a match!');
                 push(
                     `/code?room=${room}&qnTitle=${qnTitle}&difficulty=${difficulty}`
                 );
             }
         );
 
+        return () => {
+            socket.off('connect', onConnect);
+            socket.off('disconnect', onDisconnect);
+        };
+    }, [
+        onConnect,
+        onDisconnect,
+        difficulty,
+        push,
+        setRoomId,
+        setTimeElapsed,
+        setStatus,
+    ]);
+
+    useEffect(() => {
         socket.on('matchTimerCountdown', (timerCountdown: string) => {
             setTimeElapsed(timerCountdown);
         });
@@ -60,7 +82,7 @@ const MatchControls = () => {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
         };
-    }, []);
+    }, [onConnect, onDisconnect, setTimeElapsed, setStatus]);
 
     return (
         <>
@@ -79,9 +101,11 @@ const MatchControls = () => {
                                     <Select
                                         id="difficulty"
                                         className="select is-link"
-                                        onChange={(event) =>
-                                            setDifficulty(event.target.value)
-                                        }
+                                        value={difficulty}
+                                        onChange={(event) => {
+                                            console.log(event.target.value);
+                                            setDifficulty(event.target.value);
+                                        }}
                                     >
                                         <option value="easy">Easy</option>
                                         <option value="medium">Medium</option>
@@ -114,14 +138,14 @@ const MatchControls = () => {
                             <div className="column is-half">
                                 <div>
                                     <Button
-                                        className="button is-primary"
+                                        className="button is-primary mt-5"
                                         onClick={() => {
                                             setDisconnectDisabled(false);
                                             setConnectDisabled(true);
                                             socket.connect();
                                         }}
                                         isDisabled={connectDisabled}
-                                        height={'100%'}
+                                        height={'2rem'}
                                         width={'100%'}
                                     >
                                         &nbsp;Connect&nbsp;
@@ -130,14 +154,14 @@ const MatchControls = () => {
                             </div>
                             <div className="column is-half">
                                 <Button
-                                    className="button is-danger is-light"
+                                    className="button is-danger is-light mt-5"
                                     onClick={() => {
                                         setDisconnectDisabled(true);
                                         setConnectDisabled(false);
                                         socket.disconnect();
                                     }}
                                     isDisabled={disconnectDisabled}
-                                    height={'100%'}
+                                    height={'2rem'}
                                     width={'100%'}
                                 >
                                     Disconnect

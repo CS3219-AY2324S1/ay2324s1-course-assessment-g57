@@ -1,7 +1,18 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { useRouter } from 'next/navigation';
 
 const MainApp = () => {
+    const { user } = useUser();
+    const { push } = useRouter();
+
+    console.log(user);
+
+    if (user) {
+        push('/dashboard');
+    }
+
     return (
         <>
             {/* Navbar Section */}

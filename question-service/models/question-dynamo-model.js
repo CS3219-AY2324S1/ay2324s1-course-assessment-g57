@@ -33,11 +33,11 @@ const QuestionModel = dynamoose.model('questions', {
 });
 
 const MetadataModel = dynamoose.model('metadata', {
-  type: String,
-  lastID: Number,
+    type: String,
+    lastID: Number,
 });
 
 module.exports = {
-  QuestionModel,
-  MetadataModel,
+    QuestionModel,
+    MetadataModel,
 };

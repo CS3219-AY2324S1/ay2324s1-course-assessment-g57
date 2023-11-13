@@ -54,6 +54,7 @@ export default withApiAuthRequired(async function handler(
                 res.status(404).json({ error: 'User not found' });
             } else {
                 console.log('Failed to update user data');
+                console.log(response);
                 res.status(response.status).json({
                     error: 'Failed to update user data',
                 });
