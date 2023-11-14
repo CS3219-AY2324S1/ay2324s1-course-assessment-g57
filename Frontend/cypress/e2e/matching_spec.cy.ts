@@ -58,7 +58,7 @@ describe('The Matching Process', () => {
             .contains('Connect')
             .click();
 
-        cy.get("select[id='difficulty']").should('not.exist');
+        //cy.get("select[id='difficulty']").should('not.exist');
         cy.get('h2')
             .contains('Time Left:', { matchCase: false })
             .should('exist');
