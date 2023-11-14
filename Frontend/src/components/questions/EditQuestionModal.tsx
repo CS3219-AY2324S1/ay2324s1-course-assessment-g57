@@ -14,6 +14,7 @@ import {
     Button,
 } from '@chakra-ui/react';
 import { mutate } from 'swr';
+import { toast } from 'react-toastify';
 
 interface EditQuestionModalProps {
     isOpen: boolean;
@@ -54,9 +55,26 @@ const EditQuestionModal: React.FC<EditQuestionModalProps> = ({
             });
 
             if (!response.ok) {
-                throw new Error('Failed to edit question');
+                switch (response.status) {
+                    case 409:
+                        toast.error('Question already exists, please try again');
+                        break;
+                    case 400:
+                        toast.error('Invalid question, please try again');
+                        break;
+                    case 500:
+                    case 502:
+                    case 503:
+                    case 504:
+                        toast.error('A server error occurred');
+                        break;
+                    default:
+                        toast.error('An error occurred while editing question');
+                        throw new Error('Failed to edit question');
+                }
             }
             await mutate('/api/questions');
+            toast.success('Successfully edited question!');
         } catch (error) {
             console.error('Failed to edit question: ', error);
         } finally {
@@ -97,6 +115,7 @@ const EditQuestionModal: React.FC<EditQuestionModalProps> = ({
                                             name="title"
                                             as={Input}
                                             defaultValue={question.title}
+                                            isDisabled
                                         ></Field>
                                     </FormControl>
                                     <FormControl isRequired className="mb-2">

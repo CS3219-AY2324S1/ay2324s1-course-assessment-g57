@@ -14,6 +14,7 @@ import {
     Button,
 } from '@chakra-ui/react';
 import { mutate } from 'swr';
+import { toast } from 'react-toastify';
 
 interface AddQuestionModalProps {
     isOpen: boolean;
@@ -56,7 +57,23 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
             });
 
             if (!response.ok) {
-                throw new Error('Failed to add question');
+                switch (response.status) {
+                    case 409:
+                        toast.error('Question already exists, please try again');
+                        break;
+                    case 400:
+                        toast.error('Invalid question, please try again');
+                        break;
+                    case 500:
+                    case 502:
+                    case 503:
+                    case 504:
+                        toast.error('A server error occurred');
+                        break;
+                    default:
+                        toast.error('An error occurred while adding question');
+                        throw new Error('Failed to add question');
+                }
             }
             mutate('/api/questions');
             await response.json();
@@ -65,6 +82,7 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
         } finally {
             setSubmitting(false);
             onClose();
+            toast.success('Successfully added question!')
         }
     };
     return (
