@@ -22,48 +22,59 @@ const QuestionDisplay = ({ qnTitle, getNewQnFn }: QuestionDisplayProp) => {
         getQnByTitle(qnTitle);
     }, [qnTitle]);
 
+    // const css = `
+    // .column {
+    //     display: flex;
+    // }`;
+
     return (
-        <div className="box">
-            <div className="content">
-                <div>
-                    <button
-                        onClick={async () => {
-                            getNewQnFn();
-                            await getQnByTitle(qnTitle);
-                        }}
-                        className="button is-small is-rounded is-primary is-pulled-right"
-                    >
-                        <Image
-                            src="/assets/change.svg"
-                            alt="Change Questions"
-                            width="10"
-                            height="10"
-                        />
-                    </button>
+        <>
+            {/* <style>{css}</style> */}
+            <div className="box">
+                <div className="content">
+                    <div>
+                        <button
+                            onClick={async () => {
+                                getNewQnFn();
+                                await getQnByTitle(qnTitle);
+                            }}
+                            className="button is-small is-rounded is-primary is-pulled-right"
+                        >
+                            <Image
+                                src="/assets/change.svg"
+                                alt="Change Questions"
+                                width="10"
+                                height="10"
+                            />
+                        </button>
+                    </div>
+                    <h1 className="is-size-3">{question.title}</h1>
+                    <div className="flex justify-between">
+                        <p className="is-size-5">
+                            {question?.categories?.map((s) => (
+                                <Tag className="mr-1" key={s}>
+                                    {s}
+                                </Tag>
+                            ))}
+                        </p>
+                    </div>
+                    <br />
+                    <div>
+                        <b>Complexity: </b>
+                        <Tag
+                            size={'md'}
+                            variant={'solid'}
+                            colorScheme={getComplexityColor(question.complexity)}>
+                            {question.complexity}
+                        </Tag>
+                    </div>
+                    <br />
+                    <div
+                        dangerouslySetInnerHTML={{ __html: question.description }}
+                    ></div>
                 </div>
-                <h1 className="is-size-3">{question.title}</h1>
-                <div className="flex justify-between">
-                    <p className="is-size-5">
-                        {question?.categories?.map((s) => (
-                            <Tag className="mr-1" key={s}>
-                                {s}
-                            </Tag>
-                        ))}
-                    </p>
-                    <Tag
-                        className="h-6 w-15"
-                        size={'md'}
-                        variant={'solid'}
-                        colorScheme={getComplexityColor(question.complexity)}
-                    >
-                        {question.complexity}
-                    </Tag>
-                </div>
-                <div
-                    dangerouslySetInnerHTML={{ __html: question.description }}
-                ></div>
             </div>
-        </div>
+        </>
     );
 };
 

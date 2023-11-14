@@ -14,6 +14,7 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [difficulty, setDifficulty] = useState('easy');
     const [timeElapsed, setTimeElapsed] = useState('30');
+    const [status, setStatus] = useState('');
     const { setRoomId } = useContext(RoomContext);
     const { push } = useRouter();
     const [disconnectDisabled, setDisconnectDisabled] = React.useState(true);
@@ -23,21 +24,9 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
         display: flex;
     }`;
     const onConnect = useCallback(() => {
-        console.log(difficulty);
         setIsConnected(true);
+        setStatus('Finding Match...');
         toast.dismiss();
-        toast.success(`🥂 Finding a match for ${difficulty}-level questions.`, {
-            toastId: 'startMatch',
-            position: 'top-right',
-            autoClose: 30000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            pauseOnFocusLoss: false,
-            draggable: true,
-            progress: undefined,
-            theme: 'light',
-        });
         socket.emit('startMatch', userId, difficulty);
     }, [difficulty, setIsConnected, userId]);
 
@@ -47,6 +36,19 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
         setTimeElapsed('30');
         console.log('disconnected');
         toast.dismiss('startMatch');
+        toast.warn("You have been disconnected", {
+            toastId: 'noMatch',
+            position: 'top-right',
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+        });
+        setConnectDisabled(false);
+        setDisconnectDisabled(true);
     }, [setIsConnected, setRoomId, setTimeElapsed]);
 
     useEffect(() => {
@@ -59,23 +61,6 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
                 setTimeElapsed('30');
                 setRoomId(room);
                 toast.dismiss();
-                // toast.success(`🎉 Found a match.`, {
-                //     toastId: 'foundMatch',
-                //     position: 'top-right',
-                //     autoClose: 2000,
-                //     hideProgressBar: false,
-                //     closeOnClick: true,
-                //     pauseOnHover: false,
-                //     pauseOnFocusLoss: false,
-                //     draggable: true,
-                //     progress: undefined,
-                //     theme: 'light',
-                // });
-                // setTimeout(() => {
-                //     push(
-                //         `/code?room=${room}&qnTitle=${qnTitle}&difficulty=${difficulty}`
-                //     );
-                // }, 3000);
                 push(
                     `/code?room=${room}&qnTitle=${qnTitle}&difficulty=${difficulty}`
                 );
@@ -126,8 +111,6 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
             <style>{css}</style>
             {/* Same as */}
             <div className="container">
-                <h1>{status}</h1>
-                <br />
                 <div className="columns">
                     <div className="column is-one-quarter">
                         <div className="container">
@@ -149,27 +132,24 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
                                     </Select>
                                 </div>
                             )}
+                            {/* Timer */}
+                            {isConnected && (
+                                <div style={{ width: '100%' }}>
+                                    <div>{status}</div>
+                                    <h2>Time left: {timeElapsed}s...</h2>
+                                    <Progress
+                                        hasStripe
+                                        value={Number(timeElapsed)}
+                                        max={30}
+                                        min={0}
+                                        width={'100%'}
+                                    />
+                                </div>
+                            )}
                         </div>
                     </div>
 
-                    {/* Timer */}
-                    {isConnected && (
-                        <div className="column is-one-quarter">
-                            <div style={{ width: '100%' }}>
-                                <h2>Time left: {timeElapsed}s...</h2>
-                                <Progress
-                                    hasStripe
-                                    value={Number(timeElapsed)}
-                                    max={30}
-                                    min={0}
-                                    width={'100%'}
-                                />
-                            </div>
-                        </div>
-                    )}
-
                     <div className="column">
-                        {/* <ConnectionManager /> */}
                         <div className="columns is-gapless">
                             <div className="column is-half">
                                 <div>
