@@ -80,9 +80,16 @@ const MainApp = () => {
                                     <p>
                                         <Link
                                             className="button is-primary"
-                                            href=""
+                                            href="/api/auth/login"
                                         >
                                             Sign up
+                                        </Link>
+                                        &nbsp;
+                                        <Link
+                                            className="button is-link is-outlined is-inverted"
+                                            href="/api/auth/login"
+                                        >
+                                            Login
                                         </Link>
                                     </p>
                                 </div>

@@ -24,7 +24,7 @@ Provides the user interface for the application, users will interact with the va
 
 ### matching-service
 
-Provides the matching algorithm for the application, which will match users based on their difficulty and availability.
+Provides the matching algorithm for the application, which will match users based on the question difficulty level selected.
 
 ### question-service
 
@@ -56,6 +56,54 @@ To set up the entire application locally, follow the instructions on the various
 
 ### Assignment 4
 
+
+
 ### Assignment 5
+
+#### Setup Matching Service
+
+Switch to the **`assignment-5`** branch of this repo and ensure your current working directory is the `matching-service` folder.
+
+```
+npm install
+```
+
+This project uses NodeJS version v18.16.1.
+
+#### Run Matching Service with Docker
+
+Switch to the **`assignment-5`** branch of this repo and ensure your current working directory is the `matching-service` folder.
+
+```
+docker build -t matching-service .
+docker-compose build
+```
+
+```
+docker run -p 4000:4000 -p 5672:5672 -d matching-service
+docker-compose up
+```
+
+
+#### Test Matching Service
+
+There are 2 options to test the matching service:
+1. Use the included `index.html` page within the `matching-service` folder. It provides a basic UI that showcases the matching functionality.
+
+    - Once the matching service is running, navigate to `localhost:4000`.
+
+
+2. Setup the entire PeerPrep application on your local machine and access the matching service from the frontend service. Specifically, you will need to start the following services to run PeerPrep:
+
+    - User service
+    - Question service
+    - Collab service
+    - Frontend service
+    - Matching service
+    - Video service (optional for testing matching service)
+
+    Follow the README instructions in the respective folders to setup the services locally.
+
+
 
 ### Assignment 6

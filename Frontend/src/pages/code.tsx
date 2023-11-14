@@ -62,10 +62,10 @@ const CodeEditorPage = () => {
                         qnTitle={currentQnTitle}
                         getNewQnFn={getNewQn}
                     />
+                    <AgoraUIKit channel={roomId || ''} />
                 </div>
                 <div className="column is-three-fifths">
                     <MonacoEditorComponentWithNoSSR roomId={roomId || ''} />
-                    <AgoraUIKit channel={roomId || ''} />
                 </div>
             </div>
         </>
