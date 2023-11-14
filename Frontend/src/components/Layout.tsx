@@ -15,7 +15,9 @@ const Layout = ({ title, user, loading = false, children }: LayoutProps) => {
                 <title>{title || 'PeerPrep'}</title>
                 <meta
                     name="PeerPrep"
-                    content="A collaborative platform for coders to practice technical interviews with their peers."
+                    // content="A collaborative platform for coders to practice technical interviews with their peers."
+                    http-equiv="Content-Security-Policy"
+                    content="upgrade-insecure-requests"
                 />
                 <meta
                     name="viewport"
