@@ -1,5 +1,14 @@
 # Use the official Node.js image as a base image
-FROM node:16
+FROM node:16-alpine
+
+# Install bash and wget
+RUN apk add --no-cache bash
+
+# Download wait-for-it.sh script
+RUN wget -O /bin/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+
+# Make the script executable
+RUN chmod +x /bin/wait-for-it.sh
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app

@@ -5,7 +5,7 @@ services:
         image: rabbitmq:latest
         container_name: rabbitmq
         ports:
-            - '5672:5672' # RabbitMQ port
+            - '5673:5672' # RabbitMQ port
         networks:
             - rabbitmq_nodejs
     matching-service:
@@ -17,6 +17,10 @@ services:
             - '4000:4000' # Your Node.js app port
         depends_on:
             - rabbitmq # Ensure RabbitMQ is started before your app
+        command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- npm start'
+        environment:
+            NODE_ENV: production
+            AMQP_URL: amqp://guest:guest@rabbitmq:5672
         networks:
             - rabbitmq_nodejs
 
