@@ -1,7 +1,18 @@
 const dynamoose = require('dynamoose');
 const { UserModel } = require('../models/user-dynamo-model');
 const axios = require('axios');
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+const {
+    DynamoDBDocumentClient,
+    // ScanCommand,
+    GetCommand,
+    // PutCommand,
+    // UpdateCommand,
+    // DeleteCommand,
+} = require('@aws-sdk/lib-dynamodb');
 
+const client = new DynamoDBClient();
+const docClient = DynamoDBDocumentClient.from(client);
 // Get all users
 const getUsers = async (req, res) => {
     await UserModel.scan()
@@ -19,18 +30,27 @@ const getUsers = async (req, res) => {
 
 // Get a user by ID
 const getUserById = async (req, res) => {
-    await UserModel.get(req.params.id)
-        .then((user) => {
-            if (!user) {
-                return res.status(404).json({ error: 'User not found' });
-            }
-            res.status(200).json(user);
-        })
-        .catch((err) => {
-            console.error('Unable to read user', err);
-            console.error('Request:', req);
-            res.status(500).json({ error: 'Unable to get user' });
-        });
+    const params = {
+        TableName: 'users',
+        Key: {
+            user_id: req.params.id,
+        },
+    };
+    try {
+        // const question = await QuestionModel.get(req.params.id);
+        // res.status(200).json(question);
+        const { Item: user } = await docClient.send(new GetCommand(params));
+        if (!user) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
+
+        res.status(200).json(user);
+    } catch (err) {
+        console.error('Unable to get user', err);
+        console.error('Request:', req);
+        res.status(500).json({ error: 'Unable to get user' });
+    }
 };
 
 // Create a new user
@@ -41,7 +61,7 @@ const createUser = async (req, res) => {
     let { username } = req.body;
     if (username == null || username === '') {
         // Set a default username if it's not provided
-        username = 'defaultUsername';
+        username = 'displayName';
     }
 
     const newUser = new UserModel({
@@ -67,8 +87,7 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
     console.log('Updating User');
     console.log('Request Body: ', req.body);
-    const { email, username } = req.body;
-    console.log('Email: ', email);
+    const { username } = req.body;
     console.log('Username: ', username);
 
     await UserModel.get(req.params.id)
@@ -81,7 +100,7 @@ const updateUser = async (req, res) => {
         .then(async () => {
             await UserModel.update(
                 { user_id: req.params.id },
-                { email, username }
+                { username: username }
             ).then((updatedUser) => {
                 console.log('Updated user:', updatedUser);
                 res.status(200).json({ message: 'User updated successfully' });

@@ -68,7 +68,7 @@ const ViewQuestionModal: React.FC<ViewQuestionModalProps> = ({
                         <br />
                         <p>
                             <b>Categories:</b>
-                            {question.categories.map((category: string) => (
+                            {question?.categories?.map((category: string) => (
                                 <span key={category}>
                                     &nbsp;
                                     <Tag>{category}</Tag>

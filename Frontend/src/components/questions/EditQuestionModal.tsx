@@ -13,6 +13,7 @@ import {
     Textarea,
     Button,
 } from '@chakra-ui/react';
+import { mutate } from 'swr';
 
 interface EditQuestionModalProps {
     isOpen: boolean;
@@ -27,10 +28,6 @@ interface FormValues {
     description: string;
     link: string;
 }
-
-// function isValid(props: any) {
-//     return props.title.trim() === '' || props.description.trim() === '';
-// }
 
 const EditQuestionModal: React.FC<EditQuestionModalProps> = ({
     isOpen,
@@ -57,10 +54,9 @@ const EditQuestionModal: React.FC<EditQuestionModalProps> = ({
             });
 
             if (!response.ok) {
-                throw new Error('Failed to add question');
+                throw new Error('Failed to edit question');
             }
-
-            await response.json();
+            await mutate('/api/questions');
         } catch (error) {
             console.error('Failed to edit question: ', error);
         } finally {
@@ -95,11 +91,15 @@ const EditQuestionModal: React.FC<EditQuestionModalProps> = ({
                         >
                             {(props) => (
                                 <Form>
-                                    <b>Title: </b>
-                                    {question.title}
-                                    <br />
-                                    <br />
-                                    <FormControl isRequired>
+                                    <FormControl isRequired className="mb-2">
+                                        <FormLabel>Title</FormLabel>
+                                        <Field
+                                            name="title"
+                                            as={Input}
+                                            defaultValue={question.title}
+                                        ></Field>
+                                    </FormControl>
+                                    <FormControl isRequired className="mb-2">
                                         <FormLabel>Complexity</FormLabel>
                                         <Field
                                             name="complexity"
@@ -113,7 +113,7 @@ const EditQuestionModal: React.FC<EditQuestionModalProps> = ({
                                             <option value="hard">Hard</option>
                                         </Field>
                                     </FormControl>
-                                    <FormControl>
+                                    <FormControl className="mb-2">
                                         <FormLabel>Categories</FormLabel>
                                         <Field
                                             name="categories"
@@ -121,7 +121,7 @@ const EditQuestionModal: React.FC<EditQuestionModalProps> = ({
                                             placeholder="Include categories separated by commas"
                                         />
                                     </FormControl>
-                                    <FormControl isRequired>
+                                    <FormControl isRequired className="mb-2">
                                         <FormLabel>Description</FormLabel>
                                         <Field
                                             name="description"

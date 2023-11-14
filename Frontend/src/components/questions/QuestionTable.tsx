@@ -5,18 +5,22 @@ import AddQuestionModal from './AddQuestionModal';
 import ViewQuestionModal from './ViewQuestionModal';
 import { useDisclosure, Tag, IconButton } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import useSWR, { mutate } from 'swr';
+import { getComplexityColor } from '../../lib/utils';
 
 type QuestionTableProp = {
     user?: any;
+    initialData: Question[];
 };
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const TableComponent = ({ user }: QuestionTableProp) => {
-    const [questions, setQuestions] = React.useState<Question[]>([
-        defaultQuestion(),
-    ]);
+const TableComponent = ({ user, initialData }: QuestionTableProp) => {
     const [currQuestion, setCurrQuestion] = React.useState<Question>(
         defaultQuestion()
     );
+    const { data } = useSWR('/api/questions', fetcher, {
+        fallbackData: initialData,
+    });
 
     const {
         isOpen: isViewOpen,
@@ -34,18 +38,6 @@ const TableComponent = ({ user }: QuestionTableProp) => {
         onClose: onAddClose,
     } = useDisclosure();
 
-    async function fetchQuestions() {
-        try {
-            const response = await fetch(`/api/questions`);
-            const fetchedQuestions = await response.json();
-            // console.log('Fetched questions', fetchedQuestions);
-            setQuestions(fetchedQuestions);
-        } catch (error) {
-            console.error('Error fetching all questions', error);
-            setQuestions([]);
-        }
-    }
-
     async function getQuestionDetails(title: string) {
         try {
             const response = await fetch(`/api/questions/${title}`);
@@ -56,10 +48,6 @@ const TableComponent = ({ user }: QuestionTableProp) => {
         }
     }
 
-    React.useEffect(() => {
-        fetchQuestions();
-    }, []);
-
     // OnClick Delete function
     async function sendDelete(deleteTitle: string) {
         try {
@@ -68,20 +56,10 @@ const TableComponent = ({ user }: QuestionTableProp) => {
             });
 
             console.log(`Deleted question: ${deleteTitle}`);
+            await mutate('/api/questions');
             return await res.json();
         } catch (e: any) {
             console.log(e);
-        }
-    }
-
-    function getComplexityColor(complexity: string) {
-        if (complexity === 'easy') {
-            return 'green';
-        } else if (complexity === 'medium') {
-            return 'yellow';
-        } else if (complexity === 'hard') {
-            return 'red';
-        } else {
         }
     }
 
@@ -137,33 +115,41 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {questions.map((val) => {
+                        {data.map((val: Question) => {
                             return (
                                 <tr key={val.title}>
                                     <td>{val.title}</td>
                                     <td>
                                         {val.categories.map((s) => (
-                                            <Tag key={val.title + s}>
+                                            <Tag
+                                                key={val.title + s}
+                                                className="mr-1 mb-1"
+                                            >
                                                 {s}&nbsp;
                                             </Tag>
                                         ))}
                                     </td>
                                     <td>
-                                        <Tag
-                                            size={'lg'}
-                                            variant={'solid'}
-                                            colorScheme={getComplexityColor(
-                                                val.complexity
-                                            )}
-                                        >
-                                            {val.complexity}
-                                        </Tag>
+                                        <div className="flex justify-center items-center">
+                                            <Tag
+                                                className="mt-1"
+                                                size={'lg'}
+                                                variant={'solid'}
+                                                colorScheme={getComplexityColor(
+                                                    val.complexity
+                                                )}
+                                            >
+                                                {val.complexity}
+                                            </Tag>
+                                        </div>
                                     </td>
                                     <td>
                                         <button
                                             className="button is-outlined is-info"
-                                            onClick={() => {
-                                                getQuestionDetails(val.title);
+                                            onClick={async () => {
+                                                await getQuestionDetails(
+                                                    val.title
+                                                );
                                                 onViewOpen();
                                             }}
                                         >
@@ -177,8 +163,8 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                                     aria-label="Edit Button"
                                                     colorScheme="teal"
                                                     icon={<EditIcon />}
-                                                    onClick={() => {
-                                                        getQuestionDetails(
+                                                    onClick={async () => {
+                                                        await getQuestionDetails(
                                                             val.title
                                                         );
                                                         onEditOpen();
@@ -186,15 +172,6 @@ const TableComponent = ({ user }: QuestionTableProp) => {
                                                 />
                                             </td>
                                             <td>
-                                                {/* Delete */}
-                                                {/* <img
-                                                    src="/assets/trash.svg"
-                                                    alt="delete"
-                                                    onClick={() =>
-                                                        sendDelete(val.title)
-                                                    }
-                                                    style={{ width: 25 }}
-                                                /> */}
                                                 <IconButton
                                                     aria-label="Delete Button"
                                                     colorScheme="red"

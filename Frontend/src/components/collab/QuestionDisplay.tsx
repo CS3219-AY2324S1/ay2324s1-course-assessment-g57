@@ -2,6 +2,7 @@ import { Question, defaultQuestion } from '../../models/types';
 import React from 'react';
 import Image from 'next/image';
 import { Tag } from '@chakra-ui/react';
+import { getComplexityColor } from '../../lib/utils';
 
 type QuestionDisplayProp = {
     qnTitle: string;
@@ -41,11 +42,23 @@ const QuestionDisplay = ({ qnTitle, getNewQnFn }: QuestionDisplayProp) => {
                     </button>
                 </div>
                 <h1 className="is-size-3">{question.title}</h1>
-                <p className="is-size-5">
-                    {question.categories.map((s) => (
-                        <Tag key={s}>{s}</Tag>
-                    ))}
-                </p>
+                <div className="flex justify-between">
+                    <p className="is-size-5">
+                        {question?.categories?.map((s) => (
+                            <Tag className="mr-1" key={s}>
+                                {s}
+                            </Tag>
+                        ))}
+                    </p>
+                    <Tag
+                        className="h-6 w-15"
+                        size={'md'}
+                        variant={'solid'}
+                        colorScheme={getComplexityColor(question.complexity)}
+                    >
+                        {question.complexity}
+                    </Tag>
+                </div>
                 <div
                     dangerouslySetInnerHTML={{ __html: question.description }}
                 ></div>

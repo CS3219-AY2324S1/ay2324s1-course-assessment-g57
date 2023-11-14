@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const { Server } = require('socket.io');
 const cors = require('cors');
-const {onStartMatch, onDisconnect} = require('./matchHandler');
+const { onStartMatch, onDisconnect } = require('./matchHandler');
 const axios = require('axios');
 
 const hostname = '127.0.0.1';
@@ -19,14 +19,14 @@ const io = new Server(server, {
     },
 });
 
-
 // Registers the event handlers for socket connections
 function onConnection(io, socket) {
     console.log(`User ${socket.id} connected`);
 
     socket.on(
         'startMatch',
-        async (userId, difficulty) => await onStartMatch(io, socket, userId, difficulty)
+        async (userId, difficulty) =>
+            await onStartMatch(io, socket, userId, difficulty)
     );
 
     socket.on('disconnect', () => onDisconnect(socket));
