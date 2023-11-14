@@ -10,7 +10,10 @@ const app = express();
 app.use(
     cors({
         // Update when deploy
-        origin: process.env.CLIENT_URL || 'http://localhost:3000',
+        origin: [
+            'https://master.cs3219-peerprep-g57.com',
+            'http://localhost:3000',
+        ],
     })
 );
 app.options('*', cors());
