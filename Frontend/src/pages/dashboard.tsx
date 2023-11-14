@@ -52,22 +52,22 @@ const Dashboard = ({ user, initialData, isLoading }: QuestionProps) => {
     }, [username, fetchUser]);
 
     return (
-        <div className="bg-blue-100">
+        <div>
             <Layout user={user} loading={isLoading}>
                 {user ? (
                     <>
-                        <div className="bg-gray-100 p-5">
+                        <div className="p-4">
                             <p className="is-size-3">
                                 Welcome back, {username}!
                             </p>
                         </div>
 
-                        <div className="bg-gray-100 border mt-2 p-4">
+                        <div className="mt-2 p-4">
                             <h2 className="is-size-4">Match with a Peer!</h2>
                             <MatchControls userId={user.sub} />
                         </div>
 
-                        <div className="bg-gray-100 p-4 mt-4">
+                        <div className="p-4 mt-4">
                             <h1 className="is-size-3">Questions</h1>
                             <QuestionTable
                                 user={user}
