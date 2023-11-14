@@ -36,7 +36,7 @@ const MatchControls = ({ userId }: MatchControlsProps) => {
         setTimeElapsed('30');
         console.log('disconnected');
         toast.dismiss('startMatch');
-        toast.warn("You have been disconnected", {
+        toast.warn('You have been disconnected', {
             toastId: 'noMatch',
             position: 'top-right',
             autoClose: 1000,

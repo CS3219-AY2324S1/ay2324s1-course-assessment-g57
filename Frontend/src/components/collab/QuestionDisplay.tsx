@@ -64,13 +64,18 @@ const QuestionDisplay = ({ qnTitle, getNewQnFn }: QuestionDisplayProp) => {
                         <Tag
                             size={'md'}
                             variant={'solid'}
-                            colorScheme={getComplexityColor(question.complexity)}>
+                            colorScheme={getComplexityColor(
+                                question.complexity
+                            )}
+                        >
                             {question.complexity}
                         </Tag>
                     </div>
                     <br />
                     <div
-                        dangerouslySetInnerHTML={{ __html: question.description }}
+                        dangerouslySetInnerHTML={{
+                            __html: question.description,
+                        }}
                     ></div>
                 </div>
             </div>

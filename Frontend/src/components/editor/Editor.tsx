@@ -194,7 +194,7 @@ function CodeEditor({ roomId }: { roomId: string }) {
 
     return (
         <>
-            <div className='container'>
+            <div className="container">
                 <Link
                     style={{ float: 'right' }}
                     onClick={() => {
@@ -267,7 +267,9 @@ function CodeEditor({ roomId }: { roomId: string }) {
                             maxWidth={100}
                             placeholder="Select Language"
                             size={'md'}
-                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                            onChange={(
+                                e: React.ChangeEvent<HTMLSelectElement>
+                            ) => {
                                 changeLang(e.target.value);
                             }}
                             defaultValue={'python'}

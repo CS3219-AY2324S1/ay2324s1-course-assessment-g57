@@ -50,7 +50,7 @@ const Nav = ({ user }: NavProps) => {
                             </div>
                         </div>
                     </div>
-                    
+
                     <div>
                         <div className="navbar-item">
                             <div className="field is-grouped">
