@@ -145,7 +145,7 @@ describe('The Profile Page', () => {
             .should('be.visible')
             .click();
 
-        cy.get('input[id=displayName]').clear().type(`${testUsername}`);
+        cy.get('input[id=displayName]').clear().type(`${testUsername2}`);
 
         cy.get(
             "footer[class='chakra-modal__footer css-k0waxj'] > button[class='button is-primary']"
@@ -164,6 +164,10 @@ describe('The Profile Page', () => {
         cy.get("a[href*='dashboard']").should('be.visible').click();
 
         cy.url().should('include', 'dashboard');
+
+        cy.get("p[class='is-size-3']")
+            .should('be.visible')
+            .contains('danieltestuser', { matchCase: false });
 
         cy.get('a[href*=logout]').click();
 
