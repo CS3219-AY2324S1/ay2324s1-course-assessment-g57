@@ -49,7 +49,6 @@ const TableComponent = ({}: UserTableProp) => {
                                         <td>{val.userid}</td>
                                         <td>{val.username}</td>
                                         <td>{val.email}</td>
-                                        <td></td>
                                     </tr>
                                 );
                             })}

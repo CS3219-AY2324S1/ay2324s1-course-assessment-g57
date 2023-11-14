@@ -111,7 +111,7 @@ function CodeEditor({ roomId }: { roomId: string }) {
         // Transform Uint8Array to a Base64-String
         const base64Encoded = fromUint8Array(documentState);
 
-        alert(base64Encoded);
+        // alert(base64Encoded);
         // Transform Base64-String back to an Uint8Array
         // const binaryEncoded = toUint8Array(base64Encoded);
         // alert(binaryEncoded);
@@ -193,56 +193,59 @@ function CodeEditor({ roomId }: { roomId: string }) {
     }
 
     return (
-        <div>
-            <Link
-                onClick={() => {
-                    destoryConn();
-                    disconnect();
-                }}
-                className="button is-danger mb-2"
-                href="/dashboard"
-            >
-                Leave Room
-            </Link>
-            {/* Code Editor */}
-            <div className="box">
-                <Box style={{ height: '500px', width: '100%' }}>
-                    <Editor
-                        className="editor"
-                        theme={editorTheme}
-                        language={lang}
-                        onMount={handleEditorDidMount}
-                        options={{ fontSize: 12, automaticLayout: true }}
-                    />
-                </Box>
-                <br />
-                {/* Console Output */}
+        <>
+            <div className="container">
+                <Link
+                    style={{ float: 'right' }}
+                    onClick={() => {
+                        destoryConn();
+                        disconnect();
+                    }}
+                    className="button is-danger mb-2"
+                    href="/dashboard"
+                >
+                    Leave Room
+                </Link>
+                {/* Code Editor */}
                 <div>
-                    <textarea
-                        className="textarea has-fixed-size"
-                        placeholder="Console Output"
-                        readOnly={true}
-                        value={editorOutput}
-                        style={{ width: '100%', height: '100px' }}
-                    ></textarea>
+                    <Box style={{ height: '45em', width: '100%' }}>
+                        <Editor
+                            className="editor"
+                            theme={editorTheme}
+                            language={lang}
+                            onMount={handleEditorDidMount}
+                            options={{ fontSize: 12, automaticLayout: true }}
+                        />
+                    </Box>
+                    <br />
+                    {/* Console Output */}
+                    <div>
+                        <textarea
+                            className="textarea has-fixed-size"
+                            placeholder="Console Output"
+                            readOnly={true}
+                            value={editorOutput}
+                            style={{ width: '100%', height: '100px' }}
+                        ></textarea>
+                    </div>
                 </div>
-            </div>
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: 5,
-                }}
-            >
+
                 <div
                     style={{
                         display: 'flex',
+                        justifyContent: 'space-between',
                         alignItems: 'center',
-                        paddingLeft: 2,
+                        padding: 5,
                     }}
                 >
-                    {/* <IconButton
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            paddingLeft: 2,
+                        }}
+                    >
+                        {/* <IconButton
                         aria-label="Dark Mode"
                         variant="outline"
                         colorScheme="white"
@@ -255,44 +258,47 @@ function CodeEditor({ roomId }: { roomId: string }) {
                         paddingLeft={2}
                         paddingRight={5}
                     /> */}
-                </div>
+                    </div>
 
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Select
-                        className="select is-link is-normal"
-                        minWidth={100}
-                        maxWidth={100}
-                        placeholder="Select Language"
-                        size={'md'}
-                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            changeLang(e.target.value);
-                        }}
-                        defaultValue={'python'}
-                    >
-                        <option value="csharp">C#</option>
-                        <option value="cpp">C++</option>
-                        <option value="python">Python</option>
-                        <option value="go">Go</option>
-                        <option value="java">Java</option>
-                        <option value="kotlin">Kotlin</option>
-                    </Select>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Select
+                            className="select is-link is-normal"
+                            minWidth={100}
+                            maxWidth={100}
+                            placeholder="Select Language"
+                            size={'md'}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLSelectElement>
+                            ) => {
+                                changeLang(e.target.value);
+                            }}
+                            defaultValue={'python'}
+                        >
+                            <option value="csharp">C#</option>
+                            <option value="cpp">C++</option>
+                            <option value="python">Python</option>
+                            <option value="go">Go</option>
+                            <option value="java">Java</option>
+                            <option value="kotlin">Kotlin</option>
+                        </Select>
 
-                    <Button
-                        float={'right'}
-                        isLoading={loading}
-                        onClick={submitCode}
-                        loadingText="Submitting"
-                        colorScheme="teal"
-                        variant="outline"
-                        ml={4}
-                        mr={2}
-                        rightIcon={<MdPlayArrow />}
-                    >
-                        Run
-                    </Button>
+                        <Button
+                            float={'right'}
+                            isLoading={loading}
+                            onClick={submitCode}
+                            loadingText="Submitting"
+                            colorScheme="teal"
+                            variant="outline"
+                            ml={4}
+                            mr={2}
+                            rightIcon={<MdPlayArrow />}
+                        >
+                            Run
+                        </Button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 
