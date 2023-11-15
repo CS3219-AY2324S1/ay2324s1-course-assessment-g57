@@ -50,7 +50,8 @@ const Nav = ({ user }: NavProps) => {
                             </div>
                         </div>
                     </div>
-                    <div className="navbar-end">
+
+                    <div>
                         <div className="navbar-item">
                             <div className="field is-grouped">
                                 <p className="control">
