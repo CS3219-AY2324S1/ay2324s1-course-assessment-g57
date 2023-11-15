@@ -17,11 +17,11 @@ Peerprep is a collaborative platform for students to practice interview question
 -   [Assignments](#assignments) - [PeerPrep](#peerprep-setup) - [Assignment 1](#assignment-1) - [Assignment 2](#assignment-2) - [Assignment 3](#assignment-3) - [Assignment 4](#assignment-4) - [Assignment 5](#assignment-5) - [Assignment 6](#assignment-6)
 </p>
 
-# Visiting PeerPrep
+## Visiting PeerPrep
 
 Currently, the website has been fully deployed with the respective microservices. You can visit the website [here](https://master.cs3219-peerprep-g57.com/).
 
-# Setup Locally
+## Setup Locally
 
 Alternatively, you may set up the application locally with the exception of question service, user service and video service. You can continue to use the hosted version of these three services. The following instructions will guide you through the setup process.
 
