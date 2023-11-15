@@ -139,7 +139,6 @@ const TableComponent = ({ user, initialData }: QuestionTableProp) => {
                                         ) : (
                                             <></>
                                         )}
-                                        {}
                                     </td>
                                     <td>
                                         <div className="flex justify-center items-center">
