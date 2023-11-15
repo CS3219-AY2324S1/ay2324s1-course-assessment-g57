@@ -35,7 +35,7 @@ Alternatively, you may set up the application locally with the exception of ques
 1. Clone the repository
 2. Install the dependencies for each service by running `npm install`/`yarn install` in the respective service folders for Frontend, matching and collab service.
 3. Open separate terminals for each service and run the following commands:
-    - Frontend: `yarn start`
+    - Frontend: `yarn build` followed by `yarn start`
     - Matching service: `npm start`
     - Collab service: `npm start`
 
