@@ -15,7 +15,10 @@ const server = http.createServer(app);
 const io = new Server(server, {
     connectionStateRecovery: {},
     cors: {
-        origin: 'http://localhost:3000',
+        origin: [
+            'http://localhost:3000',
+            'https://master.cs3219-peerprep-g57.com',
+        ],
     },
 });
 

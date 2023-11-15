@@ -11,7 +11,7 @@ app.use(
     cors({
         // Update when deploy
         origin: [
-            process.env.CLIENT_URL,
+            'https://master.cs3219-peerprep-g57.com',
             'http://localhost:3000',
             'http://localhost:8080',
         ],
