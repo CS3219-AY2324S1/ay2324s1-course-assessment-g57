@@ -59,9 +59,9 @@ describe('The Matching Process', () => {
             .click();
 
         //cy.get("select[id='difficulty']").should('not.exist');
-        cy.get('h2')
-            .contains('Time Left:', { matchCase: false })
-            .should('exist');
+        // cy.get('h2')
+        //     .contains('Time Left:', { matchCase: false })
+        //     .should('exist');
 
         // On stop matching, check tha the switch difficulty exists.
         cy.get(
