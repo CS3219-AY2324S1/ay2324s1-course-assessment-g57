@@ -12,9 +12,32 @@ Peerprep is a collaborative platform for students to practice interview question
 <p>
 <b>Quick Links:</b>
 
+-   [Setup Locally](#setup-locally)
 -   [Services](#services)
--   [Setup](#setup) - [PeerPrep](#peerprep-setup) - [Assignment 1](#assignment-1) - [Assignment 2](#assignment-2) - [Assignment 3](#assignment-3) - [Assignment 4](#assignment-4) - [Assignment 5](#assignment-5) - [Assignment 6](#assignment-6)
+-   [Assignments](#assignments) - [PeerPrep](#peerprep-setup) - [Assignment 1](#assignment-1) - [Assignment 2](#assignment-2) - [Assignment 3](#assignment-3) - [Assignment 4](#assignment-4) - [Assignment 5](#assignment-5) - [Assignment 6](#assignment-6)
 </p>
+
+# Visiting PeerPrep
+
+Currently, the website has been fully deployed with the respective microservices. You can visit the website [here](https://master.cs3219-peerprep-g57.com/).
+
+# Setup Locally
+
+Alternatively, you may set up the application locally with the exception of question service, user service and video service. You can continue to use the hosted version of these three services. The following instructions will guide you through the setup process.
+
+## Prerequisites
+
+-   NodeJS version >v18
+-   Ensure .env is cloned in the Frontend folder. You may refer to .env.sample. The .env file contains the environment variables required for the services to run. Ideally, the .env file should not be committed to the repository as it contains sensitive information but we have left the environment variables in the .env.sample file for your convenience.
+
+## Setup Instructions
+
+1. Clone the repository
+2. Install the dependencies for each service by running `npm install`/`yarn install` in the respective service folders for Frontend, matching and collab service.
+3. Open separate terminals for each service and run the following commands:
+    - Frontend: `yarn start`
+    - Matching service: `npm start`
+    - Collab service: `npm start`
 
 ## Services
 
@@ -42,7 +65,7 @@ Handles the video conferencing between users.
 
 Handles the signaling between users.
 
-## Setup
+## Assignments
 
 ### PeerPrep Setup
 
@@ -55,8 +78,6 @@ To set up the entire application locally, follow the instructions on the various
 ### Assignment 3
 
 ### Assignment 4
-
-
 
 ### Assignment 5
 
@@ -84,14 +105,13 @@ docker run -p 4000:4000 -p 5672:5672 -d matching-service
 docker-compose up
 ```
 
-
 #### Test Matching Service
 
 There are 2 options to test the matching service:
+
 1. Use the included `index.html` page within the `matching-service` folder. It provides a basic UI that showcases the matching functionality.
 
     - Once the matching service is running, navigate to `localhost:4000`.
-
 
 2. Setup the entire PeerPrep application on your local machine and access the matching service from the frontend service. Specifically, you will need to start the following services to run PeerPrep:
 
@@ -103,8 +123,6 @@ There are 2 options to test the matching service:
     - Video service (optional for testing matching service)
 
     Follow the README instructions in the respective folders to setup the services locally.
-
-
 
 ### Assignment 6
 
