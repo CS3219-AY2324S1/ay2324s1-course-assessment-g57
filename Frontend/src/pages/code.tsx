@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { useSearchParams, useRouter } from 'next/navigation';
 import QuestionDisplay from '../components/collab/QuestionDisplay';
 import socket from '../lib/socket';
+import Head from 'next/head';
 
 const MonacoEditorComponentWithNoSSR = dynamic(
     () => import('../components/editor/Editor'),
@@ -56,6 +57,20 @@ const CodeEditorPage = () => {
     return (
         <>
             {/* <TopBar /> */}
+            <Head>
+                <title>PeerPrep</title>
+                <meta
+                    name="PeerPrep"
+                    // content="A collaborative platform for coders to practice technical interviews with their peers."
+                    http-equiv="Content-Security-Policy"
+                    content="upgrade-insecure-requests"
+                />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
+                <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+            </Head>
             <div className="columns ml-4 mr-4">
                 <div className="column is-two-fifths">
                     <QuestionDisplay

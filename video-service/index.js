@@ -13,6 +13,7 @@ app.use(
         origin: [
             'https://master.cs3219-peerprep-g57.com',
             'http://localhost:3000',
+            'http://localhost:8080',
         ],
     })
 );

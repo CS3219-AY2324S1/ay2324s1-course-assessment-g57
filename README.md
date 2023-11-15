@@ -56,8 +56,6 @@ To set up the entire application locally, follow the instructions on the various
 
 ### Assignment 4
 
-
-
 ### Assignment 5
 
 #### Setup Matching Service
@@ -84,14 +82,13 @@ docker run -p 4000:4000 -p 5672:5672 -d matching-service
 docker-compose up
 ```
 
-
 #### Test Matching Service
 
 There are 2 options to test the matching service:
+
 1. Use the included `index.html` page within the `matching-service` folder. It provides a basic UI that showcases the matching functionality.
 
     - Once the matching service is running, navigate to `localhost:4000`.
-
 
 2. Setup the entire PeerPrep application on your local machine and access the matching service from the frontend service. Specifically, you will need to start the following services to run PeerPrep:
 
@@ -104,6 +101,6 @@ There are 2 options to test the matching service:
 
     Follow the README instructions in the respective folders to setup the services locally.
 
-
-
 ### Assignment 6
+
+Leetcode question service on GCP Cloud Run. Click [here](https://github.com/CS3219-AY2324S1/ay2324s1-assignment-6-g57) for more details.
