@@ -2,9 +2,5 @@ version: '3'
 services:
   app:
     build: .
-    volumes:
-      - ./Easy.pkl:/app/Easy.pkl
-      - ./Medium.pkl:/app/Medium.pkl
-      - ./Hard.pkl:/app/Hard.pkl
     ports:
       - "8080:80"

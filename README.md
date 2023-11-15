@@ -107,3 +107,5 @@ There are 2 options to test the matching service:
 
 
 ### Assignment 6
+
+Leetcode question service on GCP Cloud Run. Click [here](https://github.com/CS3219-AY2324S1/ay2324s1-assignment-6-g57) for more details.
