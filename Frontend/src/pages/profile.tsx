@@ -12,6 +12,7 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 type AuthUser = {
     user_id: string;
@@ -67,12 +68,18 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                 }),
             });
 
+            if (!response.ok) {
+                toast.error('Failed to update display name');
+                console.log('Failed to update user');
+            }
+
             fetchUser();
             await response.json();
         } catch (error) {
             console.error('Failed to edit user: ', error);
         } finally {
             onEditClose();
+            toast.success('Successfully edited display name!');
         }
     }
 
@@ -122,6 +129,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                                 id="displayName"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
+                                required
                             />
                         </ModalBody>
                         <ModalFooter>
@@ -204,7 +212,9 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                                     </p>
                                 </div>
                                 <div className="column">
-                                    <p className="is-size-5">{username}</p>
+                                    <p className="is-size-5">
+                                        {username ?? ''}
+                                    </p>
                                     <p className="is-size-5">
                                         {user.name ?? ''}
                                     </p>

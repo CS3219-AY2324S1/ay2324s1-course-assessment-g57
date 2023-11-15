@@ -7,6 +7,7 @@ import { useDisclosure, Tag, IconButton } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import useSWR, { mutate } from 'swr';
 import { getComplexityColor } from '../../lib/utils';
+import { toast } from 'react-toastify';
 
 type QuestionTableProp = {
     user?: any;
@@ -56,10 +57,16 @@ const TableComponent = ({ user, initialData }: QuestionTableProp) => {
             });
 
             console.log(`Deleted question: ${deleteTitle}`);
+            if (!res.ok) {
+                toast.error('An error occurred while deleting question');
+                throw new Error('Failed to delete question');
+            }
             await mutate('/api/questions');
             return await res.json();
         } catch (e: any) {
             console.log(e);
+        } finally {
+            toast.success('Successfully deleted question!');
         }
     }
 
@@ -120,14 +127,18 @@ const TableComponent = ({ user, initialData }: QuestionTableProp) => {
                                 <tr key={val.title}>
                                     <td>{val.title}</td>
                                     <td>
-                                        {val.categories.map((s) => (
-                                            <Tag
-                                                key={val.title + s}
-                                                className="mr-1 mb-1"
-                                            >
-                                                {s}&nbsp;
-                                            </Tag>
-                                        ))}
+                                        {val.categories[0] != '' ? (
+                                            val.categories?.map((s) => (
+                                                <Tag
+                                                    key={val.title + s}
+                                                    className="mr-1 mb-1"
+                                                >
+                                                    {s}
+                                                </Tag>
+                                            ))
+                                        ) : (
+                                            <></>
+                                        )}
                                     </td>
                                     <td>
                                         <div className="flex justify-center items-center">
