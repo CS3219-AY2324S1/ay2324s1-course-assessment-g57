@@ -11,7 +11,8 @@
         "style:all": "tsc && npm run style:lint && npm run style:prettier",
         "style:lint": "eslint \"**/*.{js,jsx,ts,tsx}\"",
         "style:prettier": "prettier --check '**/*.{js,jsx,ts,tsx}'",
-        "make-pretty": "prettier --write '**/*.{js,jsx,ts,tsx}'"
+        "make-pretty": "prettier --write '**/*.{js,jsx,ts,tsx}'",
+    "cypress:open": "cypress open"
     },
     "dependencies": {
         "@auth0/nextjs-auth0": "^3.2.0",
@@ -29,7 +30,8 @@
         "axios": "^1.5.1",
         "babel-plugin-macros": "^3.1.0",
         "bulma": "^0.9.4",
-        "dotenv": "^16.3.1",
+        "cypress": "^13.3.3",
+    "dotenv": "^16.3.1",
         "envalid": "^8.0.0",
         "formik": "^2.4.5",
         "framer-motion": "^10.16.4",
