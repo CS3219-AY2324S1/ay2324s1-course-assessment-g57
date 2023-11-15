@@ -57,7 +57,7 @@ const TableComponent = ({ user, initialData }: QuestionTableProp) => {
             });
 
             console.log(`Deleted question: ${deleteTitle}`);
-            if(!res.ok) {
+            if (!res.ok) {
                 toast.error('An error occurred while deleting question');
                 throw new Error('Failed to delete question');
             }

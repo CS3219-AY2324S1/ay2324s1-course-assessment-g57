@@ -212,7 +212,9 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                                     </p>
                                 </div>
                                 <div className="column">
-                                    <p className="is-size-5">{username ?? ''}</p>
+                                    <p className="is-size-5">
+                                        {username ?? ''}
+                                    </p>
                                     <p className="is-size-5">
                                         {user.name ?? ''}
                                     </p>

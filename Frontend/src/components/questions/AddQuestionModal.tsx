@@ -59,7 +59,9 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
             if (!response.ok) {
                 switch (response.status) {
                     case 409:
-                        toast.error('Question already exists, please try again');
+                        toast.error(
+                            'Question already exists, please try again'
+                        );
                         break;
                     case 400:
                         toast.error('Invalid question, please try again');
@@ -82,7 +84,7 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
         } finally {
             setSubmitting(false);
             onClose();
-            toast.success('Successfully added question!')
+            toast.success('Successfully added question!');
         }
     };
     return (
