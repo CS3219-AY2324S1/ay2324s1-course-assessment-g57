@@ -59,3 +59,5 @@ To set up the entire application locally, follow the instructions on the various
 ### Assignment 5
 
 ### Assignment 6
+
+Leetcode question service on GCP Cloud Run. Click [here](./leetcode-qns-service/README.md) for more details.
