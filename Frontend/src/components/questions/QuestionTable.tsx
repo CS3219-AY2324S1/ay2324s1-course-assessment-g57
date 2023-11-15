@@ -127,14 +127,19 @@ const TableComponent = ({ user, initialData }: QuestionTableProp) => {
                                 <tr key={val.title}>
                                     <td>{val.title}</td>
                                     <td>
-                                        {val.categories.map((s) => (
-                                            <Tag
-                                                key={val.title + s}
-                                                className="mr-1 mb-1"
-                                            >
-                                                {s}&nbsp;
-                                            </Tag>
-                                        ))}
+                                        {val.categories[0] != '' ? (
+                                            val.categories?.map((s) => (
+                                                <Tag
+                                                    key={val.title + s}
+                                                    className="mr-1 mb-1"
+                                                >
+                                                    {s}
+                                                </Tag>
+                                            ))
+                                        ) : (
+                                            <></>
+                                        )}
+                                        {}
                                     </td>
                                     <td>
                                         <div className="flex justify-center items-center">
