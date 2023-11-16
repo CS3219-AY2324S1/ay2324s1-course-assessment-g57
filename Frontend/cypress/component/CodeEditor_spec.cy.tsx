@@ -77,7 +77,9 @@ describe('Code Editor Component Test', () => {
             .should('contain', 'print');
 
         // Check that the user can submit the code and that the result is printed to the terminal.
-        cy.intercept('http://34.70.59.59/submissions/*').as('runCode');
+        cy.intercept('https://judge0-ce.p.rapidapi.com/submissions/*').as(
+            'runCode'
+        );
         cy.get("button[class='chakra-button css-1ahd3gj'").click();
         cy.wait('@runCode');
         cy.get('textarea').should('contain', 'hello world');

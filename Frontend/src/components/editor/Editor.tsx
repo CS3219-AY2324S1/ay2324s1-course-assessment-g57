@@ -89,20 +89,24 @@ function CodeEditor({ roomId }: { roomId: string }) {
 
     function getLangID(inputLang: string): String {
         if (inputLang == 'python') {
-            return '71';
+            return '92';
         } else if (inputLang == 'cpp') {
             return '54';
         } else if (inputLang == 'csharp') {
             return '51';
         } else if (inputLang == 'kotlin') {
             return '78';
+        } else if (inputLang == 'java') {
+            return '91';
         } else {
-            return '60';
+            return '95';
         }
     }
 
     /*Save the code as a binary file*/
     async function submitCode() {
+        console.log(lang);
+        console.log(getLangID(lang));
         const data = editorRef.current?.getValue();
         // alert(data);
         setLoading(true);
@@ -161,16 +165,18 @@ function CodeEditor({ roomId }: { roomId: string }) {
 
             try {
                 const response2 = await axios.request(options2);
-                console.log('GET:' + response2.data.stdout);
-                if (response2.data.stderr == null) {
-                    console.log('A');
-                    setLoading(false);
-                    setEditorOutput(response2.data.stdout);
-                } else {
-                    console.log('B');
-                    setLoading(false);
-                    setEditorOutput(response2.data.stderr);
-                }
+                console.log('GET:' + response2.data);
+                const output =
+                    'Output: ' +
+                    response2.data.stdout +
+                    '\n' +
+                    'Error: ' +
+                    response2.data.stderr +
+                    '\n' +
+                    'Compilation output: ' +
+                    response2.data.compile_output;
+                setLoading(false);
+                setEditorOutput(output);
             } catch (error) {
                 console.error(error);
             }
