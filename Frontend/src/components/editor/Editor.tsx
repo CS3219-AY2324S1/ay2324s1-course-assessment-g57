@@ -122,60 +122,60 @@ function CodeEditor({ roomId }: { roomId: string }) {
             method: 'POST',
             url: 'https://judge0-ce.p.rapidapi.com/submissions',
             params: {
-              base64_encoded: 'true',
-              wait: 'true',
-              fields: 'token'
+                base64_encoded: 'true',
+                wait: 'true',
+                fields: 'token',
             },
             headers: {
-              'content-type': 'application/json',
-              'Content-Type': 'application/json',
-              'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
-              'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+                'content-type': 'application/json',
+                'Content-Type': 'application/json',
+                'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
+                'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
             },
             data: {
-              language_id: getLangID(lang),
-              source_code: base64Encoded
-            }
-          };
-          
-        try {
-        const response = await axios.request(options);
-        console.log("POST: " + response.data.token);
-        const testUrl = 'https://judge0-ce.p.rapidapi.com/submissions/' + response.data.token
-        console.log(testUrl)
-    
-        const options2 = {
-            method: 'GET',
-            url: testUrl,
-            params: {
-            base64_encoded: 'false',
-            fields: '*'
+                language_id: getLangID(lang),
+                source_code: base64Encoded,
             },
-            headers: {
-            'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
-            'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
-            }
         };
-    
+
         try {
-            const response2 = await axios.request(options2);
-            console.log("GET:" + response2.data.stdout);
-            if (response2.data.stderr == null) {
-            console.log("A")
-            setLoading(false)
-            setEditorOutput(response2.data.stdout)
-            } else {
-            console.log("B")
-            setLoading(false)
-            setEditorOutput(response2.data.stderr)
+            const response = await axios.request(options);
+            console.log('POST: ' + response.data.token);
+            const testUrl =
+                'https://judge0-ce.p.rapidapi.com/submissions/' +
+                response.data.token;
+            console.log(testUrl);
+
+            const options2 = {
+                method: 'GET',
+                url: testUrl,
+                params: {
+                    base64_encoded: 'false',
+                    fields: '*',
+                },
+                headers: {
+                    'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
+                    'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
+                },
+            };
+
+            try {
+                const response2 = await axios.request(options2);
+                console.log('GET:' + response2.data.stdout);
+                if (response2.data.stderr == null) {
+                    console.log('A');
+                    setLoading(false);
+                    setEditorOutput(response2.data.stdout);
+                } else {
+                    console.log('B');
+                    setLoading(false);
+                    setEditorOutput(response2.data.stderr);
+                }
+            } catch (error) {
+                console.error(error);
             }
-            
         } catch (error) {
             console.error(error);
-        }
-    
-        } catch (error) {
-        console.error(error);
         }
     }
 
