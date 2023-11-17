@@ -23,42 +23,6 @@ const Nav = () => {
                         </h1>
                     </Link>
                 </div>
-
-                <div className="navbar-menu">
-                    <div className="navbar-start">
-                        <div className="navbar-item">
-                            <div className="field is-grouped"></div>
-                        </div>
-                        <div className="navbar-item">
-                            <div className="field is-grouped">
-                                <p className="control has-text-weight-medium">
-                                    <Link href="/profile">Profile</Link>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div className="navbar-item">
-                            <div className="field is-grouped">
-                                <p className="control">
-                                    <Link
-                                        className="button is-light is-danger"
-                                        href="/"
-                                        onClick={() => {
-                                            localStorage.removeItem(
-                                                'userToken'
-                                            );
-                                            localStorage.removeItem('username');
-                                        }}
-                                    >
-                                        Log Out
-                                    </Link>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </nav>
         </>
     );
