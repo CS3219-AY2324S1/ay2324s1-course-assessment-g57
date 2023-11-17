@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import Layout from '../components/Layout';
-import MatchControls from '@/components/Matching/MatchControls';
 import QuestionTable from '../components/questions/QuestionTable';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { Question } from '../models/types';
@@ -61,12 +60,6 @@ const Dashboard = ({ user, initialData, isLoading }: QuestionProps) => {
                                 Welcome back, {username}!
                             </p>
                         </div>
-
-                        <div className="mt-2 p-4">
-                            <h2 className="is-size-4">Match with a Peer!</h2>
-                            <MatchControls userId={user.sub} />
-                        </div>
-
                         <div className="p-4 mt-4">
                             <h1 className="is-size-3">Questions</h1>
                             <QuestionTable

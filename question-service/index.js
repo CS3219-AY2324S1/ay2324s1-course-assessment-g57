@@ -24,7 +24,7 @@ const verifyJwt = jwt({
     algorithms: ['RS256'],
 }).unless({ path: ['/questions'] });
 
-// app.use(verifyJwt);
+app.use(verifyJwt);
 
 // if (process.env.ENV == 'DEV') {
 //     const questionRouter = require('./controller/controller-local.js');
