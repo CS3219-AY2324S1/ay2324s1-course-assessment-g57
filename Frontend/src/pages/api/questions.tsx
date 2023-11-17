@@ -9,7 +9,7 @@ export default withApiAuthRequired(async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    console.log('Get Questions', req.method);
+    console.log('Questions API', req.method);
     const { accessToken } = await getAccessToken(req, res);
     const reqHeaders: Record<string, string> = {
         Authorization: `Bearer ${accessToken}`,

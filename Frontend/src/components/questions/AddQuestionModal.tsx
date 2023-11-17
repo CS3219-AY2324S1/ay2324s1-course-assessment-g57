@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { mutate } from 'swr';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface AddQuestionModalProps {
     isOpen: boolean;
@@ -38,7 +39,8 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
         { setSubmitting }: FormikHelpers<FormValues>
     ) => {
         try {
-            const response = await fetch(`/api/questions/`, {
+            console.log('Submitting question:', values);
+            const response = await fetch(`/api/questions`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

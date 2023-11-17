@@ -8,6 +8,7 @@ import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import useSWR, { mutate } from 'swr';
 import { getComplexityColor } from '../../lib/utils';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type QuestionTableProp = {
     user?: any;

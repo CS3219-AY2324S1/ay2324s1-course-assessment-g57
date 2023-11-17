@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type AuthUser = {
     user_id: string;

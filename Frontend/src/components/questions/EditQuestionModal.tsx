@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { mutate } from 'swr';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface EditQuestionModalProps {
     isOpen: boolean;
