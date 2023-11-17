@@ -15,11 +15,7 @@ Peerprep is a collaborative platform for students to practice interview question
 
 ### Frontend
 
-Create a .env file in the root directory of the Frontend folder. Refer to .env.sample for the environment variables required for the frontend to run.
-
-### Question Service
-
-Question service has DynamoDB hosted in AWS. Questions will be fetched from the database and displayed on the frontend.
+Create a .env file in the root directory of the Frontend folder. Refer to .env.sample for the environment variables required for the frontend to run. Questions will be fetched from a hosted database and displayed on the frontend.
 
 ## Prerequisites
 
@@ -29,7 +25,6 @@ Question service has DynamoDB hosted in AWS. Questions will be fetched from the 
 ## Setup Instructions
 
 1. Clone this branch
-2. Install the dependencies for each service by running `yarn install` in the respective service folders for Frontend, User Service (Question service database is hosted)
+2. Install the dependencies for each service by running `yarn install` in the respective service folders for Frontend
 3. Open separate terminals for each service and run the following commands:
     - Frontend: `yarn build` followed by `yarn start`
-    - User service: `yarn start`
