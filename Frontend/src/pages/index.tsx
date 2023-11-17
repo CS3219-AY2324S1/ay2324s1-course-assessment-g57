@@ -181,7 +181,7 @@ const MainApp = () => {
                                     <div className="box">
                                         <Image
                                             className="is-inline-block"
-                                            src="/assets/dashboard/video-call-stock.png"
+                                            src="/assets/dashboard/video-call-stock2.jpg"
                                             alt="video calling image"
                                             width="400"
                                             height="400"
