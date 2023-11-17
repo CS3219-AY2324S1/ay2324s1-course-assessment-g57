@@ -76,15 +76,16 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
                         toast.error('An error occurred while adding question');
                         throw new Error('Failed to add question');
                 }
+            } else {
+                mutate('/api/questions');
+                await response.json();
+                toast.success('Successfully added question!');
             }
-            mutate('/api/questions');
-            await response.json();
         } catch (error) {
             console.error('Error adding question:', error);
         } finally {
             setSubmitting(false);
             onClose();
-            toast.success('Successfully added question!');
         }
     };
     return (
