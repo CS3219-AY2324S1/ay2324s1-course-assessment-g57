@@ -61,10 +61,12 @@ const Login = () => {
                 push('/dashboard');
             } else {
                 console.error('Login failed');
+                toast.error('Login failed');
                 // You might want to handle login failure, e.g., show an error message
             }
         } catch (error) {
             console.error('Error:', error);
+            toast.error('Login failed');
         }
     };
 

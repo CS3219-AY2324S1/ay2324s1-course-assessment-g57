@@ -58,10 +58,11 @@ const Register = () => {
                 push('/dashboard');
             } else {
                 console.error('Register failed');
-                toast.warn('Register failed');
+                toast.error('Register failed');
             }
         } catch (error) {
             console.error('Error:', error);
+            toast.error('Register failed');
         }
     };
 

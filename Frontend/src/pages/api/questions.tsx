@@ -42,9 +42,7 @@ export default async function handler(
             });
         }
     } else if (req.method == 'GET') {
-        const response = await fetch(url, {
-            headers: reqHeaders,
-        });
+        const response = await fetch(url);
 
         if (response.ok) {
             const questions = await response.json();
