@@ -57,8 +57,16 @@ const Register = () => {
                 // Redirect to the dashboard after successful Register
                 push('/dashboard');
             } else {
-                console.error('Register failed');
-                toast.error('Register failed');
+                switch (response.status) {
+                    case 409:
+                        console.error('Username or email already exists');
+                        toast.error('Username or email already exists');
+                        break;
+                    default:
+                        console.error('Register failed');
+                        toast.error('Register failed');
+                        break;
+                }
             }
         } catch (error) {
             console.error('Error:', error);
