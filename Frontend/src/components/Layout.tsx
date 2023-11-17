@@ -8,7 +8,7 @@ type LayoutProps = {
     children: React.ReactNode;
 };
 
-const Layout = ({ title, user, loading = false, children }: LayoutProps) => {
+const Layout = ({ title, children }: LayoutProps) => {
     return (
         <>
             <Head>
@@ -29,7 +29,7 @@ const Layout = ({ title, user, loading = false, children }: LayoutProps) => {
             {/* <Header user={user} loading={loading} /> */}
 
             <div>
-                <Nav user={user} loading={loading} />
+                <Nav />
 
                 <main className="container">
                     <div className="container">{children}</div>

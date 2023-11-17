@@ -1,12 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-type NavProps = {
-    user?: any;
-    loading?: boolean;
-};
-
-const Nav = ({ user }: NavProps) => {
+const Nav = () => {
     return (
         <>
             <nav
@@ -32,15 +27,7 @@ const Nav = ({ user }: NavProps) => {
                 <div className="navbar-menu">
                     <div className="navbar-start">
                         <div className="navbar-item">
-                            <div className="field is-grouped">
-                                {user?.peerprepRoles?.[0] === 'Admin' ? (
-                                    <p className="control has-text-weight-medium">
-                                        <Link href="/users">Users</Link>
-                                    </p>
-                                ) : (
-                                    <></>
-                                )}
-                            </div>
+                            <div className="field is-grouped"></div>
                         </div>
                         <div className="navbar-item">
                             <div className="field is-grouped">
@@ -57,7 +44,13 @@ const Nav = ({ user }: NavProps) => {
                                 <p className="control">
                                     <Link
                                         className="button is-light is-danger"
-                                        href="/api/auth/logout"
+                                        href="/"
+                                        onClick={() => {
+                                            localStorage.removeItem(
+                                                'userToken'
+                                            );
+                                            localStorage.removeItem('username');
+                                        }}
                                     >
                                         Log Out
                                     </Link>

@@ -38,7 +38,7 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
         { setSubmitting }: FormikHelpers<FormValues>
     ) => {
         try {
-            const response = await fetch(`/api/questions/`, {
+            const response = await fetch(`/api/questions`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

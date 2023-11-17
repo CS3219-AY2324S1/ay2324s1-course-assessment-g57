@@ -3,20 +3,15 @@
     "dev": "nodemon index.js"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.430.0",
-    "@aws-sdk/lib-dynamodb": "^3.430.0",
-    "axios": "^1.5.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "dynamoose": "^3.2.1",
     "express": "^4.18.2",
-    "express-jwt": "^8.4.1",
-    "jwks-rsa": "^3.1.0",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "serverless-http": "^3.2.0"
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.35.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

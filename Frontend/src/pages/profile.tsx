@@ -1,7 +1,6 @@
-import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import Layout from '../components/Layout';
+import { Formik, Field, Form, FormikHelpers } from 'formik';
 import React, { useState, useCallback } from 'react';
-import Image from 'next/image';
 import {
     Modal,
     ModalOverlay,
@@ -10,29 +9,19 @@ import {
     ModalFooter,
     ModalBody,
     useDisclosure,
+    Button,
+    FormControl,
+    FormLabel,
+    Input,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-type AuthUser = {
-    user_id: string;
-    email: string;
-    email_verified: boolean;
-    name: string;
-    nickname: string;
-    picture: string;
-    sub: string;
-    updated_at: string;
-};
-
-type ProfileCardProps = {
-    user: AuthUser;
-};
-
-const ProfileCard = ({ user }: ProfileCardProps) => {
+const ProfileCard = () => {
     const router = useRouter();
-    const [username, setUsername] = useState<string>();
-    const [email, setEmail] = useState<string>();
+    const [username, setUsername] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
     const {
         isOpen: isEditOpen,
         onOpen: onEditOpen,
@@ -43,56 +32,84 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
         onOpen: onDeleteOpen,
         onClose: onDeleteClose,
     } = useDisclosure();
+    // var localUsername = '';
 
-    const fetchUser = useCallback(() => {
-        fetch(`/api/users/${user.sub}`)
-            .then((response) => response.json())
-            .then((fetchedUser) => {
-                setUsername(fetchedUser.username);
-                setEmail(fetchedUser.email);
-            })
-            .catch((error) => {
-                console.error('Error fetching user data:', error);
-            });
-    }, [user.sub]);
-
-    async function updateUserDetails() {
+    const fetchUser = useCallback(async (localUsername: string) => {
         try {
-            const response = await fetch(`/api/users/${user.sub}`, {
+            console.log('fetching user', localUsername);
+            const response = await fetch(
+                `http://localhost:3001/${localUsername}`
+            );
+            const profile = await response.json();
+            if (response.ok) {
+                setEmail(profile.email);
+            }
+        } catch (error) {
+            console.error('Error fetching user data');
+        }
+    }, []);
+
+    React.useEffect(() => {
+        const storedUsername = localStorage.getItem('username');
+        console.log('stored', storedUsername);
+        if (storedUsername) {
+            setUsername(storedUsername);
+            fetchUser(storedUsername);
+        }
+    }, []);
+
+    interface FormValues {
+        // username: string;
+        email: string;
+    }
+
+    const updateUserDetails = async (
+        values: FormValues,
+        { setSubmitting }: FormikHelpers<FormValues>
+    ) => {
+        try {
+            console.log("submitting user's details", values);
+            const response = await fetch(`http://localhost:3001/${username}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    username: username,
+                    // username: values.username,
+                    email: values.email,
                 }),
             });
 
             if (!response.ok) {
-                toast.error('Failed to update display name');
+                toast.error('Failed to update username');
                 console.log('Failed to update user');
             }
-
-            fetchUser();
+            // setUsername(values.username);
+            // localStorage.setItem('username', values.username);
+            fetchUser(username);
             await response.json();
         } catch (error) {
             console.error('Failed to edit user: ', error);
+            toast.warning('Failed to edit profile');
         } finally {
+            setSubmitting(false);
             onEditClose();
-            toast.success('Successfully edited display name!');
+            toast.success('Successfully edited profile!');
         }
-    }
+    };
 
     // OnClick Delete function
     async function deleteUser() {
         try {
-            await fetch(`/api/users/${user.sub}`, {
+            await fetch(`http://localhost:3001/${username}`, {
                 method: 'DELETE',
             })
                 .then((response) => {
                     if (response.ok) {
                         console.log('User deleted successfully');
-                        router.push('/api/auth/logout');
+                        localStorage.removeItem('userToken');
+                        localStorage.removeItem('username');
+                        router.push('/');
                     }
                     return response.json();
                 })
@@ -103,10 +120,6 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
             console.log(e);
         }
     }
-
-    React.useEffect(() => {
-        fetchUser();
-    }, [fetchUser]);
 
     return (
         <>
@@ -120,31 +133,45 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                 <ModalOverlay bg="blackAlpha.700" backdropFilter="blur(4px)" />
                 <ModalContent>
                     <ModalHeader>Edit profile</ModalHeader>
-                    <form onSubmit={updateUserDetails}>
-                        <ModalBody>
-                            <label htmlFor="displayName">Display Name:</label>
-                            <input
-                                className="input"
-                                type="text"
-                                id="displayName"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                required
-                            />
-                        </ModalBody>
-                        <ModalFooter>
-                            <button
-                                className="button is-outlined"
-                                onClick={onEditClose}
-                            >
-                                Close
-                            </button>
-                            &nbsp;
-                            <button className="button is-primary" type="submit">
-                                Save Changes
-                            </button>
-                        </ModalFooter>
-                    </form>
+                    <ModalBody>
+                        <Formik
+                            initialValues={{
+                                email: email ?? '',
+                            }}
+                            onSubmit={updateUserDetails}
+                        >
+                            {(props) => (
+                                <Form>
+                                    <FormControl>
+                                        <FormLabel>Email</FormLabel>
+                                        <Field
+                                            name="email"
+                                            type="email"
+                                            as={Input}
+                                            // placeholder="https://leetcode.com/problems/example"
+                                        />
+                                    </FormControl>
+                                    <ModalFooter>
+                                        <Button
+                                            className="button is-outlined"
+                                            onClick={onEditClose}
+                                            mr={3}
+                                        >
+                                            Close
+                                        </Button>
+                                        <Button
+                                            className="button is-outlined"
+                                            type="submit"
+                                            isLoading={props.isSubmitting}
+                                            colorScheme="blue"
+                                        >
+                                            Submit
+                                        </Button>
+                                    </ModalFooter>
+                                </Form>
+                            )}
+                        </Formik>
+                    </ModalBody>
                 </ModalContent>
             </Modal>
 
@@ -187,25 +214,10 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                     <div className="columns is-centered">
                         <div className="column is-half">
                             <h2 className="is-size-1">User Profile</h2>
-                            {user.picture != null ? (
-                                <Image
-                                    src={user?.picture ?? ''}
-                                    alt="profile picture"
-                                    width="120"
-                                    height="120"
-                                    className="rounded-full"
-                                />
-                            ) : (
-                                <></>
-                            )}
-                            <br />
                             <div className="columns">
                                 <div className="column">
                                     <p className="is-size-5 has-text-weight-bold">
-                                        Display Name:
-                                    </p>
-                                    <p className="is-size-5 has-text-weight-bold">
-                                        Name:
+                                        Username:
                                     </p>
                                     <p className="is-size-5 has-text-weight-bold">
                                         Email:
@@ -214,9 +226,6 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                                 <div className="column">
                                     <p className="is-size-5">
                                         {username ?? ''}
-                                    </p>
-                                    <p className="is-size-5">
-                                        {user.name ?? ''}
                                     </p>
                                     <p className="is-size-5">{email}</p>
                                 </div>
@@ -244,19 +253,14 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
     );
 };
 
-type ProfileProps = {
-    user?: any;
-    isLoading: boolean;
-};
-
-const Profile = ({ user, isLoading }: ProfileProps) => {
+const Profile = () => {
     // console.log(user);
     return (
-        <Layout title={'Profile'} user={user} loading={isLoading}>
-            {isLoading ? <>Loading...</> : <ProfileCard user={user} />}
+        <Layout title={'Profile'}>
+            <ProfileCard />
         </Layout>
     );
 };
 
 // Protected route, checking user authentication client-side.(CSR)
-export default withPageAuthRequired(Profile);
+export default Profile;

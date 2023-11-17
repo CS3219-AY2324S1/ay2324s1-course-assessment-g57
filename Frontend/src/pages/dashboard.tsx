@@ -1,14 +1,13 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
-import MatchControls from '@/components/Matching/MatchControls';
 import QuestionTable from '../components/questions/QuestionTable';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { Question } from '../models/types';
 import { restoreTitle } from '@/lib/utils';
+import { useRouter } from 'next/router';
+// import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type QuestionProps = {
-    user?: any;
-    isLoading: boolean;
     initialData: Question[];
 };
 
@@ -34,72 +33,36 @@ export async function getServerSideProps() {
     }
 }
 
-const Dashboard = ({ user, initialData, isLoading }: QuestionProps) => {
-    const [username, setUsername] = useState<string>();
-    const fetchUser = useCallback(() => {
-        fetch(`/api/users/${user.sub}`)
-            .then((response) => response.json())
-            .then((fetchedUser) => {
-                setUsername(fetchedUser.username);
-            })
-            .catch((error) => {
-                console.error('Error fetching user data:', error);
-            });
-    }, [user.sub]);
+const Dashboard = ({ initialData }: QuestionProps) => {
+    // const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [username, setUsername] = useState('User');
+    const { push } = useRouter();
 
-    React.useEffect(() => {
-        fetchUser();
-    }, [username, fetchUser]);
+    useEffect(() => {
+        const storedUsername = localStorage.getItem('username');
+        const token = localStorage.getItem('userToken');
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+        if (!token) {
+            push('/login');
+        }
+    }, []);
 
     return (
         <div>
-            <Layout user={user} loading={isLoading}>
-                {user ? (
-                    <>
-                        <div className="p-4">
-                            <p className="is-size-3">
-                                Welcome back, {username}!
-                            </p>
-                        </div>
+            <Layout>
+                <div className="p-4">
+                    <p className="is-size-3">Welcome back, {username}!</p>
+                </div>
 
-                        <div className="mt-2 p-4">
-                            <h2 className="is-size-4">Match with a Peer!</h2>
-                            <MatchControls userId={user.sub} />
-                        </div>
-
-                        <div className="p-4 mt-4">
-                            <h1 className="is-size-3">Questions</h1>
-                            <QuestionTable
-                                user={user}
-                                initialData={initialData}
-                            />
-                        </div>
-                    </>
-                ) : (
-                    // <>
-                    //     <section className="section p-8">
-                    //         <p className="is-size-3">
-                    //             Welcome back, {username}!
-                    //         </p>
-                    //     </section>
-                    //     <section className="section p-24">
-                    //         <h2 className="is-size-4">Match with a Peer!</h2>
-                    //         <MatchControls userId={user.sub} />
-                    //     </section>
-
-                    //     <section className="section">
-                    //         <h1 className="is-size-3">Questions</h1>
-                    //         <QuestionTable
-                    //             user={user}
-                    //             initialData={initialData}
-                    //         />
-                    //     </section>
-                    // </>
-                    <></>
-                )}
+                <div className="p-4 mt-4">
+                    <h1 className="is-size-3">Questions</h1>
+                    <QuestionTable initialData={initialData} />
+                </div>
             </Layout>
         </div>
     );
 };
 
-export default withPageAuthRequired(Dashboard);
+export default Dashboard;

@@ -10,12 +10,11 @@ import { getComplexityColor } from '../../lib/utils';
 import { toast } from 'react-toastify';
 
 type QuestionTableProp = {
-    user?: any;
     initialData: Question[];
 };
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const TableComponent = ({ user, initialData }: QuestionTableProp) => {
+const TableComponent = ({ initialData }: QuestionTableProp) => {
     const [currQuestion, setCurrQuestion] = React.useState<Question>(
         defaultQuestion()
     );
@@ -90,18 +89,12 @@ const TableComponent = ({ user, initialData }: QuestionTableProp) => {
             <AddQuestionModal isOpen={isAddOpen} onClose={onAddClose} />
 
             <div className="table-container">
-                {user?.peerprepRoles?.[0] === 'Admin' ? (
-                    <>
-                        <button
-                            className="button is-link is-pulled-right mb-4"
-                            onClick={onAddOpen}
-                        >
-                            Add question
-                        </button>
-                    </>
-                ) : (
-                    <></>
-                )}
+                <button
+                    className="button is-link is-pulled-right mb-4"
+                    onClick={onAddOpen}
+                >
+                    Add question
+                </button>
 
                 {/* Questions Table */}
                 <table className="table is-bordered is-striped is-hoverable is-fullwidth">
@@ -111,14 +104,8 @@ const TableComponent = ({ user, initialData }: QuestionTableProp) => {
                             <th>Category</th>
                             <th>Complexity</th>
                             <th>View Details</th>
-                            {user?.peerprepRoles?.[0] === 'Admin' ? (
-                                <>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
-                                </>
-                            ) : (
-                                <></>
-                            )}
+                            <th>Edit</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -167,35 +154,29 @@ const TableComponent = ({ user, initialData }: QuestionTableProp) => {
                                             View Details
                                         </button>
                                     </td>
-                                    {user?.peerprepRoles?.[0] === 'Admin' ? (
-                                        <>
-                                            <td>
-                                                <IconButton
-                                                    aria-label="Edit Button"
-                                                    colorScheme="teal"
-                                                    icon={<EditIcon />}
-                                                    onClick={async () => {
-                                                        await getQuestionDetails(
-                                                            val.title
-                                                        );
-                                                        onEditOpen();
-                                                    }}
-                                                />
-                                            </td>
-                                            <td>
-                                                <IconButton
-                                                    aria-label="Delete Button"
-                                                    colorScheme="red"
-                                                    icon={<DeleteIcon />}
-                                                    onClick={() =>
-                                                        sendDelete(val.title)
-                                                    }
-                                                />
-                                            </td>
-                                        </>
-                                    ) : (
-                                        <></>
-                                    )}
+                                    <td>
+                                        <IconButton
+                                            aria-label="Edit Button"
+                                            colorScheme="teal"
+                                            icon={<EditIcon />}
+                                            onClick={async () => {
+                                                await getQuestionDetails(
+                                                    val.title
+                                                );
+                                                onEditOpen();
+                                            }}
+                                        />
+                                    </td>
+                                    <td>
+                                        <IconButton
+                                            aria-label="Delete Button"
+                                            colorScheme="red"
+                                            icon={<DeleteIcon />}
+                                            onClick={() =>
+                                                sendDelete(val.title)
+                                            }
+                                        />
+                                    </td>
                                 </tr>
                             );
                         })}

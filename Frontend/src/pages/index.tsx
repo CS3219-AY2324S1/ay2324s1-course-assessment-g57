@@ -1,17 +1,25 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { useUser } from '@auth0/nextjs-auth0/client';
+// import { useUser } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
 const MainApp = () => {
-    const { user } = useUser();
+    // const { user } = useUser();
     const { push } = useRouter();
 
-    console.log(user);
+    // console.log(user);
 
-    if (user) {
-        push('/dashboard');
-    }
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    React.useEffect(() => {
+        const token = localStorage.getItem('userToken');
+        if (token) {
+            setIsAuthenticated(!!token);
+        }
+        if (isAuthenticated) {
+            push('/dashboard');
+        }
+    }, []);
 
     return (
         <>
@@ -42,7 +50,7 @@ const MainApp = () => {
                                 <p className="control">
                                     <Link
                                         className="button is-light"
-                                        href="/api/auth/login"
+                                        href="/login"
                                     >
                                         Login
                                     </Link>
@@ -50,7 +58,7 @@ const MainApp = () => {
                                 <p className="control">
                                     <Link
                                         className="button is-primary"
-                                        href="/api/auth/login"
+                                        href="/register"
                                     >
                                         Sign Up
                                     </Link>
@@ -80,14 +88,14 @@ const MainApp = () => {
                                     <p>
                                         <Link
                                             className="button is-primary"
-                                            href="/api/auth/login"
+                                            href="/register"
                                         >
                                             Sign up
                                         </Link>
                                         &nbsp;
                                         <Link
                                             className="button is-link is-outlined is-inverted"
-                                            href="/api/auth/login"
+                                            href="/login"
                                         >
                                             Login
                                         </Link>

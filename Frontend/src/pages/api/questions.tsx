@@ -1,19 +1,17 @@
-import { getAccessToken, withApiAuthRequired } from '@auth0/nextjs-auth0';
+// import { getAccessToken, withApiAuthRequired } from '@auth0/nextjs-auth0';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Question } from '../../models/types';
 import { cleanTitle, restoreTitle } from '@/lib/utils';
 
 const baseURL = process.env.PROD_SERVER_BASE_URL;
 
-export default withApiAuthRequired(async function handler(
+export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     console.log('Get Questions', req.method);
-    const { accessToken } = await getAccessToken(req, res);
-    const reqHeaders: Record<string, string> = {
-        Authorization: `Bearer ${accessToken}`,
-    };
+    // const { accessToken } = await getAccessToken(req, res);
+    const reqHeaders: Record<string, string> = {};
     const url = `${baseURL}/questions`;
 
     if (req.method == 'POST') {
@@ -63,4 +61,4 @@ export default withApiAuthRequired(async function handler(
             });
         }
     }
-});
+}
