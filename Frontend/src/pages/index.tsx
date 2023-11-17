@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Layout from '../components/Layout';
 import QuestionTable from '../components/questions/QuestionTable';
 import { Question } from '../models/types';
 import { restoreTitle } from '@/lib/utils';
-import { useRouter } from 'next/router';
 // import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -34,8 +33,6 @@ export async function getServerSideProps() {
 }
 
 const MainPage = ({ initialData }: QuestionProps) => {
-    // const [isAuthenticated, setIsAuthenticated] = useState(false);
-
     return (
         <div>
             <Layout>
