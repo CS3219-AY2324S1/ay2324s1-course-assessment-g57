@@ -27,6 +27,12 @@ const getQuestions = async (req, res) => {
     //     console.error('Unable to scan the table', err);
     //     res.status(500).json({ error: 'Unable to get questions' });
     // }
+    // console.log('Querying questions');
+    // console.log('Headers', req.headers);
+    // console.log('request.auth', req.auth);
+    // console.log('UserRoles', req.auth.peerprepRoles);
+    // const userRoles = req.auth.peerprepRoles;
+    // console.log('isAdmin', userRoles.includes('admin'));
     const withDescription = req.query.withDescription;
     let projectExpr;
     if (withDescription === 'true') {
@@ -104,6 +110,12 @@ const getQuestionByComplexity = async (req, res) => {
 
 // Create a new question
 const createQuestion = async (req, res) => {
+    const userRoles = req.auth.peerprepRoles;
+    const isAdmin = userRoles.includes('Admin');
+    if (!isAdmin) {
+        res.status(403).json({ error: 'Unauthorized' });
+        return;
+    }
     const { title, categories, complexity, description, link } = req.body;
     let newQuestionID;
     let questionCreated = false;
@@ -177,6 +189,12 @@ const createQuestion = async (req, res) => {
 // Update an existing question
 const updateQuestion = async (req, res) => {
     const { title, categories, complexity, description, link } = req.body;
+    const userRoles = req.auth.peerprepRoles;
+    const isAdmin = userRoles.includes('Admin');
+    if (!isAdmin) {
+        res.status(403).json({ error: 'Unauthorized' });
+        return;
+    }
 
     if (title != req.params.title) {
         // Delete the existing item with the old key

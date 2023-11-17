@@ -5,7 +5,7 @@ const cors = require('cors');
 const { expressjwt: jwt } = require('express-jwt');
 const jwks = require('jwks-rsa');
 const serverless = require('serverless-http');
-
+// const { auth } = require('express-oauth2-jwt-bearer');
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -22,7 +22,12 @@ const verifyJwt = jwt({
     audience: 'user-service-api',
     issuer: 'https://dev-r67hrnstb5x4ekjv.us.auth0.com/',
     algorithms: ['RS256'],
-}).unless({ path: ['/questions'] });
+});
+// const verifyJwt = auth({
+//     audience: 'user-service-api',
+//     issuerBaseURL: 'https://dev-r67hrnstb5x4ekjv.us.auth0.com/',
+//     tokenSigningAlg: 'RS256',
+// });
 
 app.use(verifyJwt);
 
