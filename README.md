@@ -16,46 +16,48 @@ Peerprep is a collaborative platform for students to practice interview question
 -   [Setup](#setup) - [PeerPrep](#peerprep-setup) - [Assignment 1](#assignment-1) - [Assignment 2](#assignment-2) - [Assignment 3](#assignment-3) - [Assignment 4](#assignment-4) - [Assignment 5](#assignment-5) - [Assignment 6](#assignment-6)
 </p>
 
-## Services
 
-### Frontend
+# Assignment 5 Instructions
 
-Provides the user interface for the application, users will interact with the various services through the Frontend. Main hub for interaction between different services.
+Assignment 5 involves almost the entire app. We recommend using a partially hosted version of the app as it invovles less setup. The following services of the app are required for assignment 5:
 
-### matching-service
+- User service (hosted)
+- Question service (hosted)
+- Collab service (local)
+- Matching service (local)
+- Frontend service (local)
 
-Provides the matching algorithm for the application, which will match users based on their difficulty and availability.
+The user and question services are hosted on AWS so you only need to set up the collab, matching and frontend services locally.
 
-### question-service
 
-Provides the questions for the application.
+## Prerequisites
 
-### user-service
+-   NodeJS version >v20
+-   In the Frontend directory, make a copy of `.env.sample` and name it `.env`. The `.env` file contains the environment variables required for the services to run. Ideally, the `.env` file should not be committed to the repository as it contains sensitive information. We have not committed the `.env` file, but instead have left the environment variables in the `.env.sample` file for your convenience.
 
-Handles user authentication and authorization.
 
-### video-service
+## Setup Instructions
 
-Handles the video conferencing between users.
+1. Clone this branch
+2. Install the dependencies for each service by running `yarn install` in the respective service folders for collab, matching and frontend services.
 
-### collab-service
+3. Open separate terminals for each service and run the following commands:
+    - Collab service: `npm start`
+    - Matching service:
+        ```
+        docker build -t matching-service .
+        docker-compose build
+        ```
 
-Handles the signaling between users.
+        ```
+        docker run -p 4000:4000 -p 5672:5672 -d matching-service
+        docker-compose up
+        ```
 
-## Setup
+    - Frontend: `yarn build` followed by `yarn start`
 
-### PeerPrep Setup
 
-To set up the entire application locally, follow the instructions on the various READMEs in the respective folders.
+## Testing Instructions
 
-### Assignment 1
-
-### Assignment 2
-
-### Assignment 3
-
-### Assignment 4
-
-### Assignment 5
-
-### Assignment 6
+- Open a browser and navigate to `localhost:3000` to access the app.
+- Create an account and login to access the matching service.
