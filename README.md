@@ -22,15 +22,22 @@ Peerprep is a collaborative platform for students to practice interview question
 
 
 ### Frontend
+
 `cd Frontend`
+
 `docker build -t peerprep-frontend .`
+
 `docker run -p 3000:3000 peerprep-frontend`
 
 
 ### Question Service
+
 `cd question-service`
+
 `docker-compose up -d`
 
 ### User Service
+
 `cd user-service`
+
 `docker-compose up -d`
