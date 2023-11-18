@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    </head>
+    <body>
+        <h1>User ID: <a id="userId"></a></h1>
+        <h1 id="status">
+            Enter user ID, select difficulty and click Start Match
+        </h1>
+        <h2 id="timer">30s</h2>
+
+        <label for="userIdInput">User ID:</label>
+        <input type="text" id="userIdInput" />
+        <br />
+
+        <label for="difficulty">Select difficulty level:</label>
+        <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+
+        <br />
+        <button id="startMatchButton" onclick="startMatch()">
+            Start Match
+        </button>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            const status = document.getElementById('status');
+            const difficulty = document.getElementById('difficulty');
+
+            const userId = document.getElementById('userId');
+            const userIdInput = document.getElementById('userIdInput');
+
+            const timer = document.getElementById('timer');
+            const startMatchButton =
+                document.getElementById('startMatchButton');
+
+            function startMatch() {
+                // Assumes frontend is served on the same domain as the server
+                const socket = io();
+
+                // Start finding a match once socket is connected
+                socket.on('connect', () => {
+                    userId.innerHTML = userIdInput.value;
+                    socket.emit(
+                        'startMatch',
+                        userIdInput.value,
+                        difficulty.value
+                    );
+                    status.innerHTML = `Finding match with difficulty level ${difficulty.value}`;
+                    startMatchButton.disabled = true;
+                });
+
+                socket.on('matchFound', (message) => {
+                    status.innerHTML = message;
+                });
+
+                socket.on('matchTimerCountdown', (timerCountdown) => {
+                    timer.innerHTML = timerCountdown.toString() + 's';
+                });
+
+                socket.on('noMatchTimerExpired', () => {
+                    status.innerHTML = 'No match found!';
+                });
+
+                socket.on('userAlreadyInQueue', () => {
+                    status.innerHTML = 'User already in queue';
+                });
+
+                socket.on('disconnect', (reason) => {
+                    startMatchButton.disabled = false;
+                });
+            }
+        </script>
+    </body>
+</html>

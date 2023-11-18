@@ -1,0 +1,25 @@
+{
+    "name": "question-service",
+    "version": "1.0.0",
+    "description": "responsible for maintaining a question repository indexed by difficulty level",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon index.js"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "@aws-sdk/client-dynamodb": "^3.445.0",
+        "@aws-sdk/lib-dynamodb": "^3.445.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "dynamoose": "^3.2.1",
+        "express": "^4.18.2",
+        "express-jwt": "^8.4.1",
+        "jwks-rsa": "^3.1.0",
+        "serverless-http": "^3.2.0"
+    },
+    "devDependencies": {
+        "jest": "^29.7.0",
+        "nodemon": "^3.0.1"
+    }
+}
