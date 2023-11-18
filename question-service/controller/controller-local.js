@@ -88,7 +88,7 @@ router.delete('/:id', getQuestion, async (req, res) => {
 async function getQuestion(req, res, next) {
   let question;
   try {
-    question = await Question.findById(req.params.id);
+    question = await Question.find({ title: req.params.id });
     if (question == null) {
       return res.status(404).json({ message: 'Cannot find question' });
     }

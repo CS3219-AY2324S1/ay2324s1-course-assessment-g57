@@ -1,0 +1,22 @@
+# docker-compose.yml
+version: "2"
+services:
+  app:
+    restart: on-failure
+    build: .
+    depends_on:
+      - mongo
+    environment:
+      LOCAL_DB_URL: mongodb://mongo:27017/question-service
+      PORT: 3002
+    ports:
+      - "3002:3002"
+    command: npm run dev
+    volumes:
+      - .:/app/
+      - /app/node_modules
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
